@@ -1,6 +1,6 @@
 ﻿{
     "userName": "윾하준",
-    "energy": 0,
+    "energy": 405,
     "ePc": 1,
     "soldiers": [
         {

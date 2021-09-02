@@ -4,10 +4,13 @@ using UnityEngine;
 public class GameManager : MonoSingleton<GameManager>
 {
     [SerializeField] private User user = null;
+    
+    public User CurrentUser { get { return user; } }
 
     private string SAVE_PATH = "";
 
     private string SAVE_FILENAME = "/SaveFile.txt";
+
 
     private void Awake()
     {
@@ -26,7 +29,7 @@ public class GameManager : MonoSingleton<GameManager>
         if(File.Exists(SAVE_PATH + SAVE_FILENAME))
         {
             json = File.ReadAllText(SAVE_PATH + SAVE_FILENAME);
-            user = JsonUtility.FromJson<User>(json);
+            user = JsonUtility.FromJson<User>(json); 
         }
     }
 
@@ -34,5 +37,10 @@ public class GameManager : MonoSingleton<GameManager>
     {
         string json = JsonUtility.ToJson(user, true);
         File.WriteAllText(SAVE_PATH + SAVE_FILENAME, json, System.Text.Encoding.UTF8);
+    }
+
+    private void OnApplicationQuit()
+    {
+        SaveToJson();
     }
 }

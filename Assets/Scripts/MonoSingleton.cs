@@ -1,21 +1,22 @@
-
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class MonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
 {
+    private static T inst;
     private static bool shuttingDown = false;
     private static object locker = new object();
-    private static T inst = null;
     public static T Inst
     {
         get
         {
-            if(shuttingDown)
+            if (shuttingDown)
             {
-                Debug.LogError("[SingleTon] Instance" + typeof(T) + "already destroyed. Returning null.");
+                Debug.LogWarning("[Singleton] Instance " + typeof(T) + " already destroyed. Returning null.");
             }
 
-            lock(locker)
+            lock (locker)
             {
                 if (inst == null)
                 {
@@ -24,17 +25,11 @@ public class MonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
                     {
                         inst = new GameObject(typeof(T).ToString()).AddComponent<T>();
                     }
+                    DontDestroyOnLoad(inst);
                 }
-                DontDestroyOnLoad(inst);
+                return inst;
             }
-
-            return inst;
         }
-    }
-
-    private void OnApplicationQuit()
-    {
-        shuttingDown = true;
     }
 
     private void OnDestroy()
@@ -42,5 +37,8 @@ public class MonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
         shuttingDown = true;
     }
 
-
+    private void OnApplicationQuit()
+    {
+        shuttingDown = true;
+    }
 }
