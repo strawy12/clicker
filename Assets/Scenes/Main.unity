@@ -374,7 +374,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uD569\uC131"
+  m_Text: "\uACC4\uC57D"
 --- !u!222 &500848193
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -617,7 +617,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 126.5}
-  m_SizeDelta: {x: 320, y: 311.1}
+  m_SizeDelta: {x: 168.75, y: 168.75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &664899996
 MonoBehaviour:
@@ -639,7 +639,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -8777474336350012146, guid: e1e95eca8e36b4d45bf5ccbbb16b485d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: fe0491b8508ea7345adc19c32315fe63, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1315,7 +1315,7 @@ GameObject:
   - component: {fileID: 1584778788}
   - component: {fileID: 1584778787}
   m_Layer: 5
-  m_Name: PurchaseButton
+  m_Name: ContractButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1468,52 +1468,52 @@ MonoBehaviour:
   user:
     userName: "\uAE08\uC0AC\uD5A5"
     money: 0
-    mPc: 0
+    mPc: 1
     mPs: 0
     soldiers:
     - soldierName: "\uC751\uC560\uCC0D\uCC0D\uC774"
       amount: 0
-      ePs: 0
+      mPs: 0
       price: 1000
     - soldierName: "\uCCAD\uC18C\uB144\uCC0D\uCC0D\uC774"
       amount: 0
-      ePs: 0
+      mPs: 0
       price: 3000
     - soldierName: "\uC9112\uBCD1\uCC0D\uCC0D\uC774"
       amount: 0
-      ePs: 0
+      mPs: 0
       price: 5000
     - soldierName: "\uC0C8\uB0B4\uAE30\uCC0D\uCC0D\uC774"
       amount: 0
-      ePs: 0
+      mPs: 0
       price: 7000
     - soldierName: "\uBCF5\uD559\uC0DD\uCC0D\uCC0D\uC774"
       amount: 0
-      ePs: 0
+      mPs: 0
       price: 10000
     - soldierName: "\uC2E0\uC0AC\uCC0D\uCC0D\uC774"
       amount: 0
-      ePs: 0
+      mPs: 0
       price: 15000
     - soldierName: "\uAE30\uC0AC\uCC0D\uCC0D\uC774"
       amount: 0
-      ePs: 0
+      mPs: 0
       price: 20000
     - soldierName: "\uC9D1\uC0AC\uCC0D\uCC0D\uC774"
       amount: 0
-      ePs: 0
+      mPs: 0
       price: 30000
     - soldierName: "\uC655\uCC0D\uCC0D\uC774"
       amount: 0
-      ePs: 0
+      mPs: 0
       price: 50000
     - soldierName: "\uC0AC\uC774\uBCF4\uADF8\uCC0D\uCC0D\uC774"
       amount: 0
-      ePs: 0
+      mPs: 0
       price: 100000
     - soldierName: "AI\uCC0D\uCC0D\uC774"
       amount: 0
-      ePs: 0
+      mPs: 0
       price: 500000
 --- !u!4 &1620595928
 Transform:
@@ -1545,6 +1545,7 @@ MonoBehaviour:
   energyText: {fileID: 1625988566}
   upgradePanalTemp: {fileID: 1758408956}
   controlPanal: {fileID: 1409764443}
+  jjikjjikEPrefab: {fileID: 6520834962236217644, guid: a476ae38ce02cd948b9b3af9be5ef459, type: 3}
 --- !u!1 &1625988564
 GameObject:
   m_ObjectHideFlags: 0
@@ -1797,7 +1798,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 150, y: 10.000034}
+  m_AnchoredPosition: {x: 150, y: -40}
   m_SizeDelta: {x: 300, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1758408958

@@ -10,6 +10,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Text energyText = null;
     [SerializeField] private GameObject upgradePanalTemp = null;
     [SerializeField] private RectTransform controlPanal = null;
+    [SerializeField] private GameObject jjikjjikEPrefab = null;
 
     private bool isShow = false;
 
@@ -51,5 +52,13 @@ public class UIManager : MonoBehaviour
     public void UpdateEnergyPanal()
     {
         energyText.text = string.Format("{0} ¿¡³ÊÁö", GameManager.Inst.CurrentUser.money);
+    }
+    public void SpawnJJikJJikE(Sprite soldierSprite)
+    {
+        float x = Random.Range(-1.7f, 1.7f);
+        float y = Random.Range(0f, -3.6f);
+
+        Instantiate(jjikjjikEPrefab, new Vector2(x, y), Quaternion.identity).GetComponent<SpriteRenderer>().sprite = soldierSprite;
+
     }
 }

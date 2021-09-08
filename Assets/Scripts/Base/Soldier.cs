@@ -5,7 +5,7 @@ public class Soldier
 {
     public string soldierName;
     public int amount;
-    public long ePs;
+    public long mPs;
     public long price;
 }
 

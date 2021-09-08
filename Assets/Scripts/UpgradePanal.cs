@@ -56,6 +56,7 @@ public class UpgradePanal : MonoBehaviour
             GameManager.Inst.CurrentUser.money -= soldier.price;
             GameManager.Inst.CurrentUser.soldiers[soldierNumber].amount++;
             UpdateValues();
+            GameManager.Inst.uiManager.SpawnJJikJJikE(soldierImage.sprite);
         }
     }
 }

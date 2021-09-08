@@ -4,7 +4,8 @@ using UnityEngine;
 public class GameManager : MonoSingleton<GameManager>
 {
     [SerializeField] private User user = null;
-    
+
+    public UIManager uiManager { get; private set; }
     public User CurrentUser { get { return user; } }
 
     private string SAVE_PATH = "";
@@ -20,6 +21,7 @@ public class GameManager : MonoSingleton<GameManager>
             Directory.CreateDirectory(SAVE_PATH);
         }
         LoadFromJson();
+        uiManager = GetComponent<UIManager>();
         InvokeRepeating("SaveToJson", 1f, 60f);
     }
 
