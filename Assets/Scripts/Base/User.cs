@@ -5,7 +5,8 @@ using System.Collections.Generic;
 public class User
 {
     public string userName;
-    public long energy;
-    public long ePc;
+    public long money;
+    public long mPc;
+    public long mPs;
     public List<Soldier> soldiers;
 }
