@@ -12,7 +12,7 @@ public class GameManager : MonoSingleton<GameManager>
 
     private string SAVE_FILENAME = "/SaveFile.txt";
 
-
+    private int cnt = 3;
     private void Awake()
     {
         SAVE_PATH = Application.dataPath + "/Save";
@@ -23,7 +23,9 @@ public class GameManager : MonoSingleton<GameManager>
         LoadFromJson();
         uiManager = GetComponent<UIManager>();
         InvokeRepeating("SaveToJson", 1f, 60f);
+        //InvokeRepeating("MoneyPerSecond", 0f, 1f);
     }
+
 
     private void LoadFromJson()
     {
@@ -33,12 +35,39 @@ public class GameManager : MonoSingleton<GameManager>
             json = File.ReadAllText(SAVE_PATH + SAVE_FILENAME);
             user = JsonUtility.FromJson<User>(json); 
         }
+        else
+        {
+            user.userName = "±İ»çÇâ";
+            user.mPc = 10;
+            user.maxPeople = 5;
+            user.peopleCnt = 0;
+            user.soldiers.Add(new Soldier("ÀÀ¾ÖÂïÂïÀÌ", 0, 0, 1000, 500));
+            user.soldiers.Add(new Soldier("Ã»¼Ò³âÂïÂïÀÌ", 0, 0, 3000, 700));
+            user.soldiers.Add(new Soldier("Áß2º´ÂïÂïÀÌ", 0, 0, 5000, 1000));
+            user.soldiers.Add(new Soldier("»õ³»±âÂïÂïÀÌ", 0, 0, 10000, 1250));
+            user.soldiers.Add(new Soldier("º¹ÇĞ»ıÂïÂïÀÌ", 0, 0, 15000, 1500));
+            user.soldiers.Add(new Soldier("½Å»çÂïÂïÀÌ", 0, 0, 30000, 1750));
+            user.soldiers.Add(new Soldier("±â»çÂïÂïÀÌ", 0, 0, 50000, 2000));
+            user.soldiers.Add(new Soldier("Áı»çÂïÂïÀÌ", 0, 0, 100000, 2500));
+            user.soldiers.Add(new Soldier("¿ÕÂïÂïÀÌ", 0, 0, 300000, 3000));
+            user.soldiers.Add(new Soldier("»çÀÌº¸±×ÂïÂïÀÌ", 0, 0, 500000, 5000));
+            user.soldiers.Add(new Soldier("AIÂïÂïÀÌ", 0, 0, 1000000, 10000));
+            user.soldiers.Add(new Soldier("±î¹Ì", 0, 0, 10000000, 100000));
+        }
     }
 
     private void SaveToJson()
     {
         string json = JsonUtility.ToJson(user, true);
         File.WriteAllText(SAVE_PATH + SAVE_FILENAME, json, System.Text.Encoding.UTF8);
+    }
+
+    public void MoneyPerSecond()
+    {
+        foreach(Soldier soldier in user.soldiers)
+        {
+            user.money += soldier.amount * soldier.mPs;
+        }
     }
 
     private void OnApplicationQuit()

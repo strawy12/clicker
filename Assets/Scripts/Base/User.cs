@@ -8,5 +8,7 @@ public class User
     public long money;
     public long mPc;
     public long mPs;
+    public int maxPeople;
+    public int peopleCnt;
     public List<Soldier> soldiers;
 }
