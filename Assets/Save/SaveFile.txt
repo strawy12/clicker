@@ -1,72 +1,72 @@
 ﻿{
     "userName": "금사향",
-    "money": 999015999,
-    "mPc": 1000,
+    "money": 0,
+    "mPc": 1,
     "mPs": 0,
     "soldiers": [
         {
             "soldierName": "응애찍찍이",
-            "amount": 41,
+            "amount": 0,
             "mPs": 0,
             "price": 1000
         },
         {
             "soldierName": "청소년찍찍이",
-            "amount": 41,
+            "amount": 0,
             "mPs": 0,
             "price": 3000
         },
         {
             "soldierName": "중2병찍찍이",
-            "amount": 11,
+            "amount": 0,
             "mPs": 0,
             "price": 5000
         },
         {
             "soldierName": "새내기찍찍이",
-            "amount": 2,
+            "amount": 0,
             "mPs": 0,
             "price": 7000
         },
         {
             "soldierName": "복학생찍찍이",
-            "amount": 2,
+            "amount": 0,
             "mPs": 0,
             "price": 10000
         },
         {
             "soldierName": "신사찍찍이",
-            "amount": 2,
+            "amount": 0,
             "mPs": 0,
             "price": 15000
         },
         {
             "soldierName": "기사찍찍이",
-            "amount": 2,
+            "amount": 0,
             "mPs": 0,
             "price": 20000
         },
         {
             "soldierName": "집사찍찍이",
-            "amount": 2,
+            "amount": 0,
             "mPs": 0,
             "price": 30000
         },
         {
             "soldierName": "왕찍찍이",
-            "amount": 5,
+            "amount": 0,
             "mPs": 0,
             "price": 50000
         },
         {
             "soldierName": "사이보그찍찍이",
-            "amount": 2,
+            "amount": 0,
             "mPs": 0,
             "price": 100000
         },
         {
             "soldierName": "AI찍찍이",
-            "amount": 2,
+            "amount": 0,
             "mPs": 0,
             "price": 500000
         }

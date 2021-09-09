@@ -11,6 +11,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject upgradePanalTemp = null;
     [SerializeField] private RectTransform controlPanal = null;
     [SerializeField] private GameObject jjikjjikEPrefab = null;
+    [SerializeField] private GameObject[] scrollObject;
 
     private bool isShow = false;
 
@@ -43,12 +44,25 @@ public class UIManager : MonoBehaviour
         UpdateEnergyPanal();
     }
 
-    public void OnClickShowBtn()
+    public void OnClickShowBtn(int num)
     {
+       
         isShow = !isShow;
         controlPanal.DOAnchorPosY(isShow ? 0 : -300f, 0.2f).SetEase(Ease.InCirc);
     }
 
+    private void SetScrollActive(int num)
+    {
+        for(int i = 0; i < scrollObject.Length; i++)
+        {
+            if(i == num)
+            {
+                scrollObject[i].SetActive(true);
+                continue;
+            }
+            scrollObject[i].SetActive(false);
+        }
+    }
     public void UpdateEnergyPanal()
     {
         energyText.text = string.Format("{0} ¿¡³ÊÁö", GameManager.Inst.CurrentUser.money);
