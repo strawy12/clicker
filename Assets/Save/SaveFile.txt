@@ -1,13 +1,13 @@
 ﻿{
     "userName": "윾하준",
-    "energy": 405,
+    "energy": 1413,
     "ePc": 1,
     "soldiers": [
         {
             "soldierName": "진흙병사",
-            "amount": 0,
+            "amount": 3,
             "ePs": 1,
-            "price": 150
+            "price": 291
         },
         {
             "soldierName": "바위병사",
