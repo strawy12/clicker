@@ -1,18 +1,18 @@
 ﻿{
     "userName": "금사향",
-    "money": 38011194,
-    "mPc": 774106,
+    "money": 1000070,
+    "basemPc": 10,
     "mPs": 0,
     "maxPeople": 5,
-    "peopleCnt": 5,
+    "peopleCnt": 1,
     "soldiers": [
         {
             "soldierName": "응애찍찍이",
-            "amount": 9,
-            "level": 11,
+            "amount": 1,
+            "level": 0,
             "mPs": 0,
             "price": 1000,
-            "upgradePrice": 5813
+            "upgradePrice": 500
         },
         {
             "soldierName": "청소년찍찍이",

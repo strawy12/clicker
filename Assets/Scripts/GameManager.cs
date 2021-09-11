@@ -1,3 +1,4 @@
+using System.Collections;
 using System.IO;
 using UnityEngine;
 
@@ -12,6 +13,11 @@ public class GameManager : MonoSingleton<GameManager>
 
     private string SAVE_FILENAME = "/SaveFile.txt";
 
+    public Vector2 MaxPos { get; private set; } = new Vector2(1.5f, 3f);
+    public Vector2 MinPos { get; private set; } = new Vector2(-1.25f, 0);
+
+
+
     private int cnt = 3;
     private void Awake()
     {
@@ -23,6 +29,7 @@ public class GameManager : MonoSingleton<GameManager>
         LoadFromJson();
         uiManager = GetComponent<UIManager>();
         InvokeRepeating("SaveToJson", 1f, 60f);
+        InvokeRepeating("AutoClick", 1f, 5f);
         //InvokeRepeating("MoneyPerSecond", 0f, 1f);
     }
 
@@ -38,7 +45,7 @@ public class GameManager : MonoSingleton<GameManager>
         else
         {
             user.userName = "±›ªÁ«‚";
-            user.mPc = 10;
+            user.basemPc = 10;
             user.maxPeople = 5;
             user.peopleCnt = 0;
             user.soldiers.Add(new Soldier("¿¿æ÷¬Ô¬Ô¿Ã", 0, 0, 1000, 500));
@@ -68,8 +75,27 @@ public class GameManager : MonoSingleton<GameManager>
         {
             user.money += soldier.amount * soldier.mPs;
         }
+        uiManager.UpdateEnergyPanal();
     }
 
+    public void AutoClick()
+    {
+        StartCoroutine(AutoClickAnim());
+        for(int i = 0; i < user.peopleCnt; i++)
+        {
+            user.money += user.mpc;
+        }
+        uiManager.UpdateEnergyPanal();
+    }
+
+    private IEnumerator AutoClickAnim()
+    {
+        for (int i = 0; i < user.peopleCnt; i++)
+        {
+            uiManager.SpawnClickText(user.mpc);
+            yield return new WaitForSeconds(0.05f);
+        }
+    }
     private void OnApplicationQuit()
     {
         SaveToJson();

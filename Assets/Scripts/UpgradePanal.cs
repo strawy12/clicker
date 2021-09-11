@@ -13,6 +13,8 @@ public class UpgradePanal : MonoBehaviour
     [SerializeField] private Button contractBtn = null;
     [SerializeField] private Image soldierImage = null;
     [SerializeField] private EPanalState ePanalState;
+
+    private Coroutine messageCo;
     enum EPanalState {slave, company, level };
 
     int soldierNumber;
@@ -26,6 +28,7 @@ public class UpgradePanal : MonoBehaviour
         soldierNumber = num;
         soldier = GameManager.Inst.CurrentUser.soldiers[soldierNumber];
         UpdateValues();
+        SpawnSlaveObj();
     }
 
     public void UpdateValues()
@@ -53,6 +56,18 @@ public class UpgradePanal : MonoBehaviour
         }
     }
 
+    private void SpawnSlaveObj()
+    {
+        if (ePanalState != EPanalState.slave) return;
+        if (soldier.amount != 0)
+        {
+            for (int i = 0; i < soldier.amount; i++)
+            {
+                GameManager.Inst.uiManager.SpawnJJikJJikE(soldierImage.sprite, soldierNumber);
+            }
+        }
+    }
+
     public void OnclickBtn()
     {
         switch(ePanalState)
@@ -77,13 +92,17 @@ public class UpgradePanal : MonoBehaviour
             GameManager.Inst.CurrentUser.peopleCnt++;
             soldier.amount++;
             UpdateValues();
-            GameManager.Inst.uiManager.SpawnJJikJJikE(soldierImage.sprite);
+            if(soldier.amount == 1)
+            {
+                GameManager.Inst.uiManager.ActiveCompanySystemPanal(soldierNumber, true);
+            }
+            GameManager.Inst.uiManager.SpawnJJikJJikE(soldierImage.sprite, soldierNumber);
             GameManager.Inst.uiManager.UpdateEnergyPanal();
-            StartCoroutine(GameManager.Inst.uiManager.Message("구매 완료"));
+            ShowMessage("구매 완료");
         }
         else
         {
-            StartCoroutine(GameManager.Inst.uiManager.Message("돈이 부족합니다"));
+            ShowMessage("돈이 부족합니다");
         }
     }
 
@@ -93,16 +112,31 @@ public class UpgradePanal : MonoBehaviour
         {
             GameManager.Inst.CurrentUser.money -= soldier.price;
             soldier.level++;
-            GameManager.Inst.CurrentUser.mPc += soldier.level * GameManager.Inst.CurrentUser.mPc / 3;
+            GameManager.Inst.CurrentUser.basemPc += soldier.level * GameManager.Inst.CurrentUser.basemPc / 3;
             soldier.upgradePrice = (long)(soldier.upgradePrice * 1.25f);
             UpdateValues();
             GameManager.Inst.uiManager.UpdateEnergyPanal();
-            StartCoroutine(GameManager.Inst.uiManager.Message("구매 완료"));
+            ShowMessage("구매 완료");
         }
         else
         {
-            StartCoroutine(GameManager.Inst.uiManager.Message("돈이 부족합니다"));
+            ShowMessage("돈이 부족합니다");
         }
+    }
+
+    private void ShowMessage(string message)
+    {
+        if(messageCo != null)
+        {
+            StopCoroutine(messageCo);
+        }
+
+        messageCo = StartCoroutine(GameManager.Inst.uiManager.Message(this, message));
+    }
+    
+    public void CoroutineNull()
+    {
+        messageCo = null;
     }
 
 }
