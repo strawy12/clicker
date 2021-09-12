@@ -17,5 +17,5 @@ public class User
     public long mPs;
     public int maxPeople;
     public int peopleCnt;
-    public List<Soldier> soldiers;
+    public List<Soldier> soldiers = new List<Soldier>();
 }

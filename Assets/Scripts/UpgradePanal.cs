@@ -14,11 +14,11 @@ public class UpgradePanal : MonoBehaviour
     [SerializeField] private Image soldierImage = null;
     [SerializeField] private EPanalState ePanalState;
 
+    private Sprite soldierSprite = null;
     private Coroutine messageCo;
     enum EPanalState {slave, company, level };
 
     int soldierNumber;
-    [SerializeField] private Sprite[] soldierSpriteArray = null;
 
 
     private Soldier soldier = null;
@@ -26,7 +26,8 @@ public class UpgradePanal : MonoBehaviour
     public void SetSoldierNum(int num)
     {
         soldierNumber = num;
-        soldier = GameManager.Inst.CurrentUser.soldiers[soldierNumber];
+        soldier = GameManager.Inst.CurrentUser.soldiers[num];
+        soldierSprite = GameManager.Inst.uiManager.SoldierSpriteArray[num];
         UpdateValues();
         SpawnSlaveObj();
     }
@@ -39,19 +40,19 @@ public class UpgradePanal : MonoBehaviour
                 soldierNameText.text = soldier.soldierName;
                 priceText.text = string.Format("{0} 에너지", soldier.upgradePrice);
                 countNumtText.text = string.Format("{0}", soldier.level);
-                soldierImage.sprite = soldierSpriteArray[soldierNumber];
+                soldierImage.sprite = soldierSprite;
                 break;
             case EPanalState.level:
                 soldierNameText.text = soldier.soldierName;
                 priceText.text = string.Format("{0} 에너지", soldier.upgradePrice);
                 countNumtText.text = string.Format("{0}", soldier.level);
-                soldierImage.sprite = soldierSpriteArray[soldierNumber];
+                soldierImage.sprite = soldierSprite;
                 break;
             case EPanalState.slave:
                 soldierNameText.text = soldier.soldierName;
                 priceText.text = string.Format("{0} 에너지", soldier.price);
                 countNumtText.text = string.Format("{0}", soldier.amount);
-                soldierImage.sprite = soldierSpriteArray[soldierNumber];
+                soldierImage.sprite = soldierSprite;
                 break;
         }
     }
