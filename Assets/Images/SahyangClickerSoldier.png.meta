@@ -32,6 +32,15 @@ TextureImporter:
   - first:
       213: -1041776183744902827
     second: SahyangClickerSoldier_11
+  - first:
+      213: -2336598124239373346
+    second: SahyangClickerSoldier_0
+  - first:
+      213: 4026399474759475041
+    second: SahyangClickerSoldier_1
+  - first:
+      213: 967733853052508446
+    second: SahyangClickerSoldier_12
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -137,7 +146,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 26
-        y: 126
+        y: 214
         width: 72
         height: 72
       alignment: 0
@@ -158,7 +167,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 125
-        y: 126
+        y: 214
         width: 72
         height: 72
       alignment: 0
@@ -179,7 +188,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 223
-        y: 126
+        y: 214
         width: 72
         height: 72
       alignment: 0
@@ -200,7 +209,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 322
-        y: 126
+        y: 214
         width: 72
         height: 72
       alignment: 0
@@ -221,7 +230,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 420
-        y: 126
+        y: 214
         width: 72
         height: 72
       alignment: 0
@@ -242,7 +251,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 519
-        y: 126
+        y: 214
         width: 72
         height: 72
       alignment: 0
@@ -263,7 +272,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 27
-        y: 26
+        y: 114
         width: 72
         height: 72
       alignment: 0
@@ -284,7 +293,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 126
-        y: 26
+        y: 114
         width: 72
         height: 72
       alignment: 0
@@ -305,7 +314,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 225
-        y: 26
+        y: 114
         width: 72
         height: 72
       alignment: 0
@@ -326,7 +335,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 324
-        y: 32
+        y: 120
         width: 72
         height: 61
       alignment: 0
@@ -347,7 +356,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 423
-        y: 32
+        y: 120
         width: 72
         height: 61
       alignment: 0
@@ -368,7 +377,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 522
-        y: 38
+        y: 126
         width: 56
         height: 56
       alignment: 0
@@ -380,6 +389,27 @@ TextureImporter:
       bones: []
       spriteID: 5594c68941eda81f0800000000000000
       internalID: -1041776183744902827
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SahyangClickerSoldier_12
+      rect:
+        serializedVersion: 2
+        x: 26
+        y: 26
+        width: 72
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e199054efc41e6d00800000000000000
+      internalID: 967733853052508446
       vertices: []
       indices: 
       edges: []

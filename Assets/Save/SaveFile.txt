@@ -1,10 +1,11 @@
 ﻿{
     "userName": "금사향",
-    "money": 9900180,
+    "money": 210,
+    "mileage": 100,
     "basemPc": 10,
     "mPs": 0,
     "maxPeople": 5,
-    "peopleCnt": 1,
+    "peopleCnt": 0,
     "soldiers": [
         {
             "soldierName": "응애찍찍이",
@@ -24,7 +25,7 @@
             "mPs": 0,
             "price": 3000,
             "upgradePrice": 700,
-            "percent": 85
+            "percent": 132
         },
         {
             "soldierName": "중2병찍찍이",
@@ -34,7 +35,7 @@
             "mPs": 0,
             "price": 5000,
             "upgradePrice": 1000,
-            "percent": 85
+            "percent": 110
         },
         {
             "soldierName": "새내기찍찍이",
@@ -44,7 +45,7 @@
             "mPs": 0,
             "price": 10000,
             "upgradePrice": 1250,
-            "percent": 85
+            "percent": 70
         },
         {
             "soldierName": "복학생찍찍이",
@@ -54,7 +55,7 @@
             "mPs": 0,
             "price": 15000,
             "upgradePrice": 1500,
-            "percent": 85
+            "percent": 60
         },
         {
             "soldierName": "신사찍찍이",
@@ -64,7 +65,7 @@
             "mPs": 0,
             "price": 30000,
             "upgradePrice": 1750,
-            "percent": 35
+            "percent": 48
         },
         {
             "soldierName": "기사찍찍이",
@@ -74,7 +75,7 @@
             "mPs": 0,
             "price": 50000,
             "upgradePrice": 2000,
-            "percent": 35
+            "percent": 32
         },
         {
             "soldierName": "집사찍찍이",
@@ -84,7 +85,7 @@
             "mPs": 0,
             "price": 100000,
             "upgradePrice": 2500,
-            "percent": 35
+            "percent": 20
         },
         {
             "soldierName": "왕찍찍이",
@@ -94,7 +95,7 @@
             "mPs": 0,
             "price": 300000,
             "upgradePrice": 3000,
-            "percent": 35
+            "percent": 15
         },
         {
             "soldierName": "사이보그찍찍이",
@@ -104,17 +105,17 @@
             "mPs": 0,
             "price": 500000,
             "upgradePrice": 5000,
-            "percent": 9
+            "percent": 7
         },
         {
             "soldierName": "AI찍찍이",
             "soldierNum": 10,
-            "amount": 1,
+            "amount": 0,
             "level": 0,
             "mPs": 0,
             "price": 1000000,
             "upgradePrice": 10000,
-            "percent": 9
+            "percent": 5
         },
         {
             "soldierName": "까미",
@@ -124,7 +125,7 @@
             "mPs": 0,
             "price": 10000000,
             "upgradePrice": 100000,
-            "percent": 2
+            "percent": 1
         }
     ]
 }

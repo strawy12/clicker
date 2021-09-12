@@ -15,7 +15,6 @@ public class UpgradePanal : MonoBehaviour
     [SerializeField] private EPanalState ePanalState;
 
     private Sprite soldierSprite = null;
-    private Coroutine messageCo;
     enum EPanalState {slave, company, level };
 
     int soldierNumber;
@@ -50,7 +49,7 @@ public class UpgradePanal : MonoBehaviour
                 break;
             case EPanalState.slave:
                 soldierNameText.text = soldier.soldierName;
-                priceText.text = string.Format("{0} 에너지", soldier.price);
+                priceText.text = string.Format("{0} 마일리지", soldier.price);
                 countNumtText.text = string.Format("{0}", soldier.amount);
                 soldierImage.sprite = soldierSprite;
                 break;
@@ -86,10 +85,14 @@ public class UpgradePanal : MonoBehaviour
 
     public void OnClickContractBtn()
     {
-        if (GameManager.Inst.CurrentUser.maxPeople <= GameManager.Inst.CurrentUser.peopleCnt) return;
-        if (GameManager.Inst.CurrentUser.money >= soldier.price)
+        if (GameManager.Inst.CurrentUser.maxPeople <= GameManager.Inst.CurrentUser.peopleCnt)
         {
-            GameManager.Inst.CurrentUser.money -= soldier.price;
+            GameManager.Inst.uiManager.ShowMessage("보유 노예가 너무 많습니다");
+            return;
+        }
+        if (GameManager.Inst.CurrentUser.mileage >= soldier.price)
+        {
+            GameManager.Inst.CurrentUser.mileage -= soldier.price;
             GameManager.Inst.CurrentUser.peopleCnt++;
             soldier.amount++;
             UpdateValues();
@@ -99,11 +102,11 @@ public class UpgradePanal : MonoBehaviour
             }
             GameManager.Inst.uiManager.SpawnJJikJJikE(soldierImage.sprite, soldierNumber);
             GameManager.Inst.uiManager.UpdateEnergyPanal();
-            ShowMessage("구매 완료");
+            GameManager.Inst.uiManager.ShowMessage("구매 완료");
         }
         else
         {
-            ShowMessage("돈이 부족합니다");
+            GameManager.Inst.uiManager.ShowMessage("돈이 부족합니다");
         }
     }
 
@@ -117,27 +120,11 @@ public class UpgradePanal : MonoBehaviour
             soldier.upgradePrice = (long)(soldier.upgradePrice * 1.25f);
             UpdateValues();
             GameManager.Inst.uiManager.UpdateEnergyPanal();
-            ShowMessage("구매 완료");
+            GameManager.Inst.uiManager.ShowMessage("구매 완료");
         }
         else
         {
-            ShowMessage("돈이 부족합니다");
+            GameManager.Inst.uiManager.ShowMessage("돈이 부족합니다");
         }
     }
-
-    private void ShowMessage(string message)
-    {
-        if(messageCo != null)
-        {
-            StopCoroutine(messageCo);
-        }
-
-        messageCo = StartCoroutine(GameManager.Inst.uiManager.Message(this, message));
-    }
-    
-    public void CoroutineNull()
-    {
-        messageCo = null;
-    }
-
 }

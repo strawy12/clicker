@@ -6,6 +6,7 @@ public class User
 {
     public string userName;
     public long money;
+    public long mileage;
     public long basemPc;
     public long mpc
     {
