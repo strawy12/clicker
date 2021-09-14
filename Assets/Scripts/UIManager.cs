@@ -10,8 +10,7 @@ using UnityEngine.AddressableAssets;
 public class UIManager : MonoBehaviour
 {
     [SerializeField] private Animator beakerAnimator = null;
-    [SerializeField] private GameObject slavePanalTemp = null;
-    [SerializeField] private GameObject upgradePanalTemp = null;
+    [SerializeField] private GameObject staffPanalTemp = null;
     [SerializeField] private GameObject settingPanal = null;
     [SerializeField] private RectTransform controlPanal = null;
     [SerializeField] private GameObject compamySystemPanal = null;
@@ -22,8 +21,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Text moneyText = null;
     [SerializeField] private Text mileageText = null;
     [SerializeField] private GameObject[] scrollObject = null;
-    [SerializeField] private GameObject[] slaveTemp = null;
-    [SerializeField] private Sprite[] soldierSprites = null;
+    [SerializeField] private GameObject staffObject = null;
+    private Sprite[] soldierSprites = null;
 
     private Coroutine messageCo = null;
 
@@ -36,6 +35,8 @@ public class UIManager : MonoBehaviour
     private int scrollNum;
     private int clickNum = 0;
     private int randNum;
+
+    private string spritePath = "Assets/Images/SahyangClickerSoldier.png";
 
     private Canvas canvas;
 
@@ -52,10 +53,23 @@ public class UIManager : MonoBehaviour
 
         }
     }
+    private void Awake()
+    {
+        AsyncOperationHandle<Sprite[]> spriteHandle = Addressables.LoadAssetAsync<Sprite[]>(spritePath);
+        spriteHandle.Completed += LoadSpriteWhenReady;
+    }
+    private void LoadSpriteWhenReady(AsyncOperationHandle<Sprite[]> handleToCheck)
+    {
+        if (handleToCheck.Status == AsyncOperationStatus.Succeeded)
+        {
+            soldierSprites = handleToCheck.Result;
+        }
+    }
 
     private void Start()
     {
-        UpdateEnergyPanal();
+
+        UpdateMoneyPanal();
         CreatePanals();
         SetScrollActive(scrollObject.Length);
         isShow = false;
@@ -64,16 +78,21 @@ public class UIManager : MonoBehaviour
         canvas = FindObjectOfType<Canvas>();
     }
 
-    public List<Soldier> Mix(List<Soldier> soldiers)
+    private void Update()
     {
-        List<Soldier> list = new List<Soldier>();
-        int count = soldiers.Count;
+
+    }
+
+    public List<Staff> Mix(List<Staff> staffs)
+    {
+        List<Staff> list = new List<Staff>();
+        int count = staffs.Count;
 
         for (int i = 0; i < count; i++)
         {
-            int rand = Random.Range(0, soldiers.Count);
-            list.Add(soldiers[rand]);
-            soldiers.RemoveAt(rand);
+            int rand = Random.Range(0, staffs.Count);
+            list.Add(staffs[rand]);
+            staffs.RemoveAt(rand);
         }
         return list;
     }
@@ -84,22 +103,19 @@ public class UIManager : MonoBehaviour
         GameObject newPanal = null;
         UpgradePanal newUpgradePanal = null;
 
-        foreach (Soldier soldier in GameManager.Inst.CurrentUser.soldiers)
+        foreach (Staff soldier in GameManager.Inst.CurrentUser.staffs)
         {
-            for (int j = 0; j < 2; j++)
-            {
-                GameObject panal = j == 0 ? upgradePanalTemp : slavePanalTemp;
-                newPanal = Instantiate(panal, panal.transform.parent);
-                newUpgradePanal = newPanal.GetComponent<UpgradePanal>();
-                newUpgradePanal.SetSoldierNum(soldier.soldierNum);
-                newPanal.SetActive(true);
-            }
+
+            newPanal = Instantiate(staffPanalTemp, staffPanalTemp.transform.parent);
+            newUpgradePanal = newPanal.GetComponent<UpgradePanal>();
+            newUpgradePanal.SetSoldierNum(soldier.staffNum);
+            newPanal.SetActive(true);   
             if (soldier.amount != 0)
             {
-                ActiveCompanySystemPanal(soldier.soldierNum, true);
+                ActiveCompanySystemPanal(soldier.staffNum, true);
                 continue;
             }
-            ActiveCompanySystemPanal(soldier.soldierNum, false);
+            ActiveCompanySystemPanal(soldier.staffNum, false);
         }
 
     }
@@ -119,74 +135,75 @@ public class UIManager : MonoBehaviour
 
     }
 
-    public void OnClickBeaker()
+    public void OnClickDisPlay()
     {
         clickNum++;
         //CheckSpawnPresent();
-        GameManager.Inst.CurrentUser.money += GameManager.Inst.CurrentUser.mpc;
-        SpawnClickText(GameManager.Inst.CurrentUser.mpc);
-        beakerAnimator.Play("ClickAnim");
-        UpdateEnergyPanal();
+        //GameManager.Inst.CurrentUser.money += GameManager.Inst.CurrentUser.zpc;
+        //SpawnClickText(GameManager.Inst.CurrentUser.zpc);
+        beakerAnimator.Play("ClickAnim", -1, 0);
+        //UpdateMoneyPanal();
     }
 
-    public void OnClickRandomSlave()
+    public void OnClickRandomStaff()
     {
         if (GameManager.Inst.CurrentUser.maxPeople <= GameManager.Inst.CurrentUser.peopleCnt)
         {
-            ShowMessage("보유 노예가 너무 많습니다");
+            ShowMessage("보유 직원이 너무 많습니다");
             return;
         }
-        if (isPicking) 
+        if (isPicking)
         {
             ShowMessage("구매하는 중입니다");
             return;
         }
         if (GameManager.Inst.CurrentUser.money < 10000)
         {
-            ShowMessage("돈이 부족합니다"); 
+            ShowMessage("돈이 부족합니다");
             return;
         }
 
         GameManager.Inst.CurrentUser.money -= 10000;
         GameManager.Inst.CurrentUser.mileage += 100;
-        UpdateEnergyPanal();
-        StartCoroutine(RandomSlave());
+        UpdateMoneyPanal();
+        StartCoroutine(RandomStaff());
         isPicking = true;
         ShowMessage("구매 완료");
     }
-    public IEnumerator RandomSlave()
+    public IEnumerator RandomStaff()
     {
         int rand = 0;
         int num;
-        List<Soldier> list = Mix(GameManager.Inst.CurrentUser.soldiers.ToList());
+        List<Staff> list = Mix(GameManager.Inst.CurrentUser.staffs.ToList());
         for (int i = 0; i < 50; i++)
         {
             rand = Random.Range(0, 1000);
-            randomText.text = GameManager.Inst.CurrentUser.soldiers[Random.Range(0, 12)].soldierName;
+            randomText.text = GameManager.Inst.CurrentUser.staffs[CheckRandStaffNum(list, rand)].staffName;
             yield return new WaitForSeconds(0.1f);
         }
-        num = CheckRandSoldierNum(list, rand);
-        randomText.text = GameManager.Inst.CurrentUser.soldiers[num].soldierName;
-        SpawnJJikJJikE(soldierSprites[num], num);
-        //GameManager.Inst.CurrentUser.peopleCnt++;
-        //GameManager.Inst.CurrentUser.soldiers[num].amount++;
-        //if (GameManager.Inst.CurrentUser.soldiers[num].amount == 1)
-        //{
+        num = CheckRandStaffNum(list, rand);
+        randomText.text = GameManager.Inst.CurrentUser.staffs[num].staffName;
+        SpawnStaff(soldierSprites[num], num);
+        GameManager.Inst.CurrentUser.peopleCnt++;
+        GameManager.Inst.CurrentUser.staffs[num].amount++;
+        if (GameManager.Inst.CurrentUser.staffs[num].amount == 1)
+        {
             ActiveCompanySystemPanal(num, true);
-        
+        }
+
         isPicking = false;
     }
 
-    public int CheckRandSoldierNum(List<Soldier> soldierList, int num)
+    public int CheckRandStaffNum(List<Staff> soldierList, int num)
     {
         int cnt = 0;
-        for(int i = 0; i < soldierList.Count; i++)
+        for (int i = 0; i < soldierList.Count; i++)
         {
-            if(cnt <= num && num < soldierList[i].percent)
+            if (cnt <= num && num < soldierList[i].percent)
             {
-                return soldierList[i].soldierNum;
+                return soldierList[i].staffNum;
             }
-            cnt+= soldierList[i].percent;
+            cnt += soldierList[i].percent;
         }
         return 0;
 
@@ -269,16 +286,16 @@ public class UIManager : MonoBehaviour
             scrollObject[i].SetActive(false);
         }
     }
-    public void UpdateEnergyPanal()
+    public void UpdateMoneyPanal()
     {
-        moneyText.text = string.Format("{0} 찍찍￦", GameManager.Inst.CurrentUser.money);
+        moneyText.text = string.Format("{0} 찍", GameManager.Inst.CurrentUser.money);
         mileageText.text = string.Format("{0} 마일리지", GameManager.Inst.CurrentUser.mileage);
     }
-    public void SpawnJJikJJikE(Sprite soldierSprite, int num)
+    public void SpawnStaff(Sprite staffSprite, int num)
     {
-        GameObject slave = Instantiate(slaveTemp[num], slaveTemp[num].transform.parent);
-        slave.GetComponent<Image>().sprite = soldierSprite;
-        slave.SetActive(true);
+        GameObject staff = Instantiate(staffObject, scrollObject[1].transform.GetChild(num).GetChild(0).GetChild(0));
+        staff.GetComponent<Image>().sprite = staffSprite;
+        staff.SetActive(true);
     }
 
     public void ShowMessage(string message)

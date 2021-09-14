@@ -20,7 +20,7 @@ public class UpgradePanal : MonoBehaviour
     int soldierNumber;
 
 
-    private Soldier soldier = null;
+    private Staff soldier = null;
 
     public void SetSoldierNum(int num)
     {
@@ -36,20 +36,20 @@ public class UpgradePanal : MonoBehaviour
         switch(ePanalState)
         {
             case EPanalState.company:
-                soldierNameText.text = soldier.soldierName;
-                priceText.text = string.Format("{0} ¿¡³ÊÁö", soldier.upgradePrice);
+                soldierNameText.text = soldier.staffName;
+                priceText.text = string.Format("{0} Âï", soldier.upgradePrice);
                 countNumtText.text = string.Format("{0}", soldier.level);
                 soldierImage.sprite = soldierSprite;
                 break;
             case EPanalState.level:
-                soldierNameText.text = soldier.soldierName;
-                priceText.text = string.Format("{0} ¿¡³ÊÁö", soldier.upgradePrice);
+                soldierNameText.text = soldier.staffName;
+                priceText.text = string.Format("{0} Âï", soldier.upgradePrice);
                 countNumtText.text = string.Format("{0}", soldier.level);
                 soldierImage.sprite = soldierSprite;
                 break;
             case EPanalState.slave:
-                soldierNameText.text = soldier.soldierName;
-                priceText.text = string.Format("{0} ¸¶ÀÏ¸®Áö", soldier.price);
+                soldierNameText.text = soldier.staffName;
+                priceText.text = string.Format("{0} Âï", soldier.price);
                 countNumtText.text = string.Format("{0}", soldier.amount);
                 soldierImage.sprite = soldierSprite;
                 break;

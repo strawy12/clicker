@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
+
 public class GameManager : MonoSingleton<GameManager>
 {
-    private User user = null;
+     private User user = null;
 
     public UIManager uiManager { get; private set; }
     public User CurrentUser { get { return user; } }
@@ -49,24 +50,24 @@ public class GameManager : MonoSingleton<GameManager>
         {
             user = new User();
             user.userName = "±İ»çÇâ";
-            user.basemPc = 10;
+            user.basezPc = 10;
             user.money = 10000;
             user.maxPeople = 5;
             user.peopleCnt = 0;
             user.mileage = 0;
 
-            user.soldiers.Add(new Soldier("ÀÀ¾ÖÂïÂïÀÌ", 0, 0, 0, 1000, 500, 500));
-            user.soldiers.Add(new Soldier("Ã»¼Ò³âÂïÂïÀÌ", 1, 0, 0, 3000, 700, 132));
-            user.soldiers.Add(new Soldier("Áß2º´ÂïÂïÀÌ", 2, 0, 0, 5000, 1000, 110));
-            user.soldiers.Add(new Soldier("»õ³»±âÂïÂïÀÌ", 3, 0, 0, 10000, 1250, 70)); 
-            user.soldiers.Add(new Soldier("º¹ÇĞ»ıÂïÂïÀÌ", 4, 0, 0, 15000, 1500, 60)); 
-            user.soldiers.Add(new Soldier("½Å»çÂïÂïÀÌ", 5, 0, 0, 30000, 1750, 48));
-            user.soldiers.Add(new Soldier("±â»çÂïÂïÀÌ", 6, 0, 0, 50000, 2000, 32));
-            user.soldiers.Add(new Soldier("Áı»çÂïÂïÀÌ", 7, 0, 0, 100000, 2500, 20));
-            user.soldiers.Add(new Soldier("¿ÕÂïÂïÀÌ", 8, 0, 0, 300000, 3000, 15));
-            user.soldiers.Add(new Soldier("»çÀÌº¸±×ÂïÂïÀÌ", 9, 0, 0, 500000, 5000, 7)); 
-            user.soldiers.Add(new Soldier("AIÂïÂïÀÌ", 10, 0, 0, 1000000, 10000, 5)); 
-            user.soldiers.Add(new Soldier("±î¹Ì", 11, 0, 0, 10000000, 100000, 1));
+            user.staffs.Add(new Staff("ÀÀ¾ÖÂïÂïÀÌ", 0, 0, 0, 1000, 500, 500));
+            user.staffs.Add(new Staff("Ã»¼Ò³âÂïÂïÀÌ", 1, 0, 0, 3000, 700, 132));
+            user.staffs.Add(new Staff("Áß2º´ÂïÂïÀÌ", 2, 0, 0, 5000, 1000, 110));
+            user.staffs.Add(new Staff("»õ³»±âÂïÂïÀÌ", 3, 0, 0, 10000, 1250, 70)); 
+            user.staffs.Add(new Staff("º¹ÇĞ»ıÂïÂïÀÌ", 4, 0, 0, 15000, 1500, 60)); 
+            user.staffs.Add(new Staff("½Å»çÂïÂïÀÌ", 5, 0, 0, 30000, 1750, 48));
+            user.staffs.Add(new Staff("±â»çÂïÂïÀÌ", 6, 0, 0, 50000, 2000, 32));
+            user.staffs.Add(new Staff("Áı»çÂïÂïÀÌ", 7, 0, 0, 100000, 2500, 20));
+            user.staffs.Add(new Staff("¿ÕÂïÂïÀÌ", 8, 0, 0, 300000, 3000, 15));
+            user.staffs.Add(new Staff("»çÀÌº¸±×ÂïÂïÀÌ", 9, 0, 0, 500000, 5000, 7)); 
+            user.staffs.Add(new Staff("AIÂïÂïÀÌ", 10, 0, 0, 1000000, 10000, 5)); 
+            user.staffs.Add(new Staff("±î¹Ì", 11, 0, 0, 10000000, 100000, 1));
             SaveToJson();
         }
     }
@@ -79,11 +80,11 @@ public class GameManager : MonoSingleton<GameManager>
 
     public void MoneyPerSecond()
     {
-        foreach(Soldier soldier in user.soldiers)
+        foreach(Staff soldier in user.staffs)
         {
             user.money += soldier.amount * soldier.mPs;
         }
-        uiManager.UpdateEnergyPanal();
+        uiManager.UpdateMoneyPanal();
     }
 
     public void AutoClick()
@@ -91,16 +92,16 @@ public class GameManager : MonoSingleton<GameManager>
         StartCoroutine(AutoClickAnim());
         for(int i = 0; i < user.peopleCnt; i++)
         {
-            user.money += user.mpc;
+            user.money += user.zpc;
         }
-        uiManager.UpdateEnergyPanal();
+        uiManager.UpdateMoneyPanal();
     }
 
     private IEnumerator AutoClickAnim()
     {
         for (int i = 0; i < user.peopleCnt; i++)
         {
-            uiManager.SpawnClickText(user.mpc);
+            uiManager.SpawnClickText(user.zpc);
             yield return new WaitForSeconds(0.05f);
         }
     }

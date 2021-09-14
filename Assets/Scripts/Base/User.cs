@@ -7,16 +7,17 @@ public class User
     public string userName;
     public long money;
     public long mileage;
-    public long basemPc;
-    public long mpc
+    public long basezPc;
+
+    public long zpc
     {
         get
         {
-            return basemPc * Mathf.Max(1, (1 + peopleCnt) / 2);
+            return basezPc * (1 + peopleCnt);
         }
     }
     public long mPs;
     public int maxPeople;
     public int peopleCnt;
-    public List<Soldier> soldiers = new List<Soldier>();
+    public List<Staff> staffs = new List<Staff>();
 }

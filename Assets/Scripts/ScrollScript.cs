@@ -9,14 +9,9 @@ public class ScrollScript : ScrollRect
 
     bool forParent = false;
     [SerializeField] ScrollRect mainScrollRect = null;
-    RectTransform mainContent = null;
+    [SerializeField] RectTransform mainContent = null;
 
 
-    protected override void Start()
-    {
-        base.Start();
-        mainContent = mainScrollRect.content.GetComponent<RectTransform>();
-    }
     public override void OnBeginDrag(PointerEventData eventData)
     {
         forParent = Mathf.Abs(eventData.delta.x) < Mathf.Abs(eventData.delta.y);

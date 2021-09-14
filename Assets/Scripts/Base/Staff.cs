@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 
 [System.Serializable]
-public class Soldier
+public class Staff
 {
-    public string soldierName;
-    public int soldierNum;
+    public string staffName;
+    public int staffNum;
     public int amount;
     public int level;
     public long mPs;
@@ -13,10 +13,10 @@ public class Soldier
     public int percent;
 
 
-    public Soldier(string soldierName, int soldierNum, int amount, long mPs, long price, long upgradePrice, int percent)
+    public Staff(string staffName, int staffNum, int amount, long mPs, long price, long upgradePrice, int percent)
     {
-        this.soldierName = soldierName;
-        this.soldierNum = soldierNum;
+        this.staffName = staffName;
+        this.staffNum = staffNum;
         this.amount = amount;
         this.mPs = mPs;
         this.price = price;
