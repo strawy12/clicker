@@ -9,19 +9,33 @@ using UnityEngine.AddressableAssets;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField] private Animator beakerAnimator = null;
+    [Header("Ï∫êÎ¶≠ÌÑ∞Ïö©")]
+    [SerializeField] private Animator characterAnimator = null;
+
+    [Header("ÏãúÏä§ÌÖú")]
+    [SerializeField] private ScrollRect scrollRect = null;
+    [SerializeField] private Text randomText = null;
+
+    [Header("ÌîÑÎ¶¨Ìåπ")]
     [SerializeField] private GameObject staffPanalTemp = null;
+    [SerializeField] private GameObject staffObjectTemp = null;
+    [SerializeField] private CoinText coinTextTemp = null;
+
+    [SerializeField] private GameObject messageObject = null;
+
+
+    [Header("Ìå®ÎÑêÎì§")]
     [SerializeField] private GameObject settingPanal = null;
     [SerializeField] private RectTransform controlPanal = null;
     [SerializeField] private GameObject compamySystemPanal = null;
-    [SerializeField] private GameObject messageObject = null;
-    [SerializeField] private GameObject clickPrefab = null;
-    [SerializeField] private ScrollRect scrollRect = null;
-    [SerializeField] private Text randomText = null;
+
+    [Header("Îèà")]
     [SerializeField] private Text moneyText = null;
     [SerializeField] private Text mileageText = null;
+    
+    [Header("Ïª®ÌÖêÏ∏† Ïä§ÌÅ¨Î°§")]
     [SerializeField] private GameObject[] scrollObject = null;
-    [SerializeField] private GameObject staffObject = null;
+
     private Sprite[] soldierSprites = null;
 
     private Coroutine messageCo = null;
@@ -41,18 +55,7 @@ public class UIManager : MonoBehaviour
     private Canvas canvas;
 
     private List<UpgradePanal> upgradePanalList = new List<UpgradePanal>();
-    public static Vector3 MousePos
-    {
-        get
-        {
-            Vector3 result = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            result.x = Mathf.Clamp(result.x, GameManager.Inst.MinPos.x, GameManager.Inst.MaxPos.x);
-            result.y = Mathf.Clamp(result.y, GameManager.Inst.MinPos.y, GameManager.Inst.MaxPos.y);
-            result.z = -10;
-            return result;
 
-        }
-    }
     private void Awake()
     {
         AsyncOperationHandle<Sprite[]> spriteHandle = Addressables.LoadAssetAsync<Sprite[]>(spritePath);
@@ -64,9 +67,10 @@ public class UIManager : MonoBehaviour
         {
             soldierSprites = handleToCheck.Result;
         }
+        GameStartStart();
     }
 
-    private void Start()
+    private void GameStartStart()
     {
 
         UpdateMoneyPanal();
@@ -139,27 +143,44 @@ public class UIManager : MonoBehaviour
     {
         clickNum++;
         //CheckSpawnPresent();
-        //GameManager.Inst.CurrentUser.money += GameManager.Inst.CurrentUser.zpc;
-        //SpawnClickText(GameManager.Inst.CurrentUser.zpc);
-        beakerAnimator.Play("ClickAnim", -1, 0);
-        //UpdateMoneyPanal();
+        GameManager.Inst.CurrentUser.money += GameManager.Inst.CurrentUser.zpc;
+        characterAnimator.Play("ClickAnim", -1, 0);
+        UpdateMoneyPanal();
+
+        ShowCoinText();
+    }
+    public void ShowCoinText()
+    {
+        CoinText coinText = null;
+
+        if (GameManager.Inst.Pool.childCount > 0)
+        {
+            coinText = GameManager.Inst.Pool.GetChild(0).GetComponent<CoinText>();
+            coinText.transform.SetParent(coinTextTemp.transform.parent);
+        }
+        else
+        {
+            coinText = Instantiate(coinTextTemp, coinTextTemp.transform.parent);
+        }
+
+        coinText.Show();
     }
 
     public void OnClickRandomStaff()
     {
         if (GameManager.Inst.CurrentUser.maxPeople <= GameManager.Inst.CurrentUser.peopleCnt)
         {
-            ShowMessage("∫∏¿Ø ¡˜ø¯¿Ã ≥ π´ ∏πΩ¿¥œ¥Ÿ");
+            ShowMessage("ÏßÅÏõê ÏàòÍ∞Ä ÎÑàÎ¨¥ ÎßéÏäµÎãàÎã§.");
             return;
         }
         if (isPicking)
         {
-            ShowMessage("±∏∏≈«œ¥¬ ¡ﬂ¿‘¥œ¥Ÿ");
+            ShowMessage("Ï∫êÎ¶≠ÌÑ∞Î•º Ïù¥ÎØ∏ ÎΩëÍ≥† ÏûàÏäµÎãàÎã§.");
             return;
         }
         if (GameManager.Inst.CurrentUser.money < 10000)
         {
-            ShowMessage("µ∑¿Ã ∫Œ¡∑«’¥œ¥Ÿ");
+            ShowMessage("ÎèàÏù¥ Î∂ÄÏ°±Ìï©ÎãàÎã§.");
             return;
         }
 
@@ -168,7 +189,7 @@ public class UIManager : MonoBehaviour
         UpdateMoneyPanal();
         StartCoroutine(RandomStaff());
         isPicking = true;
-        ShowMessage("±∏∏≈ øœ∑·");
+        ShowMessage("Íµ¨Îß§ ÏôÑÎ£å");
     }
     public IEnumerator RandomStaff()
     {
@@ -199,7 +220,7 @@ public class UIManager : MonoBehaviour
         int cnt = 0;
         for (int i = 0; i < soldierList.Count; i++)
         {
-            if (cnt <= num && num < soldierList[i].percent)
+            if (cnt <= num && num < (cnt + soldierList[i].percent))
             {
                 return soldierList[i].staffNum;
             }
@@ -223,49 +244,12 @@ public class UIManager : MonoBehaviour
         SetScrollActive(num);
     }
 
-    public void SpawnClickText(long num)
-    {
-        Text text = Instantiate(clickPrefab, clickPrefab.transform.parent).GetComponent<Text>();
-        RectTransform rectTransform = text.GetComponent<RectTransform>();
-        Image image = text.transform.GetChild(0).GetComponent<Image>();
-
-        text.transform.position = SetPosition(num);
-        text.gameObject.SetActive(true);
-        text.text = string.Format("+{0}", num);
-
-        float targetPositionY = rectTransform.anchoredPosition.y + 100f;
-        rectTransform.DOAnchorPosY(targetPositionY, 0.5f);
-        text.DOFade(0f, 0.5f).OnComplete(() => text.DOFade(1f, 0f).OnComplete(() => DestroyText(text.gameObject)));
-        image.DOFade(0f, 0.5f).OnComplete(() => text.DOFade(1f, 0f));
-    }
-
     private void DestroyText(GameObject text)
     {
         Destroy(text);
     }
 
-    private Vector3 SetPosition(long num)
-    {
-        if (MousePos.x < GameManager.Inst.MaxPos.x) return MousePos;
-        int digit = (int)Mathf.Log10(num) + 1;
-        Vector3 targetPos = MousePos;
-        switch (digit)
-        {
-            case 1:
-                targetPos.x = 1.94f;
-                break;
-            case 2:
-                targetPos.x = 1.8f;
-                break;
-            case 3:
-                targetPos.x = 1.7f;
-                break;
-            case 4:
-                targetPos.x = 1.6f;
-                break;
-        }
-        return targetPos;
-    }
+   
 
 
     public void OnClickSettingBtn()
@@ -288,12 +272,12 @@ public class UIManager : MonoBehaviour
     }
     public void UpdateMoneyPanal()
     {
-        moneyText.text = string.Format("{0} ¬Ô", GameManager.Inst.CurrentUser.money);
-        mileageText.text = string.Format("{0} ∏∂¿œ∏Æ¡ˆ", GameManager.Inst.CurrentUser.mileage);
+        moneyText.text = string.Format("{0} Ï∞ç", GameManager.Inst.CurrentUser.money);
+        mileageText.text = string.Format("{0} ÎßàÏùºÎ¶¨ÏßÄ", GameManager.Inst.CurrentUser.mileage);
     }
     public void SpawnStaff(Sprite staffSprite, int num)
     {
-        GameObject staff = Instantiate(staffObject, scrollObject[1].transform.GetChild(num).GetChild(0).GetChild(0));
+        GameObject staff = Instantiate(staffObjectTemp, scrollObject[1].transform.GetChild(num).GetChild(0).GetChild(0));
         staff.GetComponent<Image>().sprite = staffSprite;
         staff.SetActive(true);
     }

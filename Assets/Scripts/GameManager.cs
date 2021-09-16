@@ -6,20 +6,38 @@ using UnityEngine;
 
 public class GameManager : MonoSingleton<GameManager>
 {
-     private User user = null;
+    public enum EPanalState { slave, company, level };
 
-    public UIManager uiManager { get; private set; }
+    private User user = null;
+
+    private UIManager uiManager = null;
+
+    [SerializeField] private Transform pool = null;
+
     public User CurrentUser { get { return user; } }
+
+    public UIManager UI { get { return uiManager; } }
+
+    public Transform Pool { get {return pool; } } 
 
     private string SAVE_PATH = "";
 
     private string SAVE_FILENAME = "/SaveFile.txt";
 
-    public Vector2 MaxPos { get; private set; } = new Vector2(1.5f, 3f);
-    public Vector2 MinPos { get; private set; } = new Vector2(-1.25f, 0);
+    public Vector2 MaxPos { get; private set; }
+    public Vector2 MinPos { get; private set; }
+    public Vector3 MousePos
+    {
+        get
+        {
+            Vector3 result = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            result.x = Mathf.Clamp(result.x, MinPos.x, MaxPos.x);
+            result.y = Mathf.Clamp(result.y, MinPos.y, MaxPos.y);
+            result.z = -10;
+            return result;
 
-
-    
+        }
+    }
 
     private int cnt = 3;
     private void Awake()
@@ -31,7 +49,8 @@ public class GameManager : MonoSingleton<GameManager>
         }
         LoadFromJson();
         uiManager = GetComponent<UIManager>();
-        
+        MaxPos = new Vector2(Camera.main.rect.center.x + Camera.main.rect.xMax, Camera.main.rect.center.y + Camera.main.rect.yMax);
+        MinPos = new Vector2(Camera.main.rect.center.x + Camera.main.rect.xMin, Camera.main.rect.center.y + Camera.main.rect.yMin);
         InvokeRepeating("SaveToJson", 1f, 60f);
         InvokeRepeating("AutoClick", 1f, 5f);
         //InvokeRepeating("MoneyPerSecond", 0f, 1f);
@@ -80,9 +99,9 @@ public class GameManager : MonoSingleton<GameManager>
 
     public void MoneyPerSecond()
     {
-        foreach(Staff soldier in user.staffs)
+        foreach(Staff staff in user.staffs)
         {
-            user.money += soldier.amount * soldier.mPs;
+            user.money += staff.amount * staff.mPs;
         }
         uiManager.UpdateMoneyPanal();
     }
@@ -101,7 +120,7 @@ public class GameManager : MonoSingleton<GameManager>
     {
         for (int i = 0; i < user.peopleCnt; i++)
         {
-            uiManager.SpawnClickText(user.zpc);
+            uiManager.ShowCoinText();
             yield return new WaitForSeconds(0.05f);
         }
     }

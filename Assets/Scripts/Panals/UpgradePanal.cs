@@ -1,34 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.UI;
-
+using EPanalState = GameManager.EPanalState;
 public class UpgradePanal : MonoBehaviour
 {
-    [SerializeField] private Text soldierNameText = null;
+    [SerializeField] private Text staffNameText = null;
     [SerializeField] private Text priceText = null;
     [SerializeField] private Text countNumtText = null;
     [SerializeField] private Button contractBtn = null;
-    [SerializeField] private Image soldierImage = null;
+    [SerializeField] private Image staffImage = null;
     [SerializeField] private EPanalState ePanalState;
 
-    private Sprite soldierSprite = null;
-    enum EPanalState {slave, company, level };
+    private Sprite staffSprite = null;
 
-    int soldierNumber;
+    int staffNumber;
 
 
-    private Staff soldier = null;
+    private Staff staff = null;
 
     public void SetSoldierNum(int num)
     {
-        soldierNumber = num;
-        soldier = GameManager.Inst.CurrentUser.soldiers[num];
-        soldierSprite = GameManager.Inst.uiManager.SoldierSpriteArray[num];
+        staffNumber = num;
+        staff = GameManager.Inst.CurrentUser.staffs[num];
+        staffSprite = GameManager.Inst.UI.SoldierSpriteArray[num];
         UpdateValues();
-        SpawnSlaveObj();
+        SpawnStaffObj();
     }
 
     public void UpdateValues()
@@ -36,34 +33,34 @@ public class UpgradePanal : MonoBehaviour
         switch(ePanalState)
         {
             case EPanalState.company:
-                soldierNameText.text = soldier.staffName;
-                priceText.text = string.Format("{0} 찍", soldier.upgradePrice);
-                countNumtText.text = string.Format("{0}", soldier.level);
-                soldierImage.sprite = soldierSprite;
+                staffNameText.text = staff.staffName;
+                priceText.text = string.Format("{0} 찍", staff.upgradePrice);
+                countNumtText.text = string.Format("{0}", staff.level);
+                staffImage.sprite = staffSprite;
                 break;
             case EPanalState.level:
-                soldierNameText.text = soldier.staffName;
-                priceText.text = string.Format("{0} 찍", soldier.upgradePrice);
-                countNumtText.text = string.Format("{0}", soldier.level);
-                soldierImage.sprite = soldierSprite;
+                staffNameText.text = staff.staffName;
+                priceText.text = string.Format("{0} 찍", staff.upgradePrice);
+                countNumtText.text = string.Format("{0}", staff.level);
+                staffImage.sprite = staffSprite;
                 break;
             case EPanalState.slave:
-                soldierNameText.text = soldier.staffName;
-                priceText.text = string.Format("{0} 찍", soldier.price);
-                countNumtText.text = string.Format("{0}", soldier.amount);
-                soldierImage.sprite = soldierSprite;
+                staffNameText.text = staff.staffName;
+                priceText.text = string.Format("{0} 찍", staff.price);
+                countNumtText.text = string.Format("{0}", staff.amount);
+                staffImage.sprite = staffSprite;
                 break;
         }
     }
 
-    private void SpawnSlaveObj()
+    private void SpawnStaffObj()
     {
         if (ePanalState != EPanalState.slave) return;
-        if (soldier.amount != 0)
+        if (staff.amount != 0)
         {
-            for (int i = 0; i < soldier.amount; i++)
+            for (int i = 0; i < staff.amount; i++)
             {
-                GameManager.Inst.uiManager.SpawnJJikJJikE(soldierImage.sprite, soldierNumber);
+                GameManager.Inst.UI.SpawnStaff(staffImage.sprite, staffNumber);
             }
         }
     }
@@ -87,44 +84,44 @@ public class UpgradePanal : MonoBehaviour
     {
         if (GameManager.Inst.CurrentUser.maxPeople <= GameManager.Inst.CurrentUser.peopleCnt)
         {
-            GameManager.Inst.uiManager.ShowMessage("보유 노예가 너무 많습니다");
+            GameManager.Inst.UI.ShowMessage("보유 직원이 너무 많습니다");
             return;
         }
-        if (GameManager.Inst.CurrentUser.mileage >= soldier.price)
+        if (GameManager.Inst.CurrentUser.mileage >= staff.price)
         {
-            GameManager.Inst.CurrentUser.mileage -= soldier.price;
+            GameManager.Inst.CurrentUser.mileage -= staff.price;
             GameManager.Inst.CurrentUser.peopleCnt++;
-            soldier.amount++;
+            staff.amount++;
             UpdateValues();
-            if(soldier.amount == 1)
+            if(staff.amount == 1)
             {
-                GameManager.Inst.uiManager.ActiveCompanySystemPanal(soldierNumber, true);
+                GameManager.Inst.UI.ActiveCompanySystemPanal(staffNumber, true);
             }
-            GameManager.Inst.uiManager.SpawnJJikJJikE(soldierImage.sprite, soldierNumber);
-            GameManager.Inst.uiManager.UpdateEnergyPanal();
-            GameManager.Inst.uiManager.ShowMessage("구매 완료");
+            GameManager.Inst.UI.SpawnStaff(staffImage.sprite, staffNumber);
+            GameManager.Inst.UI.UpdateMoneyPanal();
+            GameManager.Inst.UI.ShowMessage("구매 완료");
         }
         else
         {
-            GameManager.Inst.uiManager.ShowMessage("돈이 부족합니다");
+            GameManager.Inst.UI.ShowMessage("돈이 부족합니다");
         }
     }
 
     public void OnClickUpgradeBtn()
     {
-        if (GameManager.Inst.CurrentUser.money >= soldier.price)
+        if (GameManager.Inst.CurrentUser.money >= staff.price)
         {
-            GameManager.Inst.CurrentUser.money -= soldier.price;
-            soldier.level++;
-            GameManager.Inst.CurrentUser.basemPc += soldier.level * GameManager.Inst.CurrentUser.basemPc / 3;
-            soldier.upgradePrice = (long)(soldier.upgradePrice * 1.25f);
+            GameManager.Inst.CurrentUser.money -= staff.price;
+            staff.level++;
+            GameManager.Inst.CurrentUser.basezPc += staff.level * GameManager.Inst.CurrentUser.basezPc / 3;
+            staff.upgradePrice = (long)(staff.upgradePrice * 1.25f);
             UpdateValues();
-            GameManager.Inst.uiManager.UpdateEnergyPanal();
-            GameManager.Inst.uiManager.ShowMessage("구매 완료");
+            GameManager.Inst.UI.UpdateMoneyPanal();
+            GameManager.Inst.UI.ShowMessage("구매 완료");
         }
         else
         {
-            GameManager.Inst.uiManager.ShowMessage("돈이 부족합니다");
+            GameManager.Inst.UI.ShowMessage("돈이 부족합니다");
         }
     }
 }
