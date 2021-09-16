@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-
 public class GameManager : MonoSingleton<GameManager>
 {
-    public enum EPanalState { slave, company, level };
+    public enum EPanalState { staff, company, level };
 
     private User user = null;
 
@@ -35,7 +34,6 @@ public class GameManager : MonoSingleton<GameManager>
             result.y = Mathf.Clamp(result.y, MinPos.y, MaxPos.y);
             result.z = -10;
             return result;
-
         }
     }
 
@@ -49,8 +47,8 @@ public class GameManager : MonoSingleton<GameManager>
         }
         LoadFromJson();
         uiManager = GetComponent<UIManager>();
-        MaxPos = new Vector2(Camera.main.rect.center.x + Camera.main.rect.xMax, Camera.main.rect.center.y + Camera.main.rect.yMax);
-        MinPos = new Vector2(Camera.main.rect.center.x + Camera.main.rect.xMin, Camera.main.rect.center.y + Camera.main.rect.yMin);
+        MaxPos = new Vector2(4.1f, 1.7f);
+        MinPos = new Vector2(-3.6f, -1.7f);
         InvokeRepeating("SaveToJson", 1f, 60f);
         InvokeRepeating("AutoClick", 1f, 5f);
         //InvokeRepeating("MoneyPerSecond", 0f, 1f);
@@ -87,6 +85,11 @@ public class GameManager : MonoSingleton<GameManager>
             user.staffs.Add(new Staff("사이보그찍찍이", 9, 0, 0, 500000, 5000, 7)); 
             user.staffs.Add(new Staff("AI찍찍이", 10, 0, 0, 1000000, 10000, 5)); 
             user.staffs.Add(new Staff("까미", 11, 0, 0, 10000000, 100000, 1));
+
+            user.skills.Add(new Skill("금사향", 0, 0, 1000));
+            user.skills.Add(new Skill("응애", 1, 0, 2000));
+            user.skills.Add(new Skill("유으내모드", 2, 0, 3000));
+
             SaveToJson();
         }
     }

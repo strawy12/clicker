@@ -1,6 +1,6 @@
 ﻿{
     "userName": "금사향",
-    "money": 13420,
+    "money": 10960,
     "mileage": 0,
     "basezPc": 10,
     "mPs": 0,
@@ -126,6 +126,29 @@
             "price": 10000000,
             "upgradePrice": 100000,
             "percent": 1
+        }
+    ],
+    "skills": [
+        {
+            "skillName": "금사향",
+            "skillNum": 0,
+            "level": 0,
+            "price": 1000,
+            "isSold": false
+        },
+        {
+            "skillName": "응애",
+            "skillNum": 1,
+            "level": 0,
+            "price": 2000,
+            "isSold": false
+        },
+        {
+            "skillName": "유으내모드",
+            "skillNum": 2,
+            "level": 0,
+            "price": 3000,
+            "isSold": false
         }
     ]
 }

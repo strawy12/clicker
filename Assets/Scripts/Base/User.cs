@@ -20,4 +20,5 @@ public class User
     public int maxPeople;
     public int peopleCnt;
     public List<Staff> staffs = new List<Staff>();
+    public List<Skill> skills = new List<Skill>();
 }

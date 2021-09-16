@@ -6,11 +6,13 @@ using System.Linq;
 using DG.Tweening;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.AddressableAssets;
+using EPanalState = GameManager.EPanalState;
 
 public class UIManager : MonoBehaviour
 {
     [Header("캐릭터용")]
-    [SerializeField] private Animator characterAnimator = null;
+    [SerializeField] private SpriteRenderer characterSpriteRenderer = null;
+
 
     [Header("시스템")]
     [SerializeField] private ScrollRect scrollRect = null;
@@ -18,6 +20,7 @@ public class UIManager : MonoBehaviour
 
     [Header("프리팹")]
     [SerializeField] private GameObject staffPanalTemp = null;
+    [SerializeField] private GameObject companyPanalTemp = null;
     [SerializeField] private GameObject staffObjectTemp = null;
     [SerializeField] private CoinText coinTextTemp = null;
 
@@ -82,11 +85,6 @@ public class UIManager : MonoBehaviour
         canvas = FindObjectOfType<Canvas>();
     }
 
-    private void Update()
-    {
-
-    }
-
     public List<Staff> Mix(List<Staff> staffs)
     {
         List<Staff> list = new List<Staff>();
@@ -107,19 +105,27 @@ public class UIManager : MonoBehaviour
         GameObject newPanal = null;
         UpgradePanal newUpgradePanal = null;
 
-        foreach (Staff soldier in GameManager.Inst.CurrentUser.staffs)
+        foreach (Staff staff in GameManager.Inst.CurrentUser.staffs)
         {
 
             newPanal = Instantiate(staffPanalTemp, staffPanalTemp.transform.parent);
             newUpgradePanal = newPanal.GetComponent<UpgradePanal>();
-            newUpgradePanal.SetSoldierNum(soldier.staffNum);
+            newUpgradePanal.SetPanalNum(staff.staffNum, EPanalState.staff);
             newPanal.SetActive(true);   
-            if (soldier.amount != 0)
+            if (staff.amount != 0)
             {
-                ActiveCompanySystemPanal(soldier.staffNum, true);
+                ActiveCompanySystemPanal(staff.staffNum, true);
                 continue;
             }
-            ActiveCompanySystemPanal(soldier.staffNum, false);
+            ActiveCompanySystemPanal(staff.staffNum, false);
+        }
+        foreach (Skill skill in GameManager.Inst.CurrentUser.skills)
+        {
+
+            newPanal = Instantiate(companyPanalTemp, companyPanalTemp.transform.parent);
+            newUpgradePanal = newPanal.GetComponent<UpgradePanal>();
+            newUpgradePanal.SetPanalNum(skill.skillNum, EPanalState.company);
+            newPanal.SetActive(true);
         }
 
     }
@@ -144,11 +150,10 @@ public class UIManager : MonoBehaviour
         clickNum++;
         //CheckSpawnPresent();
         GameManager.Inst.CurrentUser.money += GameManager.Inst.CurrentUser.zpc;
-        characterAnimator.Play("ClickAnim", -1, 0);
         UpdateMoneyPanal();
-
         ShowCoinText();
     }
+
     public void ShowCoinText()
     {
         CoinText coinText = null;

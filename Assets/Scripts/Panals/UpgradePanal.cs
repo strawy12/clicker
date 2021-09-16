@@ -5,62 +5,87 @@ using UnityEngine.UI;
 using EPanalState = GameManager.EPanalState;
 public class UpgradePanal : MonoBehaviour
 {
-    [SerializeField] private Text staffNameText = null;
+    [SerializeField] private Text nameText = null;
     [SerializeField] private Text priceText = null;
     [SerializeField] private Text countNumtText = null;
-    [SerializeField] private Button contractBtn = null;
-    [SerializeField] private Image staffImage = null;
+    [SerializeField] private Button buyBtn = null;
+    [SerializeField] private Image mainImage = null;
     [SerializeField] private EPanalState ePanalState;
 
-    private Sprite staffSprite = null;
+    private Sprite mainSprite = null;
 
-    int staffNumber;
+    int panal_Number;
 
 
     private Staff staff = null;
+    private Skill skill = null;
 
-    public void SetSoldierNum(int num)
+    public void SetPanalNum(int num, EPanalState state)
     {
-        staffNumber = num;
+        switch(state)
+        {
+            case EPanalState.company:
+                SetCompanyNum(num);
+                break;
+            case EPanalState.staff:
+                SetStaffNum(num);
+                break;
+            case EPanalState.level:
+                break;
+        }
+        
+    }
+
+    private void SetStaffNum(int num)
+    {
+        panal_Number = num;
         staff = GameManager.Inst.CurrentUser.staffs[num];
-        staffSprite = GameManager.Inst.UI.SoldierSpriteArray[num];
+        mainSprite = GameManager.Inst.UI.SoldierSpriteArray[num];
         UpdateValues();
         SpawnStaffObj();
     }
 
+    private void SetCompanyNum(int num)
+    {
+        panal_Number = num;
+        skill = GameManager.Inst.CurrentUser.skills[num];
+        //mainSprite = GameManager.Inst.UI.SoldierSpriteArray[num];
+        UpdateValues();
+        //SpawnStaffObj();
+    }
     public void UpdateValues()
     {
         switch(ePanalState)
         {
             case EPanalState.company:
-                staffNameText.text = staff.staffName;
-                priceText.text = string.Format("{0} Âï", staff.upgradePrice);
-                countNumtText.text = string.Format("{0}", staff.level);
-                staffImage.sprite = staffSprite;
+                nameText.text = skill.skillName;
+                priceText.text = string.Format("{0} ¿ø", skill.price);
+                countNumtText.text = string.Format("{0}", skill.level);
+                //mainImage.sprite = mainSprite;
                 break;
             case EPanalState.level:
-                staffNameText.text = staff.staffName;
-                priceText.text = string.Format("{0} Âï", staff.upgradePrice);
+                nameText.text = staff.staffName;
+                priceText.text = string.Format("{0} ¿ø", staff.upgradePrice);
                 countNumtText.text = string.Format("{0}", staff.level);
-                staffImage.sprite = staffSprite;
+                mainImage.sprite = mainSprite;
                 break;
-            case EPanalState.slave:
-                staffNameText.text = staff.staffName;
-                priceText.text = string.Format("{0} Âï", staff.price);
+            case EPanalState.staff:
+                nameText.text = staff.staffName;
+                priceText.text = string.Format("{0} ¿ø", staff.price);
                 countNumtText.text = string.Format("{0}", staff.amount);
-                staffImage.sprite = staffSprite;
+                mainImage.sprite = mainSprite;
                 break;
         }
     }
 
     private void SpawnStaffObj()
     {
-        if (ePanalState != EPanalState.slave) return;
+        if (ePanalState != EPanalState.staff) return;
         if (staff.amount != 0)
         {
             for (int i = 0; i < staff.amount; i++)
             {
-                GameManager.Inst.UI.SpawnStaff(staffImage.sprite, staffNumber);
+                GameManager.Inst.UI.SpawnStaff(mainImage.sprite, panal_Number);
             }
         }
     }
@@ -74,7 +99,7 @@ public class UpgradePanal : MonoBehaviour
                 break;
             case EPanalState.company:
                 break;
-            case EPanalState.slave:
+            case EPanalState.staff:
                 OnClickContractBtn();
                 break;
         }
@@ -95,9 +120,9 @@ public class UpgradePanal : MonoBehaviour
             UpdateValues();
             if(staff.amount == 1)
             {
-                GameManager.Inst.UI.ActiveCompanySystemPanal(staffNumber, true);
+                GameManager.Inst.UI.ActiveCompanySystemPanal(panal_Number, true);
             }
-            GameManager.Inst.UI.SpawnStaff(staffImage.sprite, staffNumber);
+            GameManager.Inst.UI.SpawnStaff(mainImage.sprite, panal_Number);
             GameManager.Inst.UI.UpdateMoneyPanal();
             GameManager.Inst.UI.ShowMessage("±¸¸Å ¿Ï·á");
         }
