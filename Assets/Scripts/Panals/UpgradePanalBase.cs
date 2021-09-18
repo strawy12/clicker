@@ -8,22 +8,26 @@ using UnityEngine.AddressableAssets;
 
 public class UpgradePanalBase : MonoBehaviour
 {
-    [SerializeField] private Image buyBtn = null;
-    [SerializeField] private Button bulkPurchaseBtn = null;
+    [SerializeField] protected Button buyBtn = null;
+    [SerializeField] protected Button bulkPurchaseBtn = null;
 
     protected Sprite[] buyBtnSprites = null;
    
     protected Image[] buyBtnImages = null;
+    protected Image buyBtnImage = null;
+
+    protected bool isLocked = true;
 
     private string spritePath = "Assets/Images/Clicker Button UI.png";
 
-    private void Awake()
+    public virtual void Awake()
     {
         AsyncOperationHandle<Sprite[]> spriteHandle = Addressables.LoadAssetAsync<Sprite[]>(spritePath);
         spriteHandle.Completed += LoadSpriteWhenReady;
         buyBtnImages = FindImages<Image>(bulkPurchaseBtn.gameObject);
+        buyBtnImage = buyBtn.GetComponent<Image>();
     }
-    private void LoadSpriteWhenReady(AsyncOperationHandle<Sprite[]> handleToCheck)
+    protected virtual void LoadSpriteWhenReady(AsyncOperationHandle<Sprite[]> handleToCheck)
     {
         if (handleToCheck.Status == AsyncOperationStatus.Succeeded)
         {
@@ -50,14 +54,14 @@ public class UpgradePanalBase : MonoBehaviour
 
     public virtual void UpdateValues()
     {
-        
+
     }
 
     
 
     public void OnClickBulkPurchaseBtn()
     {
-        buyBtn.sprite = buyBtnSprites[3];
+        buyBtnImage.sprite = buyBtnSprites[3];
         for(int i = 0; i < buyBtnImages.Length; i++)
         {
             buyBtnImages[i].sprite = buyBtnSprites[2];

@@ -52,6 +52,8 @@ public class UIManager : MonoBehaviour
     private bool isShow = true;
     private bool isShow_Setting = false;
     private bool isUseSkill_1 = false;
+    private bool isUseSkill_2 = false;
+    private bool isUseSkill_3 = false;
     private int scrollNum;
     private int clickNum = 0;
     private int randNum;
@@ -111,6 +113,7 @@ public class UIManager : MonoBehaviour
         {
             newPanal = Instantiate(staffPanalTemp, staffPanalTemp.transform.parent);
             newUpgradePanal = newPanal.GetComponent<UpgradePanalBase>();
+            upgradePanalList.Add(newUpgradePanal);
             newUpgradePanal.SetPanalNum(staff.staffNum);
             newPanal.SetActive(true);   
         }
@@ -120,6 +123,7 @@ public class UIManager : MonoBehaviour
 
         //    newPanal = Instantiate(companyPanalTemp, companyPanalTemp.transform.parent);
         //    newUpgradePanal = newPanal.GetComponent<UpgradePanalBase>();
+        //    upgradePanalList.Add(newUpgradePanal);
         //    newUpgradePanal.SetPanalNum(skill.skillNum);
         //    newPanal.SetActive(true);
         //}
@@ -128,6 +132,7 @@ public class UIManager : MonoBehaviour
         {
             newPanal = Instantiate(petPanalTemp, petPanalTemp.transform.parent);
             newUpgradePanal = newPanal.GetComponent<UpgradePanalBase>();
+            upgradePanalList.Add(newUpgradePanal);
             newUpgradePanal.SetPanalNum(pet.petNum);
             newPanal.SetActive(true);
         }
@@ -213,14 +218,33 @@ public class UIManager : MonoBehaviour
         switch (num)
         {
             case 1:
+                if(isUseSkill_1)
+                {
+                    return;
+                }
                 isUseSkill_1 = true;
+                StartCoroutine(Timer(30f, num));
                 break;
             case 2:
+                if(isUseSkill_2)
+                {
+                    return;
+                }
+                isUseSkill_2 = true;
+                GameManager.Inst.CurrentUser.money += (long)(GameManager.Inst.CurrentUser.mPc * 1000f);
                 break;
             case 3:
+                if (isUseSkill_3)
+                {
+                    return;
+                }
+                isUseSkill_3 = true;
+                GameManager.Inst.CurrentUser.basemPc *= 4;
+                GameManager.Inst.CurrentUser.mPs *= 4;
+                StartCoroutine(Timer(30f, num));
                 break;
         }
-        StartCoroutine(Timer());
+
     }
 
     private IEnumerator AdditionClick()
@@ -234,15 +258,26 @@ public class UIManager : MonoBehaviour
         }
     }   
     
-    private IEnumerator Timer()
+    private IEnumerator Timer(float time, int num)
     {
-        float time = 30f;
         while(time > 0)
         {
             time -= 0.1f;
             yield return new WaitForSeconds(0.1f);
         }
-        isUseSkill_1 = false;
+        switch (num)
+        {
+            case 1:
+                isUseSkill_1 = false;
+                break;
+            case 2:
+                isUseSkill_2 = false;
+                break;
+            case 3:
+                
+                isUseSkill_3 = false;
+                break;
+        }
     }
 
     //public void OnClickRandomStaff()
@@ -348,6 +383,10 @@ public class UIManager : MonoBehaviour
     {
         moneyText.text = string.Format("{0} 찍", GameManager.Inst.CurrentUser.money);
         mileageText.text = string.Format("{0} 마일리지", GameManager.Inst.CurrentUser.mileage);
+        foreach(UpgradePanalBase upgradePanal in upgradePanalList)
+        {
+            upgradePanal.UpdateValues();
+        }
     }
     public void SpawnStaff(Sprite staffSprite, int num)
     {

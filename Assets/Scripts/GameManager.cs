@@ -80,7 +80,6 @@ public class GameManager : MonoSingleton<GameManager>
             user.basemPc = 10;
             user.money = 10000;
             user.maxPeople = 5;
-            user.peopleCnt = 0;
             user.mileage = 0;
 
             user.staffs.Add(new Staff("응애찍찍이", 0, 0, 0, 1000, 500));
@@ -95,7 +94,7 @@ public class GameManager : MonoSingleton<GameManager>
             user.staffs.Add(new Staff("사이보그찍찍이", 9, 0, 0, 500000, 5000)); 
             user.staffs.Add(new Staff("AI찍찍이", 10, 0, 0, 1000000, 10000)); 
 
-            user.skills.Add(new Skill("금사향", 0, 0, 1000));
+            user.skills.Add(new Skill("트이유", 0, 0, 1000));
             user.skills.Add(new Skill("응애", 1, 0, 2000));
             user.skills.Add(new Skill("유으내모드", 2, 0, 3000));
 

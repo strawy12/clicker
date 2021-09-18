@@ -1,17 +1,16 @@
 ﻿{
     "userName": "금사향",
-    "money": 10060,
+    "money": 63910,
     "mileage": 0,
     "basemPc": 10,
     "mPs": 0,
     "maxPeople": 5,
-    "peopleCnt": 0,
     "staffs": [
         {
             "staffName": "응애찍찍이",
             "staffNum": 0,
             "amount": 0,
-            "level": 0,
+            "level": 10,
             "mPs": 0,
             "price": 1000,
             "upgradePrice": 500
@@ -20,7 +19,7 @@
             "staffName": "청소년찍찍이",
             "staffNum": 1,
             "amount": 0,
-            "level": 0,
+            "level": 10,
             "mPs": 0,
             "price": 3000,
             "upgradePrice": 700
@@ -29,7 +28,7 @@
             "staffName": "중2병찍찍이",
             "staffNum": 2,
             "amount": 0,
-            "level": 0,
+            "level": 10,
             "mPs": 0,
             "price": 5000,
             "upgradePrice": 1000
@@ -38,7 +37,7 @@
             "staffName": "새내기찍찍이",
             "staffNum": 3,
             "amount": 0,
-            "level": 0,
+            "level": 10,
             "mPs": 0,
             "price": 10000,
             "upgradePrice": 1250
