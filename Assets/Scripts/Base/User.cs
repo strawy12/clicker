@@ -21,4 +21,5 @@ public class User
     public int peopleCnt;
     public List<Staff> staffs = new List<Staff>();
     public List<Skill> skills = new List<Skill>();
+    public List<Pet> pets = new List<Pet>();
 }

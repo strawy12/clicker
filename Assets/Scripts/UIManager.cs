@@ -6,7 +6,6 @@ using System.Linq;
 using DG.Tweening;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.AddressableAssets;
-using EPanalState = GameManager.EPanalState;
 using EPoolingType = GameManager.EPoolingType;
 
 public class UIManager : MonoBehaviour
@@ -22,6 +21,7 @@ public class UIManager : MonoBehaviour
     [Header("프리팹")]
     [SerializeField] private GameObject staffPanalTemp = null;
     [SerializeField] private GameObject companyPanalTemp = null;
+    [SerializeField] private GameObject petPanalTemp = null;
     [SerializeField] private Button staffObjectTemp = null;
     [SerializeField] private CoinText coinTextTemp = null;
     [SerializeField] private GameObject clickEffectTemp = null;
@@ -49,7 +49,7 @@ public class UIManager : MonoBehaviour
     private bool isPicking = false;
     public Sprite[] SoldierSpriteArray { get { return soldierSprites; } }
 
-    private bool isShow = false;
+    private bool isShow = true;
     private bool isShow_Setting = false;
     private bool isUseSkill_1 = false;
     private int scrollNum;
@@ -60,7 +60,7 @@ public class UIManager : MonoBehaviour
 
     private Canvas canvas;
 
-    private List<UpgradePanal> upgradePanalList = new List<UpgradePanal>();
+    private List<UpgradePanalBase> upgradePanalList = new List<UpgradePanalBase>();
 
     private void Awake()
     {
@@ -81,10 +81,9 @@ public class UIManager : MonoBehaviour
 
         UpdateMoneyPanal();
         CreatePanals();
-        SetScrollActive(scrollObject.Length);
+        SetScrollActive(2);
         isShow = false;
         messageText = messageObject.transform.GetChild(0).GetComponent<Text>();
-        randNum = Random.Range(230, 500);
         canvas = FindObjectOfType<Canvas>();
     }
 
@@ -106,22 +105,30 @@ public class UIManager : MonoBehaviour
     private void CreatePanals()
     {
         GameObject newPanal = null;
-        UpgradePanal newUpgradePanal = null;
+        UpgradePanalBase newUpgradePanal = null;
 
         foreach (Staff staff in GameManager.Inst.CurrentUser.staffs)
         {
-
             newPanal = Instantiate(staffPanalTemp, staffPanalTemp.transform.parent);
-            newUpgradePanal = newPanal.GetComponent<UpgradePanal>();
-            newUpgradePanal.SetPanalNum(staff.staffNum, EPanalState.staff);
+            newUpgradePanal = newPanal.GetComponent<UpgradePanalBase>();
+            newUpgradePanal.SetPanalNum(staff.staffNum);
             newPanal.SetActive(true);   
         }
-        foreach (Skill skill in GameManager.Inst.CurrentUser.skills)
-        {
 
-            newPanal = Instantiate(companyPanalTemp, companyPanalTemp.transform.parent);
-            newUpgradePanal = newPanal.GetComponent<UpgradePanal>();
-            newUpgradePanal.SetPanalNum(skill.skillNum, EPanalState.company);
+        //foreach (Skill skill in GameManager.Inst.CurrentUser.skills)
+        //{
+
+        //    newPanal = Instantiate(companyPanalTemp, companyPanalTemp.transform.parent);
+        //    newUpgradePanal = newPanal.GetComponent<UpgradePanalBase>();
+        //    newUpgradePanal.SetPanalNum(skill.skillNum);
+        //    newPanal.SetActive(true);
+        //}
+
+        foreach (Pet pet in GameManager.Inst.CurrentUser.pets)
+        {
+            newPanal = Instantiate(petPanalTemp, petPanalTemp.transform.parent);
+            newUpgradePanal = newPanal.GetComponent<UpgradePanalBase>();
+            newUpgradePanal.SetPanalNum(pet.petNum);
             newPanal.SetActive(true);
         }
 
@@ -238,64 +245,64 @@ public class UIManager : MonoBehaviour
         isUseSkill_1 = false;
     }
 
-    public void OnClickRandomStaff()
-    {
-        if (GameManager.Inst.CurrentUser.maxPeople <= GameManager.Inst.CurrentUser.peopleCnt)
-        {
-            ShowMessage("직원 수가 너무 많습니다.");
-            return;
-        }
-        if (isPicking)
-        {
-            ShowMessage("캐릭터를 이미 뽑고 있습니다.");
-            return;
-        }
-        if (GameManager.Inst.CurrentUser.money < 10000)
-        {
-            ShowMessage("돈이 부족합니다.");
-            return;
-        }
+    //public void OnClickRandomStaff()
+    //{
+    //    if (GameManager.Inst.CurrentUser.maxPeople <= GameManager.Inst.CurrentUser.peopleCnt)
+    //    {
+    //        ShowMessage("직원 수가 너무 많습니다.");
+    //        return;
+    //    }
+    //    if (isPicking)
+    //    {
+    //        ShowMessage("캐릭터를 이미 뽑고 있습니다.");
+    //        return;
+    //    }
+    //    if (GameManager.Inst.CurrentUser.money < 10000)
+    //    {
+    //        ShowMessage("돈이 부족합니다.");
+    //        return;
+    //    }
 
-        GameManager.Inst.CurrentUser.money -= 10000;
-        GameManager.Inst.CurrentUser.mileage += 100;
-        UpdateMoneyPanal();
-        StartCoroutine(RandomStaff());
-        isPicking = true;
-        ShowMessage("구매 완료");
-    }
-    public IEnumerator RandomStaff()
-    {
-        int rand = 0;
-        int num;
-        List<Staff> list = Mix(GameManager.Inst.CurrentUser.staffs.ToList());
-        for (int i = 0; i < 50; i++)
-        {
-            rand = Random.Range(0, 1000);
-            randomText.text = GameManager.Inst.CurrentUser.staffs[CheckRandStaffNum(list, rand)].staffName;
-            yield return new WaitForSeconds(0.1f);
-        }
-        num = CheckRandStaffNum(list, rand);
-        randomText.text = GameManager.Inst.CurrentUser.staffs[num].staffName;
-        SpawnStaff(soldierSprites[num], num);
-        GameManager.Inst.CurrentUser.peopleCnt++;
-        GameManager.Inst.CurrentUser.staffs[num].amount++;
-        isPicking = false;
-    }
+    //    GameManager.Inst.CurrentUser.money -= 10000;
+    //    GameManager.Inst.CurrentUser.mileage += 100;
+    //    UpdateMoneyPanal();
+    //    StartCoroutine(RandomStaff());
+    //    isPicking = true;
+    //    ShowMessage("구매 완료");
+    //}
+    //public IEnumerator RandomStaff()
+    //{
+    //    int rand = 0;
+    //    int num;
+    //    List<Staff> list = Mix(GameManager.Inst.CurrentUser.staffs.ToList());
+    //    for (int i = 0; i < 50; i++)
+    //    {
+    //        rand = Random.Range(0, 1000);
+    //        randomText.text = GameManager.Inst.CurrentUser.staffs[CheckRandStaffNum(list, rand)].staffName;
+    //        yield return new WaitForSeconds(0.1f);
+    //    }
+    //    num = CheckRandStaffNum(list, rand);
+    //    randomText.text = GameManager.Inst.CurrentUser.staffs[num].staffName;
+    //    SpawnStaff(soldierSprites[num], num);
+    //    GameManager.Inst.CurrentUser.peopleCnt++;
+    //    GameManager.Inst.CurrentUser.staffs[num].amount++;
+    //    isPicking = false;
+    //}
 
-    public int CheckRandStaffNum(List<Staff> soldierList, int num)
-    {
-        int cnt = 0;
-        for (int i = 0; i < soldierList.Count; i++)
-        {
-            if (cnt <= num && num < (cnt + soldierList[i].percent))
-            {
-                return soldierList[i].staffNum;
-            }
-            cnt += soldierList[i].percent;
-        }
-        return 0;
+    //public int CheckRandStaffNum(List<Staff> soldierList, int num)
+    //{
+    //    int cnt = 0;
+    //    for (int i = 0; i < soldierList.Count; i++)
+    //    {
+    //        if (cnt <= num && num < (cnt + soldierList[i].percent))
+    //        {
+    //            return soldierList[i].staffNum;
+    //        }
+    //        cnt += soldierList[i].percent;
+    //    }
+    //    return 0;
 
-    }
+    //}
 
     public void OnClickShowBtn(int num)
     {
@@ -307,7 +314,7 @@ public class UIManager : MonoBehaviour
         }
         scrollNum = num;
         isShow = !isShow;
-        controlPanal.DOAnchorPosY(isShow ? 0 : -300f, 0.2f).SetEase(Ease.InCirc);
+        controlPanal.DOAnchorPosY(isShow ? 27f : -242f, 0.2f).SetEase(Ease.InCirc);
         SetScrollActive(num);
     }
 
@@ -352,7 +359,7 @@ public class UIManager : MonoBehaviour
     public void ShowPetInfoPanal(int num)
     {
         Staff staff = GameManager.Inst.CurrentUser.staffs[num];
-        petinfoPanal.SetInfo(soldierSprites[num], staff.staffName, staff.percent.ToString());
+        petinfoPanal.SetInfo(soldierSprites[num], staff.staffName, staff.staffNum.ToString());
         petinfoPanal.gameObject.SetActive(true);
     }
     public void ShowMessage(string message)

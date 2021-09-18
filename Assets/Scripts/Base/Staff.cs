@@ -10,10 +10,9 @@ public class Staff
     public long mPs;
     public long price;
     public long upgradePrice;
-    public int percent;
 
 
-    public Staff(string staffName, int staffNum, int amount, long mPs, long price, long upgradePrice, int percent)
+    public Staff(string staffName, int staffNum, int amount, long mPs, long price, long upgradePrice)
     {
         this.staffName = staffName;
         this.staffNum = staffNum;
@@ -21,7 +20,6 @@ public class Staff
         this.mPs = mPs;
         this.price = price;
         this.upgradePrice = upgradePrice;
-        this.percent = percent;
     }
 }
 

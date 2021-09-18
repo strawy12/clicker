@@ -83,22 +83,32 @@ public class GameManager : MonoSingleton<GameManager>
             user.peopleCnt = 0;
             user.mileage = 0;
 
-            user.staffs.Add(new Staff("ÀÀ¾ÖÂïÂïÀÌ", 0, 0, 0, 1000, 500, 500));
-            user.staffs.Add(new Staff("Ã»¼Ò³âÂïÂïÀÌ", 1, 0, 0, 3000, 700, 132));
-            user.staffs.Add(new Staff("Áß2º´ÂïÂïÀÌ", 2, 0, 0, 5000, 1000, 110));
-            user.staffs.Add(new Staff("»õ³»±âÂïÂïÀÌ", 3, 0, 0, 10000, 1250, 70)); 
-            user.staffs.Add(new Staff("º¹ÇĞ»ıÂïÂïÀÌ", 4, 0, 0, 15000, 1500, 60)); 
-            user.staffs.Add(new Staff("½Å»çÂïÂïÀÌ", 5, 0, 0, 30000, 1750, 48));
-            user.staffs.Add(new Staff("±â»çÂïÂïÀÌ", 6, 0, 0, 50000, 2000, 32));
-            user.staffs.Add(new Staff("Áı»çÂïÂïÀÌ", 7, 0, 0, 100000, 2500, 20));
-            user.staffs.Add(new Staff("¿ÕÂïÂïÀÌ", 8, 0, 0, 300000, 3000, 15));
-            user.staffs.Add(new Staff("»çÀÌº¸±×ÂïÂïÀÌ", 9, 0, 0, 500000, 5000, 7)); 
-            user.staffs.Add(new Staff("AIÂïÂïÀÌ", 10, 0, 0, 1000000, 10000, 5)); 
-            user.staffs.Add(new Staff("±î¹Ì", 11, 0, 0, 10000000, 100000, 1));
+            user.staffs.Add(new Staff("ÀÀ¾ÖÂïÂïÀÌ", 0, 0, 0, 1000, 500));
+            user.staffs.Add(new Staff("Ã»¼Ò³âÂïÂïÀÌ", 1, 0, 0, 3000, 700));
+            user.staffs.Add(new Staff("Áß2º´ÂïÂïÀÌ", 2, 0, 0, 5000, 1000));
+            user.staffs.Add(new Staff("»õ³»±âÂïÂïÀÌ", 3, 0, 0, 10000, 1250)); 
+            user.staffs.Add(new Staff("º¹ÇĞ»ıÂïÂïÀÌ", 4, 0, 0, 15000, 1500)); 
+            user.staffs.Add(new Staff("½Å»çÂïÂïÀÌ", 5, 0, 0, 30000, 1750));
+            user.staffs.Add(new Staff("±â»çÂïÂïÀÌ", 6, 0, 0, 50000, 2000));
+            user.staffs.Add(new Staff("Áı»çÂïÂïÀÌ", 7, 0, 0, 100000, 2500));
+            user.staffs.Add(new Staff("¿ÕÂïÂïÀÌ", 8, 0, 0, 300000, 3000));
+            user.staffs.Add(new Staff("»çÀÌº¸±×ÂïÂïÀÌ", 9, 0, 0, 500000, 5000)); 
+            user.staffs.Add(new Staff("AIÂïÂïÀÌ", 10, 0, 0, 1000000, 10000)); 
 
             user.skills.Add(new Skill("±İ»çÇâ", 0, 0, 1000));
             user.skills.Add(new Skill("ÀÀ¾Ö", 1, 0, 2000));
             user.skills.Add(new Skill("À¯À¸³»¸ğµå", 2, 0, 3000));
+
+            user.pets.Add(new Pet(0, "°­¾ÆÁö", 0, 0, 1000));
+            user.pets.Add(new Pet(1, "Åä³¢", 0, 0, 2000));
+            user.pets.Add(new Pet(2, "¿©¿ì", 0, 0, 3000));
+            user.pets.Add(new Pet(3, "°õ", 0, 0, 4000));
+            user.pets.Add(new Pet(4, "Æë±Ï", 0, 0, 5000));
+            user.pets.Add(new Pet(5, "³Ê±¸¸®", 0, 0, 6000));
+            user.pets.Add(new Pet(6, "µÅÁö", 0, 0, 7000));
+            user.pets.Add(new Pet(7, "¾ç", 0, 0, 8000));
+            user.pets.Add(new Pet(8, "´Ù¶÷Áã", 0, 0, 9000));
+            user.pets.Add(new Pet(9, "±î¹Ì", 0, 0, 10000));
 
             SaveToJson();
         }

@@ -3,8 +3,11 @@ guid: ab0233c7815f1644cb59c8f7cd25127a
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5586146239332684615
-    second: Clicker UI_8
+      213: 8559595730894977567
+    second: Clicker UI_9
+  - first:
+      213: -6013146347862255926
+    second: Clicker UI_10
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -216,7 +219,7 @@ TextureImporter:
         serializedVersion: 2
         x: 76
         y: 106
-        width: 476
+        width: 490
         height: 33
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -253,11 +256,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Clicker UI_7
+      name: Clicker UI_8
       rect:
         serializedVersion: 2
-        x: 234
-        y: 4
+        x: 407
+        y: 5
         width: 170
         height: 93
       alignment: 0
@@ -274,10 +277,10 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Clicker UI_8
+      name: Clicker UI_7
       rect:
         serializedVersion: 2
-        x: 407
+        x: 234
         y: 4
         width: 170
         height: 93
@@ -290,6 +293,48 @@ TextureImporter:
       bones: []
       spriteID: 7431fc2786af58d40800000000000000
       internalID: 5586146239332684615
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Clicker UI_9
+      rect:
+        serializedVersion: 2
+        x: 62
+        y: 0
+        width: 106
+        height: 106
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f1af1f077fac9c670800000000000000
+      internalID: 8559595730894977567
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Clicker UI_10
+      rect:
+        serializedVersion: 2
+        x: 433
+        y: 428
+        width: 80
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ac69b3171430d8ca0800000000000000
+      internalID: -6013146347862255926
       vertices: []
       indices: 
       edges: []
