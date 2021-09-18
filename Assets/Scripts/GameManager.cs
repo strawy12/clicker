@@ -6,7 +6,7 @@ using UnityEngine;
 public class GameManager : MonoSingleton<GameManager>
 {
     public enum EPanalState { staff, company, level };
-    public enum EPoolingType { clickEffect, coinText };
+    public enum EPoolingType { clickEffect, coinText }
 
     private User user = null;
 

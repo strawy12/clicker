@@ -1,6 +1,6 @@
 ﻿{
     "userName": "금사향",
-    "money": 8550,
+    "money": 8690,
     "mileage": 100,
     "basemPc": 10,
     "mPs": 0,

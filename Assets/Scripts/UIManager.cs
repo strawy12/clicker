@@ -22,7 +22,7 @@ public class UIManager : MonoBehaviour
     [Header("프리팹")]
     [SerializeField] private GameObject staffPanalTemp = null;
     [SerializeField] private GameObject companyPanalTemp = null;
-    [SerializeField] private GameObject staffObjectTemp = null;
+    [SerializeField] private Button staffObjectTemp = null;
     [SerializeField] private CoinText coinTextTemp = null;
     [SerializeField] private GameObject clickEffectTemp = null;
 
@@ -32,6 +32,7 @@ public class UIManager : MonoBehaviour
     [Header("패널들")]
     [SerializeField] private GameObject settingPanal = null;
     [SerializeField] private RectTransform controlPanal = null;
+    [SerializeField] private PetInfo petinfoPanal = null;
 
     [Header("돈")]
     [SerializeField] private Text moneyText = null;
@@ -126,7 +127,7 @@ public class UIManager : MonoBehaviour
 
     }
 
-    private void CheckSpawnPresent()
+    private void OnClick()
     {
         if (clickNum == randNum)
         {
@@ -343,11 +344,17 @@ public class UIManager : MonoBehaviour
     }
     public void SpawnStaff(Sprite staffSprite, int num)
     {
-        GameObject staff = Instantiate(staffObjectTemp, staffObjectTemp.transform.parent);
+        Button staff = Instantiate(staffObjectTemp, staffObjectTemp.transform.parent);
         staff.transform.GetChild(0).GetComponent<Image>().sprite = staffSprite;
-        staff.SetActive(true);
+        staff.gameObject.SetActive(true);
+        staff.onClick.AddListener(() => ShowPetInfoPanal(num));
     }
-
+    public void ShowPetInfoPanal(int num)
+    {
+        Staff staff = GameManager.Inst.CurrentUser.staffs[num];
+        petinfoPanal.SetInfo(soldierSprites[num], staff.staffName, staff.percent.ToString());
+        petinfoPanal.gameObject.SetActive(true);
+    }
     public void ShowMessage(string message)
     {
         if (messageCo != null)
