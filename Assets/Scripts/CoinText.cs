@@ -9,11 +9,17 @@ public class CoinText : MonoBehaviour
 
     public void Show()
     {
-        coinText = GetComponent<Text>();
-        coinImage = transform.GetChild(0).GetComponent<Image>();
+        if(coinImage == null)
+        {
+            coinImage = transform.GetChild(0).GetComponent<Image>();
+        }
+        if(coinText == null)
+        {
+            coinText = GetComponent<Text>();
+        }
 
         RectTransform rectTransform = GetComponent<RectTransform>();
-        coinText.text = string.Format("+{0}", GameManager.Inst.CurrentUser.zpc);
+        coinText.text = string.Format("+{0}", GameManager.Inst.CurrentUser.mPc);
         transform.position = GameManager.Inst.MousePos;
         float targetPositionY = rectTransform.anchoredPosition.y + 100f;
         gameObject.SetActive(true);

@@ -7,13 +7,13 @@ public class User
     public string userName;
     public long money;
     public long mileage;
-    public long basezPc;
+    public long basemPc;
 
-    public long zpc
+    public long mPc
     {
         get
         {
-            return basezPc * (1 + peopleCnt);
+            return basemPc * (1 + peopleCnt);
         }
     }
     public long mPs;

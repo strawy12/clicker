@@ -1,22 +1,10 @@
 fileFormatVersion: 2
-guid: 6f4d8f1d87ffaab40bec970c1c50713a
+guid: ab0233c7815f1644cb59c8f7cd25127a
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 646210735883600415
-    second: Retouching_Sahyang_0
-  - first:
-      213: 1269240902201604765
-    second: Retouching_Sahyang_1
-  - first:
-      213: -7875130075342684898
-    second: Retouching_Sahyang_2
-  - first:
-      213: -4809011475779035355
-    second: Retouching_Sahyang_3
-  - first:
-      213: -3791421098451541354
-    second: Retouching_Sahyang_4
+      213: 5586146239332684615
+    second: Clicker UI_8
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -118,106 +106,190 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Retouching_Sahyang_0
+      name: Clicker UI_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 1150
-        height: 2620
+        x: 57
+        y: 413
+        width: 348
+        height: 83
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f12c2629d3dc7f800800000000000000
-      internalID: 646210735883600415
+      spriteID: 347e6312b6f2027c0800000000000000
+      internalID: -4098223523741898941
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Retouching_Sahyang_1
+      name: Clicker UI_1
       rect:
         serializedVersion: 2
-        x: 1150
-        y: 0
-        width: 1150
-        height: 2620
+        x: 58
+        y: 282
+        width: 545
+        height: 122
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d9a7f1630ef3d9110800000000000000
-      internalID: 1269240902201604765
+      spriteID: 51e7937afc3dd0fd0800000000000000
+      internalID: -2374008539737129451
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Retouching_Sahyang_2
+      name: Clicker UI_2
       rect:
         serializedVersion: 2
-        x: 2300
-        y: 0
-        width: 1150
-        height: 2620
+        x: 59
+        y: 159
+        width: 106
+        height: 106
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e1d3433bbeae5b290800000000000000
-      internalID: -7875130075342684898
+      spriteID: 7773b0f7e7964aab0800000000000000
+      internalID: -4997753694456170633
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Retouching_Sahyang_3
+      name: Clicker UI_3
       rect:
         serializedVersion: 2
-        x: 3450
-        y: 0
-        width: 1150
-        height: 2620
+        x: 181
+        y: 163
+        width: 18
+        height: 93
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 52fd961ca85f24db0800000000000000
-      internalID: -4809011475779035355
+      spriteID: 77cf048d150ce5aa0800000000000000
+      internalID: -6170282981697979273
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Retouching_Sahyang_4
+      name: Clicker UI_4
       rect:
         serializedVersion: 2
-        x: 4600
-        y: 0
-        width: 1150
-        height: 2620
+        x: 416
+        y: 163
+        width: 161
+        height: 93
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 692efd8499a226bc0800000000000000
-      internalID: -3791421098451541354
+      spriteID: 3bef39e799f3e5be0800000000000000
+      internalID: -1486680898499510605
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Clicker UI_5
+      rect:
+        serializedVersion: 2
+        x: 76
+        y: 106
+        width: 476
+        height: 33
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 63bdcbb3593b4c3b0800000000000000
+      internalID: -5493068191951430858
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Clicker UI_6
+      rect:
+        serializedVersion: 2
+        x: 241
+        y: 163
+        width: 161
+        height: 93
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bd19a9c7629d59e40800000000000000
+      internalID: 5662670865810756059
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Clicker UI_7
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 4
+        width: 170
+        height: 93
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fc4251d8130f6c100800000000000000
+      internalID: 128053735037674703
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Clicker UI_8
+      rect:
+        serializedVersion: 2
+        x: 407
+        y: 4
+        width: 170
+        height: 93
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7431fc2786af58d40800000000000000
+      internalID: 5586146239332684615
       vertices: []
       indices: 
       edges: []

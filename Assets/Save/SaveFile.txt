@@ -1,11 +1,11 @@
 ﻿{
     "userName": "금사향",
-    "money": 10960,
-    "mileage": 0,
-    "basezPc": 10,
+    "money": 8550,
+    "mileage": 100,
+    "basemPc": 10,
     "mPs": 0,
     "maxPeople": 5,
-    "peopleCnt": 0,
+    "peopleCnt": 1,
     "staffs": [
         {
             "staffName": "응애찍찍이",
@@ -20,7 +20,7 @@
         {
             "staffName": "청소년찍찍이",
             "staffNum": 1,
-            "amount": 0,
+            "amount": 1,
             "level": 0,
             "mPs": 0,
             "price": 3000,

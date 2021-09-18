@@ -6,6 +6,7 @@ using UnityEngine;
 public class GameManager : MonoSingleton<GameManager>
 {
     public enum EPanalState { staff, company, level };
+    public enum EPoolingType { clickEffect, coinText };
 
     private User user = null;
 
@@ -13,11 +14,13 @@ public class GameManager : MonoSingleton<GameManager>
 
     [SerializeField] private Transform pool = null;
 
+    private Dictionary<EPoolingType, Queue<GameObject>> poolingList = new Dictionary<EPoolingType, Queue<GameObject>>();
     public User CurrentUser { get { return user; } }
 
     public UIManager UI { get { return uiManager; } }
 
     public Transform Pool { get {return pool; } } 
+    public Dictionary<EPoolingType, Queue<GameObject>> PoolingList { get {return poolingList; } } 
 
     private string SAVE_PATH = "";
 
@@ -46,12 +49,19 @@ public class GameManager : MonoSingleton<GameManager>
             Directory.CreateDirectory(SAVE_PATH);
         }
         LoadFromJson();
+        SetDict();
         uiManager = GetComponent<UIManager>();
         MaxPos = new Vector2(4.1f, 1.7f);
         MinPos = new Vector2(-3.6f, -1.7f);
         InvokeRepeating("SaveToJson", 1f, 60f);
-        InvokeRepeating("AutoClick", 1f, 5f);
+       // InvokeRepeating("AutoClick", 1f, 5f);
         //InvokeRepeating("MoneyPerSecond", 0f, 1f);
+    }
+
+    private void SetDict()
+    {
+        poolingList.Add(EPoolingType.clickEffect, new Queue<GameObject>());
+        poolingList.Add(EPoolingType.coinText, new Queue<GameObject>());
     }
 
 
@@ -67,7 +77,7 @@ public class GameManager : MonoSingleton<GameManager>
         {
             user = new User();
             user.userName = "±›ªÁ«‚";
-            user.basezPc = 10;
+            user.basemPc = 10;
             user.money = 10000;
             user.maxPeople = 5;
             user.peopleCnt = 0;
@@ -114,7 +124,7 @@ public class GameManager : MonoSingleton<GameManager>
         StartCoroutine(AutoClickAnim());
         for(int i = 0; i < user.peopleCnt; i++)
         {
-            user.money += user.zpc;
+            user.money += user.mPc;
         }
         uiManager.UpdateMoneyPanal();
     }
@@ -123,7 +133,7 @@ public class GameManager : MonoSingleton<GameManager>
     {
         for (int i = 0; i < user.peopleCnt; i++)
         {
-            uiManager.ShowCoinText();
+            //uiManager.ShowCoinText();
             yield return new WaitForSeconds(0.05f);
         }
     }

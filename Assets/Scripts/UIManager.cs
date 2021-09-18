@@ -7,6 +7,7 @@ using DG.Tweening;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.AddressableAssets;
 using EPanalState = GameManager.EPanalState;
+using EPoolingType = GameManager.EPoolingType;
 
 public class UIManager : MonoBehaviour
 {
@@ -23,6 +24,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject companyPanalTemp = null;
     [SerializeField] private GameObject staffObjectTemp = null;
     [SerializeField] private CoinText coinTextTemp = null;
+    [SerializeField] private GameObject clickEffectTemp = null;
 
     [SerializeField] private GameObject messageObject = null;
 
@@ -30,7 +32,6 @@ public class UIManager : MonoBehaviour
     [Header("패널들")]
     [SerializeField] private GameObject settingPanal = null;
     [SerializeField] private RectTransform controlPanal = null;
-    [SerializeField] private GameObject compamySystemPanal = null;
 
     [Header("돈")]
     [SerializeField] private Text moneyText = null;
@@ -49,6 +50,7 @@ public class UIManager : MonoBehaviour
 
     private bool isShow = false;
     private bool isShow_Setting = false;
+    private bool isUseSkill_1 = false;
     private int scrollNum;
     private int clickNum = 0;
     private int randNum;
@@ -112,12 +114,6 @@ public class UIManager : MonoBehaviour
             newUpgradePanal = newPanal.GetComponent<UpgradePanal>();
             newUpgradePanal.SetPanalNum(staff.staffNum, EPanalState.staff);
             newPanal.SetActive(true);   
-            if (staff.amount != 0)
-            {
-                ActiveCompanySystemPanal(staff.staffNum, true);
-                continue;
-            }
-            ActiveCompanySystemPanal(staff.staffNum, false);
         }
         foreach (Skill skill in GameManager.Inst.CurrentUser.skills)
         {
@@ -128,11 +124,6 @@ public class UIManager : MonoBehaviour
             newPanal.SetActive(true);
         }
 
-    }
-
-    public void ActiveCompanySystemPanal(int num, bool isActive)
-    {
-        compamySystemPanal.transform.GetChild(num).gameObject.SetActive(isActive);
     }
 
     private void CheckSpawnPresent()
@@ -148,19 +139,57 @@ public class UIManager : MonoBehaviour
     public void OnClickDisPlay()
     {
         clickNum++;
+        if(isUseSkill_1 && clickNum > 10)
+        {
+            clickNum = 0;
+            StartCoroutine(AdditionClick());
+        }    
         //CheckSpawnPresent();
-        GameManager.Inst.CurrentUser.money += GameManager.Inst.CurrentUser.zpc;
+        GameManager.Inst.CurrentUser.money += GameManager.Inst.CurrentUser.mPc;
         UpdateMoneyPanal();
-        ShowCoinText();
+        ShowClickEffect(GameManager.Inst.MousePos);
+        //ShowCoinText();
     }
 
+
+    public void ShowClickEffect(Vector3 pos)
+    {
+        GameObject clickEffect = null;
+        Image clickImage = null;
+        Queue<GameObject> queue = GameManager.Inst.PoolingList[EPoolingType.clickEffect];
+        if (queue.Count > 0)
+        {
+            clickEffect = queue.Dequeue();
+            clickEffect.transform.SetParent(clickEffectTemp.transform.parent);
+        }
+        else
+        {
+            clickEffect = Instantiate(clickEffectTemp, clickEffectTemp.transform.parent);
+        }
+        clickImage = clickEffect.GetComponent<Image>();
+        clickEffect.transform.position = pos;
+
+        clickEffect.SetActive(true);
+        clickImage.DOFade(0f, 0.5f).SetEase(Ease.InCirc);
+        clickEffect.transform.DOScale(new Vector3(0.5f, 0.5f, 0.5f), 0.2f).SetEase(Ease.OutCirc).OnComplete(() =>
+        {
+            clickEffect.transform.DOScale(new Vector3(1f, 1f, 1f), 0.3f).SetEase(Ease.InCirc).OnComplete(() =>
+            {
+                clickImage.DOFade(1f, 0f);
+                clickEffect.SetActive(false);
+                clickEffect.transform.localScale = (Vector3.zero);
+                clickEffect.transform.SetParent(GameManager.Inst.Pool);
+                queue.Enqueue(clickEffect);
+            });
+        });
+    }
     public void ShowCoinText()
     {
         CoinText coinText = null;
 
         if (GameManager.Inst.Pool.childCount > 0)
         {
-            coinText = GameManager.Inst.Pool.GetChild(0).GetComponent<CoinText>();
+            GameManager.Inst.Pool.GetChild(0).GetComponent<CoinText>();
             coinText.transform.SetParent(coinTextTemp.transform.parent);
         }
         else
@@ -169,6 +198,43 @@ public class UIManager : MonoBehaviour
         }
 
         coinText.Show();
+    }
+
+    public void OnClickSkill(int num)
+    {
+        switch (num)
+        {
+            case 1:
+                isUseSkill_1 = true;
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+        }
+        StartCoroutine(Timer());
+    }
+
+    private IEnumerator AdditionClick()
+    {
+        for(int i = 0; i < 2; i++)
+        {
+            GameManager.Inst.CurrentUser.money += GameManager.Inst.CurrentUser.mPc;
+            UpdateMoneyPanal();
+            ShowClickEffect(new Vector3(Random.Range(-1.7f, 1.7f), Random.Range(-4f, 4f), -5f));
+            yield return new WaitForSeconds(0.1f);
+        }
+    }   
+    
+    private IEnumerator Timer()
+    {
+        float time = 30f;
+        while(time > 0)
+        {
+            time -= 0.1f;
+            yield return new WaitForSeconds(0.1f);
+        }
+        isUseSkill_1 = false;
     }
 
     public void OnClickRandomStaff()
@@ -212,11 +278,6 @@ public class UIManager : MonoBehaviour
         SpawnStaff(soldierSprites[num], num);
         GameManager.Inst.CurrentUser.peopleCnt++;
         GameManager.Inst.CurrentUser.staffs[num].amount++;
-        if (GameManager.Inst.CurrentUser.staffs[num].amount == 1)
-        {
-            ActiveCompanySystemPanal(num, true);
-        }
-
         isPicking = false;
     }
 
@@ -282,8 +343,8 @@ public class UIManager : MonoBehaviour
     }
     public void SpawnStaff(Sprite staffSprite, int num)
     {
-        GameObject staff = Instantiate(staffObjectTemp, scrollObject[1].transform.GetChild(num).GetChild(0).GetChild(0));
-        staff.GetComponent<Image>().sprite = staffSprite;
+        GameObject staff = Instantiate(staffObjectTemp, staffObjectTemp.transform.parent);
+        staff.transform.GetChild(0).GetComponent<Image>().sprite = staffSprite;
         staff.SetActive(true);
     }
 
