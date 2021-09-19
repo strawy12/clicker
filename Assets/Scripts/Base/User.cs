@@ -13,28 +13,11 @@ public class User
     {
         get
         {
-            return basemPc * (1 + peopleCnt) * Mathf.Max(1, (petAmount * 2));
-        }
-    }
-    public long mPs;
-    public int maxPeople;
-    public int peopleCnt
-    {
-        get
-        {
-            int cnt = 0;
-            foreach(Staff staff in staffs)
-            {
-                if(staff.level != 0)
-                {
-                    cnt++;
-                }
-            }
-            return cnt;
+            return basemPc * Mathf.Max(1, (petAmount * 2));
         }
     }
 
-    private int petAmount
+    public int petAmount
     {
         get
         {

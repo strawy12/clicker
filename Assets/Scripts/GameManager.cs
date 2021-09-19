@@ -53,9 +53,9 @@ public class GameManager : MonoSingleton<GameManager>
         uiManager = GetComponent<UIManager>();
         MaxPos = new Vector2(4.1f, 1.7f);
         MinPos = new Vector2(-3.6f, -1.7f);
-        InvokeRepeating("SaveToJson", 1f, 60f);
-       // InvokeRepeating("AutoClick", 1f, 5f);
-        //InvokeRepeating("MoneyPerSecond", 0f, 1f);
+        InvokeRepeating("SaveToJson", 5f, 60f);
+        InvokeRepeating("AutoClick", 5f, 5f);
+        InvokeRepeating("MoneyPerSecond", 5f, 1f);
     }
 
     private void SetDict()
@@ -79,7 +79,6 @@ public class GameManager : MonoSingleton<GameManager>
             user.userName = "±Ý»çÇâ";
             user.basemPc = 10;
             user.money = 10000;
-            user.maxPeople = 5;
             user.mileage = 0;
 
             user.staffs.Add(new Staff("ÀÀ¾ÖÂïÂïÀÌ", 0, 0, 0, 1000, 500));
@@ -98,16 +97,16 @@ public class GameManager : MonoSingleton<GameManager>
             user.skills.Add(new Skill("ÀÀ¾Ö", 1, 0, 2000));
             user.skills.Add(new Skill("À¯À¸³»¸ðµå", 2, 0, 3000));
 
-            user.pets.Add(new Pet(0, "°­¾ÆÁö", 0, 0, 1000));
-            user.pets.Add(new Pet(1, "Åä³¢", 0, 0, 2000));
-            user.pets.Add(new Pet(2, "¿©¿ì", 0, 0, 3000));
-            user.pets.Add(new Pet(3, "°õ", 0, 0, 4000));
-            user.pets.Add(new Pet(4, "Æë±Ï", 0, 0, 5000));
-            user.pets.Add(new Pet(5, "³Ê±¸¸®", 0, 0, 6000));
-            user.pets.Add(new Pet(6, "µÅÁö", 0, 0, 7000));
-            user.pets.Add(new Pet(7, "¾ç", 0, 0, 8000));
-            user.pets.Add(new Pet(8, "´Ù¶÷Áã", 0, 0, 9000));
-            user.pets.Add(new Pet(9, "±î¹Ì", 0, 0, 10000));
+            user.pets.Add(new Pet(0, "°­¾ÆÁö", 0, 0, 1000, 20));
+            user.pets.Add(new Pet(1, "Åä³¢", 0, 0, 2000, 20));
+            user.pets.Add(new Pet(2, "¿©¿ì", 0, 0, 3000, 15));
+            user.pets.Add(new Pet(3, "°õ", 0, 0, 4000, 10));
+            user.pets.Add(new Pet(4, "Æë±Ï", 0, 0, 5000, 10));
+            user.pets.Add(new Pet(5, "³Ê±¸¸®", 0, 0, 6000, 7));
+            user.pets.Add(new Pet(6, "µÅÁö", 0, 0, 7000, 7));
+            user.pets.Add(new Pet(7, "¾ç", 0, 0, 8000, 5));
+            user.pets.Add(new Pet(8, "´Ù¶÷Áã", 0, 0, 9000, 5));
+            user.pets.Add(new Pet(9, "±î¹Ì", 0, 0, 10000, 1));
 
             SaveToJson();
         }
@@ -123,7 +122,7 @@ public class GameManager : MonoSingleton<GameManager>
     {
         foreach(Staff staff in user.staffs)
         {
-            user.money += staff.amount * staff.mPs;
+            user.money += staff.mPs;
         }
         uiManager.UpdateMoneyPanal();
     }
@@ -131,7 +130,7 @@ public class GameManager : MonoSingleton<GameManager>
     public void AutoClick()
     {
         StartCoroutine(AutoClickAnim());
-        for(int i = 0; i < user.peopleCnt; i++)
+        for(int i = 0; i < user.petAmount; i++)
         {
             user.money += user.mPc;
         }
@@ -140,9 +139,10 @@ public class GameManager : MonoSingleton<GameManager>
 
     private IEnumerator AutoClickAnim()
     {
-        for (int i = 0; i < user.peopleCnt; i++)
+        for (int i = 0; i < user.petAmount; i++)
         {
             //uiManager.ShowCoinText();
+            uiManager.ShowClickEffect(new Vector3(Random.Range(-1.7f, 1.7f), Random.Range(-4f, 4f), -5f));
             yield return new WaitForSeconds(0.05f);
         }
     }

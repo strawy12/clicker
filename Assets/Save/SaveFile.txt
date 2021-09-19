@@ -1,25 +1,21 @@
 ﻿{
     "userName": "금사향",
-    "money": 63910,
+    "money": 1100383,
     "mileage": 0,
     "basemPc": 10,
-    "mPs": 0,
-    "maxPeople": 5,
     "staffs": [
         {
             "staffName": "응애찍찍이",
             "staffNum": 0,
-            "amount": 0,
-            "level": 10,
-            "mPs": 0,
-            "price": 1000,
+            "level": 4,
+            "mPs": 18,
+            "price": 2440,
             "upgradePrice": 500
         },
         {
             "staffName": "청소년찍찍이",
             "staffNum": 1,
-            "amount": 0,
-            "level": 10,
+            "level": 0,
             "mPs": 0,
             "price": 3000,
             "upgradePrice": 700
@@ -27,8 +23,7 @@
         {
             "staffName": "중2병찍찍이",
             "staffNum": 2,
-            "amount": 0,
-            "level": 10,
+            "level": 0,
             "mPs": 0,
             "price": 5000,
             "upgradePrice": 1000
@@ -36,8 +31,7 @@
         {
             "staffName": "새내기찍찍이",
             "staffNum": 3,
-            "amount": 0,
-            "level": 10,
+            "level": 0,
             "mPs": 0,
             "price": 10000,
             "upgradePrice": 1250
@@ -45,7 +39,6 @@
         {
             "staffName": "복학생찍찍이",
             "staffNum": 4,
-            "amount": 0,
             "level": 0,
             "mPs": 0,
             "price": 15000,
@@ -54,7 +47,6 @@
         {
             "staffName": "신사찍찍이",
             "staffNum": 5,
-            "amount": 0,
             "level": 0,
             "mPs": 0,
             "price": 30000,
@@ -63,7 +55,6 @@
         {
             "staffName": "기사찍찍이",
             "staffNum": 6,
-            "amount": 0,
             "level": 0,
             "mPs": 0,
             "price": 50000,
@@ -72,7 +63,6 @@
         {
             "staffName": "집사찍찍이",
             "staffNum": 7,
-            "amount": 0,
             "level": 0,
             "mPs": 0,
             "price": 100000,
@@ -81,7 +71,6 @@
         {
             "staffName": "왕찍찍이",
             "staffNum": 8,
-            "amount": 0,
             "level": 0,
             "mPs": 0,
             "price": 300000,
@@ -90,7 +79,6 @@
         {
             "staffName": "사이보그찍찍이",
             "staffNum": 9,
-            "amount": 0,
             "level": 0,
             "mPs": 0,
             "price": 500000,
@@ -99,7 +87,6 @@
         {
             "staffName": "AI찍찍이",
             "staffNum": 10,
-            "amount": 0,
             "level": 0,
             "mPs": 0,
             "price": 1000000,
@@ -108,7 +95,7 @@
     ],
     "skills": [
         {
-            "skillName": "금사향",
+            "skillName": "트이유",
             "skillNum": 0,
             "level": 0,
             "price": 1000,
@@ -133,8 +120,9 @@
         {
             "petNum": 0,
             "petName": "강아지",
-            "amount": 0,
+            "amount": 1,
             "level": 0,
+            "percent": 20,
             "price": 1000
         },
         {
@@ -142,13 +130,15 @@
             "petName": "토끼",
             "amount": 0,
             "level": 0,
+            "percent": 20,
             "price": 2000
         },
         {
             "petNum": 2,
             "petName": "여우",
-            "amount": 0,
+            "amount": 1,
             "level": 0,
+            "percent": 15,
             "price": 3000
         },
         {
@@ -156,6 +146,7 @@
             "petName": "곰",
             "amount": 0,
             "level": 0,
+            "percent": 10,
             "price": 4000
         },
         {
@@ -163,6 +154,7 @@
             "petName": "펭귄",
             "amount": 0,
             "level": 0,
+            "percent": 10,
             "price": 5000
         },
         {
@@ -170,6 +162,7 @@
             "petName": "너구리",
             "amount": 0,
             "level": 0,
+            "percent": 7,
             "price": 6000
         },
         {
@@ -177,6 +170,7 @@
             "petName": "돼지",
             "amount": 0,
             "level": 0,
+            "percent": 7,
             "price": 7000
         },
         {
@@ -184,6 +178,7 @@
             "petName": "양",
             "amount": 0,
             "level": 0,
+            "percent": 5,
             "price": 8000
         },
         {
@@ -191,6 +186,7 @@
             "petName": "다람쥐",
             "amount": 0,
             "level": 0,
+            "percent": 5,
             "price": 9000
         },
         {
@@ -198,6 +194,7 @@
             "petName": "까미",
             "amount": 0,
             "level": 0,
+            "percent": 1,
             "price": 10000
         }
     ]

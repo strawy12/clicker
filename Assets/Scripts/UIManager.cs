@@ -89,16 +89,16 @@ public class UIManager : MonoBehaviour
         canvas = FindObjectOfType<Canvas>();
     }
 
-    public List<Staff> Mix(List<Staff> staffs)
+    public List<T> Mix<T>(List<T> pets)
     {
-        List<Staff> list = new List<Staff>();
-        int count = staffs.Count;
+        List<T> list = new List<T>();
+        int count = pets.Count;
 
         for (int i = 0; i < count; i++)
         {
-            int rand = Random.Range(0, staffs.Count);
-            list.Add(staffs[rand]);
-            staffs.RemoveAt(rand);
+            int rand = Random.Range(0, pets.Count);
+            list.Add(pets[rand]);
+            pets.RemoveAt(rand);
         }
         return list;
     }
@@ -239,9 +239,9 @@ public class UIManager : MonoBehaviour
                     return;
                 }
                 isUseSkill_3 = true;
-                GameManager.Inst.CurrentUser.basemPc *= 4;
-                GameManager.Inst.CurrentUser.mPs *= 4;
-                StartCoroutine(Timer(30f, num));
+                //GameManager.Inst.CurrentUser.basemPc *= 4;
+                //GameManager.Inst.CurrentUser.mPs *= 4;
+                //StartCoroutine(Timer(30f, num));
                 break;
         }
 
@@ -280,64 +280,57 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    //public void OnClickRandomStaff()
-    //{
-    //    if (GameManager.Inst.CurrentUser.maxPeople <= GameManager.Inst.CurrentUser.peopleCnt)
-    //    {
-    //        ShowMessage("직원 수가 너무 많습니다.");
-    //        return;
-    //    }
-    //    if (isPicking)
-    //    {
-    //        ShowMessage("캐릭터를 이미 뽑고 있습니다.");
-    //        return;
-    //    }
-    //    if (GameManager.Inst.CurrentUser.money < 10000)
-    //    {
-    //        ShowMessage("돈이 부족합니다.");
-    //        return;
-    //    }
+    public void OnClickRandomPets()
+    {
+        if (isPicking)
+        {
+            ShowMessage("캐릭터를 이미 뽑고 있습니다.");
+            return;
+        }
+        if (GameManager.Inst.CurrentUser.money < 10000)
+        {
+            ShowMessage("돈이 부족합니다.");
+            return;
+        }
 
-    //    GameManager.Inst.CurrentUser.money -= 10000;
-    //    GameManager.Inst.CurrentUser.mileage += 100;
-    //    UpdateMoneyPanal();
-    //    StartCoroutine(RandomStaff());
-    //    isPicking = true;
-    //    ShowMessage("구매 완료");
-    //}
-    //public IEnumerator RandomStaff()
-    //{
-    //    int rand = 0;
-    //    int num;
-    //    List<Staff> list = Mix(GameManager.Inst.CurrentUser.staffs.ToList());
-    //    for (int i = 0; i < 50; i++)
-    //    {
-    //        rand = Random.Range(0, 1000);
-    //        randomText.text = GameManager.Inst.CurrentUser.staffs[CheckRandStaffNum(list, rand)].staffName;
-    //        yield return new WaitForSeconds(0.1f);
-    //    }
-    //    num = CheckRandStaffNum(list, rand);
-    //    randomText.text = GameManager.Inst.CurrentUser.staffs[num].staffName;
-    //    SpawnStaff(soldierSprites[num], num);
-    //    GameManager.Inst.CurrentUser.peopleCnt++;
-    //    GameManager.Inst.CurrentUser.staffs[num].amount++;
-    //    isPicking = false;
-    //}
+        GameManager.Inst.CurrentUser.money -= 10000;
+        UpdateMoneyPanal();
+        StartCoroutine(RandomPets());
+        isPicking = true;
+        ShowMessage("구매 완료");
+    }
+    public IEnumerator RandomPets()
+    {
+        int rand = 0;
+        int num;
+        List<Pet> list = Mix(GameManager.Inst.CurrentUser.pets.ToList());
+        for (int i = 0; i < 50; i++)
+        {
+            rand = Random.Range(0, 100);
+            randomText.text = GameManager.Inst.CurrentUser.pets[CheckRandPetNum(list, rand)].petName;
+            yield return new WaitForSeconds(0.1f);
+        }
+        num = CheckRandPetNum(list, rand);
+        randomText.text = GameManager.Inst.CurrentUser.pets[num].petName;
+        //SpawnPet(soldierSprites[num], num);
+        GameManager.Inst.CurrentUser.pets[num].amount++;
+        isPicking = false;
+    }
 
-    //public int CheckRandStaffNum(List<Staff> soldierList, int num)
-    //{
-    //    int cnt = 0;
-    //    for (int i = 0; i < soldierList.Count; i++)
-    //    {
-    //        if (cnt <= num && num < (cnt + soldierList[i].percent))
-    //        {
-    //            return soldierList[i].staffNum;
-    //        }
-    //        cnt += soldierList[i].percent;
-    //    }
-    //    return 0;
+    public int CheckRandPetNum(List<Pet> petList, int num)
+    {
+        int cnt = 0;
+        for (int i = 0; i < petList.Count; i++)
+        {
+            if (cnt <= num && num < (cnt + petList[i].percent))
+            {
+                return petList[i].petNum;
+            }
+            cnt += petList[i].percent;
+        }
+        return 0;
 
-    //}
+    }
 
     public void OnClickShowBtn(int num)
     {
