@@ -22,6 +22,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
     {
         pet = GameManager.Inst.CurrentUser.pets[num];
         petNum = num;
+        OnClickMounting(pet.isEquip);
     }
 
     public override void UpdateValues()
@@ -30,6 +31,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
         if (!pet.isLocked)
         {
+            petMountingBtn.isOn = pet.isEquip;
             petMountingBtn.interactable = true;
             buyBtnInfoText.text = "°­È­";
             petNameText.text = string.Format("Lv.{0} {1}", pet.level, pet.petName);
@@ -66,13 +68,12 @@ using UnityEngine.ResourceManagement.AsyncOperations;
     public void OnClickMounting(bool isOn)
     {
         pet.isEquip = isOn;
+        if (petBuffObj == null)
+        {
+            petBuffObj = Instantiate(petObjectTemp, petObjectTemp.transform.parent);
+        }
         if (isOn)
         {
-            if (petBuffObj == null)
-            {
-                petBuffObj = Instantiate(petObjectTemp, petObjectTemp.transform.parent);
-            }
-
             //buffPanal.transform.GetChild(0).GetComponent<Image>().sprite = petSprite;
             petBuffObj.SetActive(true);
             petBuffObj.transform.DOScale(Vector3.one, 0.25f).SetEase(Ease.InOutBack);

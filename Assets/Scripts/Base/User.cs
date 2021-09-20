@@ -6,14 +6,14 @@ public class User
 {
     public string userName;
     public long money;
+    public long additionMoney;
     public long mileage;
     public long basemPc;
-
     public long mPc
     {
         get
         {
-            return basemPc * Mathf.Max(1, (petAmount * 2));
+            return basemPc * Mathf.Max(1, (petAmount * 2)) * additionMoney;
         }
     }
 

@@ -17,6 +17,7 @@ public class UIManager : MonoBehaviour
     [Header("시스템")]
     [SerializeField] private ScrollRect scrollRect = null;
     [SerializeField] private Text randomText = null;
+    
 
     [Header("프리팹")]
     [SerializeField] private GameObject staffPanalTemp = null;
@@ -33,6 +34,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject settingPanal = null;
     [SerializeField] private RectTransform controlPanal = null;
     [SerializeField] private PetInfo petinfoPanal = null;
+    [SerializeField] private Image randomPickPanal = null;
 
     [Header("돈")]
     [SerializeField] private Text moneyText = null;
@@ -42,8 +44,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject[] scrollObject = null;
 
     private Sprite[] soldierSprites = null;
-
     private Coroutine messageCo = null;
+    private Image randomPickImage = null;
 
     private Text messageText = null;
     private bool isPicking = false;
@@ -51,9 +53,7 @@ public class UIManager : MonoBehaviour
 
     private bool isShow = false;
     private bool isShow_Setting = false;
-    private bool isUseSkill_1 = false;
-    private bool isUseSkill_2 = false;
-    private bool isUseSkill_3 = false;
+    private bool isAdditionClick = false;
     private int scrollNum;
     private int clickNum = 0;
     private int randNum;
@@ -80,13 +80,13 @@ public class UIManager : MonoBehaviour
 
     private void GameStartStart()
     {
-
         UpdateMoneyPanal();
         CreatePanals();
         SetScrollActive(2);
         isShow = false;
         messageText = messageObject.transform.GetChild(0).GetComponent<Text>();
         canvas = FindObjectOfType<Canvas>();
+        randomPickImage = randomPickPanal.transform.GetChild(0).GetComponent<Image>();
     }
 
     public List<T> Mix<T>(List<T> pets)
@@ -152,7 +152,7 @@ public class UIManager : MonoBehaviour
     public void OnClickDisPlay()
     {
         clickNum++;
-        if(isUseSkill_1 && clickNum > 10)
+        if(isAdditionClick && clickNum > 3)
         {
             clickNum = 0;
             StartCoroutine(AdditionClick());
@@ -213,38 +213,32 @@ public class UIManager : MonoBehaviour
         coinText.Show();
     }
 
-    public void OnClickSkill(int num)
+    public void OnOffSkill(int num, bool isOn)
     {
         switch (num)
         {
+            case 0:
+                isAdditionClick = isOn;
+                break;
             case 1:
-                if(isUseSkill_1)
+                if(isOn)
                 {
-                    return;
+                    Debug.Log("응애");
+                    GameManager.Inst.CurrentUser.money += (GameManager.Inst.CurrentUser.mPc * 1000);
+                    UpdateMoneyPanal();
                 }
-                isUseSkill_1 = true;
-                StartCoroutine(Timer(30f, num));
                 break;
             case 2:
-                if(isUseSkill_2)
+                if(isOn)
                 {
-                    return;
+                    GameManager.Inst.CurrentUser.additionMoney = 4;
                 }
-                isUseSkill_2 = true;
-                GameManager.Inst.CurrentUser.money += (long)(GameManager.Inst.CurrentUser.mPc * 1000f);
-                break;
-            case 3:
-                if (isUseSkill_3)
+                else
                 {
-                    return;
+                    GameManager.Inst.CurrentUser.additionMoney = 1;
                 }
-                isUseSkill_3 = true;
-                //GameManager.Inst.CurrentUser.basemPc *= 4;
-                //GameManager.Inst.CurrentUser.mPs *= 4;
-                //StartCoroutine(Timer(30f, num));
                 break;
         }
-
     }
 
     private IEnumerator AdditionClick()
@@ -255,28 +249,6 @@ public class UIManager : MonoBehaviour
             UpdateMoneyPanal();
             ShowClickEffect(new Vector3(Random.Range(-1.7f, 1.7f), Random.Range(-4f, 4f), -5f));
             yield return new WaitForSeconds(0.1f);
-        }
-    }   
-    
-    private IEnumerator Timer(float time, int num)
-    {
-        while(time > 0)
-        {
-            time -= 0.1f;
-            yield return new WaitForSeconds(0.1f);
-        }
-        switch (num)
-        {
-            case 1:
-                isUseSkill_1 = false;
-                break;
-            case 2:
-                isUseSkill_2 = false;
-                break;
-            case 3:
-                
-                isUseSkill_3 = false;
-                break;
         }
     }
 
@@ -295,25 +267,40 @@ public class UIManager : MonoBehaviour
 
         GameManager.Inst.CurrentUser.money -= 10000;
         UpdateMoneyPanal();
-        StartCoroutine(RandomPets());
+        RandomPets();
         isPicking = true;
         ShowMessage("구매 완료");
     }
-    public IEnumerator RandomPets()
+    public void RandomPets()
     {
         int rand = 0;
         int num;
         Pet pet = null;
         List<Pet> list = Mix(GameManager.Inst.CurrentUser.pets.ToList());
-        for (int i = 0; i < 50; i++)
-        {
-            rand = Random.Range(0, 100);
-            randomText.text = GameManager.Inst.CurrentUser.pets[CheckRandPetNum(list, rand)].petName;
-            yield return new WaitForSeconds(0.1f);
-        }
+        rand = Random.Range(0, 100);
         num = CheckRandPetNum(list, rand);
         pet = GameManager.Inst.CurrentUser.pets[num];
         randomText.text = pet.petName;
+        randomPickImage.DOFade(0f, 0f);
+        randomPickPanal.rectTransform.DOScale(Vector3.one, 0.2f).OnComplete(() =>
+        {
+            randomPickImage.sprite = SoldierSpriteArray[num];
+            randomPickImage.DOFade(1f, 1f).OnComplete(() =>
+            {
+                randomPickImage.rectTransform.DOScale(new Vector3(1.5f, 1f, 1.5f), 0.2f).OnComplete(() =>
+                {
+                    randomPickImage.rectTransform.DOScale(Vector3.one, 0.1f).OnComplete(() =>
+                    {
+                        randomPickPanal.rectTransform.DOScale(Vector3.zero, 0.3f);
+                        isPicking = false;
+                    });
+                });
+            });
+            randomPickImage.rectTransform.DOShakePosition(1f);
+            randomPickImage.rectTransform.DOShakeScale(1f);
+            randomPickImage.rectTransform.DOShakeRotation(1f);
+        });
+        
         //SpawnPet(soldierSprites[num], num);
 
         if (pet.level >= 10)
@@ -328,8 +315,7 @@ public class UIManager : MonoBehaviour
                 pet.level++;
             }
         }
-
-        isPicking = false;
+        UpdateMoneyPanal();
     }
 
     public int CheckRandPetNum(List<Pet> petList, int num)
@@ -360,14 +346,7 @@ public class UIManager : MonoBehaviour
         controlPanal.DOAnchorPosY(isShow ? 27f : -242f, 0.2f).SetEase(Ease.InCirc);
         SetScrollActive(num);
     }
-
-    private void DestroyText(GameObject text)
-    {
-        Destroy(text);
-    }
-
-   
-
+  
 
     public void OnClickSettingBtn()
     {
@@ -396,13 +375,7 @@ public class UIManager : MonoBehaviour
             upgradePanal.UpdateValues();
         }
     }
-    public void SpawnStaff(Sprite staffSprite, int num)
-    {
-        Button staff = Instantiate(staffObjectTemp, staffObjectTemp.transform.parent);
-        staff.transform.GetChild(0).GetComponent<Image>().sprite = staffSprite;
-        staff.gameObject.SetActive(true);
-        staff.onClick.AddListener(() => ShowPetInfoPanal(num));
-    }
+
     public void ShowPetInfoPanal(int num)
     {
         Staff staff = GameManager.Inst.CurrentUser.staffs[num];

@@ -44,18 +44,6 @@ public class UpgradePanalBase : MonoBehaviour
         UpdateValues();
     }
 
-    public T[] FindImages<T>(GameObject gameObject)
-    {
-        T[] arr = gameObject.GetComponentsInChildren<T>();
-        T[] returnArr = new T[arr.Length - 1];
-        for (int i = 1; i < arr.Length; i++)
-        {
-            returnArr[i - 1] = arr[i];
-        }
-
-        return returnArr;
-    }
-
     public virtual void SetPanalNum(int num)
     {
 

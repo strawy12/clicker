@@ -78,6 +78,7 @@ public class GameManager : MonoSingleton<GameManager>
             user = new User();
             user.userName = "금사향";
             user.basemPc = 10;
+            user.additionMoney = 1;
             user.money = 10000;
             user.mileage = 0;
 
@@ -93,9 +94,9 @@ public class GameManager : MonoSingleton<GameManager>
             user.staffs.Add(new Staff("사이보그찍찍이", 9, 0, 0, 500000, 5000)); 
             user.staffs.Add(new Staff("AI찍찍이", 10, 0, 0, 1000000, 10000)); 
 
-            user.skills.Add(new Skill("트이유", 0, 0, 1000,100, ESkillType.Active));
-            user.skills.Add(new Skill("응애", 1, 0, 2000, 200,ESkillType.Active));
-            user.skills.Add(new Skill("유으내모드", 2, 0, 3000, 300, ESkillType.Active));
+            user.skills.Add(new Skill("트이유", 0, 0, 1000, 30, 100, ESkillType.Active));
+            user.skills.Add(new Skill("응애", 1, 0, 2000, 0, 200,ESkillType.Active));
+            user.skills.Add(new Skill("유으내모드", 2, 0, 3000, 30, 300, ESkillType.Active));
 
             user.pets.Add(new Pet(0, "강아지", 0, 0, 20));
             user.pets.Add(new Pet(1, "토끼", 0, 0, 20));
@@ -110,6 +111,17 @@ public class GameManager : MonoSingleton<GameManager>
 
             SaveToJson();
         }
+    }
+    public T[] FindImages<T>(GameObject gameObject)
+    {
+        T[] arr = gameObject.GetComponentsInChildren<T>();
+        T[] returnArr = new T[arr.Length - 1];
+        for (int i = 1; i < arr.Length; i++)
+        {
+            returnArr[i - 1] = arr[i];
+        }
+
+        return returnArr;
     }
 
     private void SaveToJson()

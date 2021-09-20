@@ -1,6 +1,7 @@
 ﻿{
     "userName": "금사향",
-    "money": 4010070,
+    "money": 17486,
+    "additionMoney": 1,
     "mileage": 0,
     "basemPc": 10,
     "staffs": [
@@ -97,13 +98,15 @@
         {
             "skillName": "트이유",
             "skillNum": 0,
-            "level": 0,
-            "price": 1000,
+            "level": 4,
+            "price": 2440,
             "isSold": false,
             "skilltype": 0,
             "baseCoolTime": 100,
+            "baseDuration": 30,
             "isUsed": true,
-            "endTime": "2021-09-20 PM 4:57:32"
+            "endTime": "2021-09-20 PM 11:32:26",
+            "endDurationTime": "2021-09-20 PM 11:31:26"
         },
         {
             "skillName": "응애",
@@ -113,8 +116,10 @@
             "isSold": false,
             "skilltype": 0,
             "baseCoolTime": 200,
-            "isUsed": true,
-            "endTime": "2021-09-20 PM 4:57:40"
+            "baseDuration": 0,
+            "isUsed": false,
+            "endTime": "2021-09-20 PM 11:23:43",
+            "endDurationTime": "2021-09-20 PM 11:20:23"
         },
         {
             "skillName": "유으내모드",
@@ -124,8 +129,10 @@
             "isSold": false,
             "skilltype": 0,
             "baseCoolTime": 300,
-            "isUsed": true,
-            "endTime": "2021-09-20 PM 5:00:18"
+            "baseDuration": 30,
+            "isUsed": false,
+            "endTime": "2021-09-20 PM 11:26:15",
+            "endDurationTime": "2021-09-20 PM 11:21:45"
         }
     ],
     "pets": [
