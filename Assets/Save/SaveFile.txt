@@ -1,15 +1,15 @@
 ﻿{
     "userName": "금사향",
-    "money": 1100383,
+    "money": 4010070,
     "mileage": 0,
     "basemPc": 10,
     "staffs": [
         {
             "staffName": "응애찍찍이",
             "staffNum": 0,
-            "level": 4,
-            "mPs": 18,
-            "price": 2440,
+            "level": 0,
+            "mPs": 0,
+            "price": 1000,
             "upgradePrice": 500
         },
         {
@@ -99,31 +99,44 @@
             "skillNum": 0,
             "level": 0,
             "price": 1000,
-            "isSold": false
+            "isSold": false,
+            "skilltype": 0,
+            "baseCoolTime": 100,
+            "isUsed": true,
+            "endTime": "2021-09-20 PM 4:57:32"
         },
         {
             "skillName": "응애",
             "skillNum": 1,
             "level": 0,
             "price": 2000,
-            "isSold": false
+            "isSold": false,
+            "skilltype": 0,
+            "baseCoolTime": 200,
+            "isUsed": true,
+            "endTime": "2021-09-20 PM 4:57:40"
         },
         {
             "skillName": "유으내모드",
             "skillNum": 2,
             "level": 0,
             "price": 3000,
-            "isSold": false
+            "isSold": false,
+            "skilltype": 0,
+            "baseCoolTime": 300,
+            "isUsed": true,
+            "endTime": "2021-09-20 PM 5:00:18"
         }
     ],
     "pets": [
         {
             "petNum": 0,
             "petName": "강아지",
-            "amount": 1,
+            "amount": 0,
             "level": 0,
             "percent": 20,
-            "price": 1000
+            "price": 1000,
+            "isEquip": false
         },
         {
             "petNum": 1,
@@ -131,15 +144,17 @@
             "amount": 0,
             "level": 0,
             "percent": 20,
-            "price": 2000
+            "price": 1000,
+            "isEquip": false
         },
         {
             "petNum": 2,
             "petName": "여우",
-            "amount": 1,
+            "amount": 0,
             "level": 0,
             "percent": 15,
-            "price": 3000
+            "price": 1000,
+            "isEquip": false
         },
         {
             "petNum": 3,
@@ -147,7 +162,8 @@
             "amount": 0,
             "level": 0,
             "percent": 10,
-            "price": 4000
+            "price": 1000,
+            "isEquip": false
         },
         {
             "petNum": 4,
@@ -155,7 +171,8 @@
             "amount": 0,
             "level": 0,
             "percent": 10,
-            "price": 5000
+            "price": 1000,
+            "isEquip": false
         },
         {
             "petNum": 5,
@@ -163,7 +180,8 @@
             "amount": 0,
             "level": 0,
             "percent": 7,
-            "price": 6000
+            "price": 1000,
+            "isEquip": false
         },
         {
             "petNum": 6,
@@ -171,7 +189,8 @@
             "amount": 0,
             "level": 0,
             "percent": 7,
-            "price": 7000
+            "price": 1000,
+            "isEquip": false
         },
         {
             "petNum": 7,
@@ -179,7 +198,8 @@
             "amount": 0,
             "level": 0,
             "percent": 5,
-            "price": 8000
+            "price": 1000,
+            "isEquip": false
         },
         {
             "petNum": 8,
@@ -187,7 +207,8 @@
             "amount": 0,
             "level": 0,
             "percent": 5,
-            "price": 9000
+            "price": 1000,
+            "isEquip": false
         },
         {
             "petNum": 9,
@@ -195,7 +216,8 @@
             "amount": 0,
             "level": 0,
             "percent": 1,
-            "price": 10000
+            "price": 1000,
+            "isEquip": false
         }
     ]
 }

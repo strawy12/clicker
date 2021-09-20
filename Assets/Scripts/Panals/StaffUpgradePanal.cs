@@ -15,11 +15,6 @@ public class StaffUpgradePanal : UpgradePanalBase
     private Staff staff = null;
     private int staffNum;
 
-    protected override void LoadSpriteWhenReady(AsyncOperationHandle<Sprite[]> handleToCheck)
-    {
-        base.LoadSpriteWhenReady(handleToCheck);
-        UpdateValues();
-    }
 
     public override void SetPanalNum(int num)
     {

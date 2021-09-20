@@ -5,22 +5,19 @@ using UnityEngine.UI;
 using DG.Tweening;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
-public class PetUpgradePanal : UpgradePanalBase
-{
-    [SerializeField] private Text petNameText = null;
-    [SerializeField] private Text amountText = null;
-    [SerializeField] private Image petImage = null;
-    [SerializeField] GameObject petObjectTemp = null;
-    [SerializeField] private Toggle petMountingBtn = null;
-
-    private Pet pet = null;
-    private int petNum;
-    private GameObject petBuffObj = null;
-    protected override void LoadSpriteWhenReady(AsyncOperationHandle<Sprite[]> handleToCheck)
+    public class PetUpgradePanal : UpgradePanalBase
     {
-        base.LoadSpriteWhenReady(handleToCheck);
-        UpdateValues();
-    }
+        [SerializeField] private Text petNameText = null;
+        [SerializeField] private Text amountText = null;
+        [SerializeField] private Image petImage = null;
+        [SerializeField] GameObject petObjectTemp = null;
+        [SerializeField] private Toggle petMountingBtn = null;
+
+        private Pet pet = null;
+        private int petNum;
+    private GameObject petBuffObj = null;
+
+
     public override void SetPanalNum(int num)
     {
         pet = GameManager.Inst.CurrentUser.pets[num];
@@ -36,11 +33,12 @@ public class PetUpgradePanal : UpgradePanalBase
             petMountingBtn.interactable = true;
             buyBtnInfoText.text = "강화";
             petNameText.text = string.Format("Lv.{0} {1}", pet.level, pet.petName);
-            priceText.text = string.Format("{0} 원", pet.price);
+            priceText.text = string.Format("{0} / {1}\n{2} 원",pet.amount, pet.maxAmount , pet.price);
             backgroundImage.color = Color.white;
-            buyBtnImages[2].sprite = GameManager.Inst.CurrentUser.money >= pet.price ? buyBtnSprites[isShow ? 3 : 1] : buyBtnSprites[0];
-            bulkPurchaseBtn.gameObject.SetActive(!isShow);
             amountText.text = string.Format("{0}", pet.amount);
+            bulkPurchaseBtn.gameObject.SetActive(!isShow);
+            buyBtnImages[2].sprite = GameManager.Inst.CurrentUser.money >= pet.price && pet.amount >= pet.maxAmount ? buyBtnSprites[isShow ? 3 : 1] : buyBtnSprites[0];
+            
         }
         else
         {
@@ -55,8 +53,19 @@ public class PetUpgradePanal : UpgradePanalBase
         //petImage.sprite = mainSprite;
     }
 
+    public void OnClickLevelUpBtn()
+    {
+        if (pet.level >= 10 || pet.amount < pet.maxAmount) return;
+        if (GameManager.Inst.CurrentUser.money < pet.price) return;
+        GameManager.Inst.CurrentUser.money -= pet.price;
+        pet.amount -= pet.maxAmount;
+        pet.level++;
+        pet.price = (long)(pet.price * 1.25f);
+    }
+
     public void OnClickMounting(bool isOn)
     {
+        pet.isEquip = isOn;
         if (isOn)
         {
             if (petBuffObj == null)

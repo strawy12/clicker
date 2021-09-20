@@ -49,7 +49,7 @@ public class UIManager : MonoBehaviour
     private bool isPicking = false;
     public Sprite[] SoldierSpriteArray { get { return soldierSprites; } }
 
-    private bool isShow = true;
+    private bool isShow = false;
     private bool isShow_Setting = false;
     private bool isUseSkill_1 = false;
     private bool isUseSkill_2 = false;
@@ -118,15 +118,15 @@ public class UIManager : MonoBehaviour
             newPanal.SetActive(true);   
         }
 
-        //foreach (Skill skill in GameManager.Inst.CurrentUser.skills)
-        //{
+        foreach (Skill skill in GameManager.Inst.CurrentUser.skills)
+        {
 
-        //    newPanal = Instantiate(companyPanalTemp, companyPanalTemp.transform.parent);
-        //    newUpgradePanal = newPanal.GetComponent<UpgradePanalBase>();
-        //    upgradePanalList.Add(newUpgradePanal);
-        //    newUpgradePanal.SetPanalNum(skill.skillNum);
-        //    newPanal.SetActive(true);
-        //}
+            newPanal = Instantiate(companyPanalTemp, companyPanalTemp.transform.parent);
+            newUpgradePanal = newPanal.GetComponent<UpgradePanalBase>();
+            upgradePanalList.Add(newUpgradePanal);
+            newUpgradePanal.SetPanalNum(skill.skillNum);
+            newPanal.SetActive(true);
+        }
 
         foreach (Pet pet in GameManager.Inst.CurrentUser.pets)
         {
@@ -303,6 +303,7 @@ public class UIManager : MonoBehaviour
     {
         int rand = 0;
         int num;
+        Pet pet = null;
         List<Pet> list = Mix(GameManager.Inst.CurrentUser.pets.ToList());
         for (int i = 0; i < 50; i++)
         {
@@ -311,9 +312,23 @@ public class UIManager : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
         }
         num = CheckRandPetNum(list, rand);
-        randomText.text = GameManager.Inst.CurrentUser.pets[num].petName;
+        pet = GameManager.Inst.CurrentUser.pets[num];
+        randomText.text = pet.petName;
         //SpawnPet(soldierSprites[num], num);
-        GameManager.Inst.CurrentUser.pets[num].amount++;
+
+        if (pet.level >= 10)
+        {
+            GameManager.Inst.CurrentUser.money += num * 1000;
+        }
+        else
+        {
+            pet.amount++;
+            if(pet.amount == 1)
+            {
+                pet.level++;
+            }
+        }
+
         isPicking = false;
     }
 

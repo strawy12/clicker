@@ -41,6 +41,7 @@ public class UpgradePanalBase : MonoBehaviour
         {
             buyBtnSprites = handleToCheck.Result;
         }
+        UpdateValues();
     }
 
     public T[] FindImages<T>(GameObject gameObject)
