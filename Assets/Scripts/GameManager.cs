@@ -1,11 +1,14 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using BigInteger = System.Numerics.BigInteger;
+using Random = UnityEngine.Random;
 
 public class GameManager : MonoSingleton<GameManager>
 {
-    public enum ESkillType {Active, Passive, Normal }
+    public enum ESkillType { Active, Passive, Normal }
     public enum EPoolingType { clickEffect, coinText }
 
     private User user = null;
@@ -19,12 +22,24 @@ public class GameManager : MonoSingleton<GameManager>
 
     public UIManager UI { get { return uiManager; } }
 
-    public Transform Pool { get {return pool; } } 
-    public Dictionary<EPoolingType, Queue<GameObject>> PoolingList { get {return poolingList; } } 
+    public Transform Pool { get { return pool; } }
+    public Dictionary<EPoolingType, Queue<GameObject>> PoolingList { get { return poolingList; } }
 
     private string SAVE_PATH = "";
 
     private string SAVE_FILENAME = "/SaveFile.txt";
+
+    private string moneyUnits = ",A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z";
+
+    public string[] moneyUnit
+    {
+        get
+        {
+            return moneyUnits.Split(',');
+        }
+
+    }
+
 
     public Vector2 MaxPos { get; private set; }
     public Vector2 MinPos { get; private set; }
@@ -48,11 +63,18 @@ public class GameManager : MonoSingleton<GameManager>
         {
             Directory.CreateDirectory(SAVE_PATH);
         }
-        LoadFromJson();
-        SetDict();
         uiManager = GetComponent<UIManager>();
         MaxPos = new Vector2(4.1f, 1.7f);
         MinPos = new Vector2(-3.6f, -1.7f);
+        LoadFromJson();
+        SetDict();
+
+        
+    }
+
+    private void Start()
+    {
+        CheckReJoinTime();
         InvokeRepeating("SaveToJson", 5f, 60f);
         InvokeRepeating("AutoClick", 5f, user.autoClickTime);
         InvokeRepeating("MoneyPerSecond", 5f, 1f);
@@ -71,7 +93,8 @@ public class GameManager : MonoSingleton<GameManager>
         if(File.Exists(SAVE_PATH + SAVE_FILENAME))
         {
             json = File.ReadAllText(SAVE_PATH + SAVE_FILENAME);
-            user = JsonUtility.FromJson<User>(json); 
+            user = JsonUtility.FromJson<User>(json);
+            user.ConversionType(false);
         }
         if (user == null)
         {
@@ -126,10 +149,29 @@ public class GameManager : MonoSingleton<GameManager>
 
     private void SaveToJson()
     {
+        user.ConversionType(true);
+        user.exitTime = DateTime.Now.ToString("G");
         string json = JsonUtility.ToJson(user, true);
         File.WriteAllText(SAVE_PATH + SAVE_FILENAME, json, System.Text.Encoding.UTF8);
     }
 
+    public void CheckReJoinTime()
+    {
+        TimeSpan datediff = DateTime.Now - DateTime.Parse(user.exitTime);
+        int diffSec = datediff.Seconds;
+        BigInteger mPsSum = 0;
+        foreach(Staff staff in user.staffs)
+        {
+            if(staff.level > 0)
+            {
+                mPsSum += staff.mPs;
+            }
+        }
+
+        mPsSum /= 10;
+        user.money += mPsSum * diffSec;
+        uiManager.ShowRewardPanal(mPsSum * diffSec);
+    }
     public void MoneyPerSecond()
     {
         foreach(Staff staff in user.staffs)

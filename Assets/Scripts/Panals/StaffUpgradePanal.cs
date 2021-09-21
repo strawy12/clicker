@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using UnityEngine;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.UI;
@@ -68,7 +69,7 @@ public class StaffUpgradePanal : UpgradePanalBase
             GameManager.Inst.CurrentUser.money -= staff.price;
             staff.level++;
             staff.price = (long)(staff.price * 1.25f);
-            staff.mPs = (long)Mathf.Max(staff.mPs * 1.25f, 10);
+            staff.mPs = (BigInteger)Mathf.Max((float)staff.mPs * 1.25f, 10);
             UpdateValues();
             GameManager.Inst.UI.UpdateMoneyPanal();
             GameManager.Inst.UI.ShowMessage("구매 완료");

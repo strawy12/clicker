@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Numerics;
 using UnityEngine;
 
 [System.Serializable]
@@ -7,7 +8,8 @@ public class Staff
     public string staffName;
     public int staffNum;
     public int level;
-    public long mPs;
+    public string savemPs;
+    public BigInteger mPs;
     public long price;
     public long upgradePrice;
 
@@ -24,7 +26,7 @@ public class Staff
         get
         {
             int num = staffNum - 1;
-            if (num < 0)
+            if (num < 0) 
             {
                 return false;
             }
@@ -33,7 +35,7 @@ public class Staff
         }
     }
 
-    public Staff(string staffName, int staffNum, int level, long mPs, long price, long upgradePrice)
+    public Staff(string staffName, int staffNum, int level, BigInteger mPs, long price, long upgradePrice)
     {
         this.staffName = staffName;
         this.staffNum = staffNum;

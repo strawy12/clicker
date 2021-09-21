@@ -19,8 +19,6 @@ public class SkillUpgradePanal : UpgradePanalBase
     {
         if(skill.isUsed && skill.skilltype == ESkillType.Active)
         {
-            Debug.Log(skill.coolTime);
-            Debug.Log(skill.duration);
             coolTime.fillAmount = (float)CheckCoolTime(endTime, DateTime.Now) / skill.coolTime;
             if(DateTime.Now > endDurationTime)
             {

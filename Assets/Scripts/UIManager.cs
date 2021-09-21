@@ -7,6 +7,8 @@ using DG.Tweening;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.AddressableAssets;
 using EPoolingType = GameManager.EPoolingType;
+using BigInteger = System.Numerics.BigInteger;
+
 
 public class UIManager : MonoBehaviour
 {
@@ -35,6 +37,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private RectTransform controlPanal = null;
     [SerializeField] private PetInfo petinfoPanal = null;
     [SerializeField] private Image randomPickPanal = null;
+    [SerializeField] private GameObject rewardPanal = null;
 
     [Header("돈")]
     [SerializeField] private Text moneyText = null;
@@ -43,6 +46,7 @@ public class UIManager : MonoBehaviour
     [Header("컨텐츠 스크롤")]
     [SerializeField] private GameObject[] scrollObject = null;
 
+    private Text rewardText = null;
     private Sprite[] soldierSprites = null;
     private Coroutine messageCo = null;
     private Image randomPickImage = null;
@@ -68,6 +72,11 @@ public class UIManager : MonoBehaviour
     {
         AsyncOperationHandle<Sprite[]> spriteHandle = Addressables.LoadAssetAsync<Sprite[]>(spritePath);
         spriteHandle.Completed += LoadSpriteWhenReady;
+
+        messageText = messageObject.transform.GetChild(0).GetComponent<Text>();
+        canvas = FindObjectOfType<Canvas>();
+        randomPickImage = randomPickPanal.transform.GetChild(0).GetComponent<Image>();
+        rewardText = rewardPanal.transform.GetChild(1).GetChild(1).GetComponent<Text>();
     }
     private void LoadSpriteWhenReady(AsyncOperationHandle<Sprite[]> handleToCheck)
     {
@@ -78,15 +87,21 @@ public class UIManager : MonoBehaviour
         GameStartStart();
     }
 
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            GameManager.Inst.CurrentUser.money *= 2;
+        }
+    }
+
     private void GameStartStart()
     {
         UpdateMoneyPanal();
         CreatePanals();
         SetScrollActive(2);
         isShow = false;
-        messageText = messageObject.transform.GetChild(0).GetComponent<Text>();
-        canvas = FindObjectOfType<Canvas>();
-        randomPickImage = randomPickPanal.transform.GetChild(0).GetComponent<Image>();
+
     }
 
     public List<T> Mix<T>(List<T> pets)
@@ -164,6 +179,12 @@ public class UIManager : MonoBehaviour
         //ShowCoinText();
     }
 
+    public void ShowRewardPanal(BigInteger money)
+    {
+        if (money <= 0) return;
+        rewardText.text = string.Format("+ {0}", GameManager.Inst.CurrentUser.MoneyUnitConversion(money));
+        rewardPanal.SetActive(true);
+    }
 
     public void ShowClickEffect(Vector3 pos)
     {
@@ -368,7 +389,7 @@ public class UIManager : MonoBehaviour
     }
     public void UpdateMoneyPanal()
     {
-        moneyText.text = string.Format("{0} 찍", GameManager.Inst.CurrentUser.money);
+        moneyText.text = string.Format("{0}원",GameManager.Inst.CurrentUser.MoneyUnitConversion(GameManager.Inst.CurrentUser.money));
         mileageText.text = string.Format("{0} 마일리지", GameManager.Inst.CurrentUser.mileage);
         foreach(UpgradePanalBase upgradePanal in upgradePanalList)
         {

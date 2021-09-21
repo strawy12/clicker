@@ -1,15 +1,16 @@
 ﻿{
     "userName": "금사향",
-    "money": 17486,
+    "exitTime": "2021-09-21 PM 8:27:28",
+    "saveMoney": "10920",
     "additionMoney": 1,
     "mileage": 0,
-    "basemPc": 10,
+    "saveBasemPc": "10",
     "staffs": [
         {
             "staffName": "응애찍찍이",
             "staffNum": 0,
             "level": 0,
-            "mPs": 0,
+            "savemPs": "0",
             "price": 1000,
             "upgradePrice": 500
         },
@@ -17,7 +18,7 @@
             "staffName": "청소년찍찍이",
             "staffNum": 1,
             "level": 0,
-            "mPs": 0,
+            "savemPs": "0",
             "price": 3000,
             "upgradePrice": 700
         },
@@ -25,7 +26,7 @@
             "staffName": "중2병찍찍이",
             "staffNum": 2,
             "level": 0,
-            "mPs": 0,
+            "savemPs": "0",
             "price": 5000,
             "upgradePrice": 1000
         },
@@ -33,7 +34,7 @@
             "staffName": "새내기찍찍이",
             "staffNum": 3,
             "level": 0,
-            "mPs": 0,
+            "savemPs": "0",
             "price": 10000,
             "upgradePrice": 1250
         },
@@ -41,7 +42,7 @@
             "staffName": "복학생찍찍이",
             "staffNum": 4,
             "level": 0,
-            "mPs": 0,
+            "savemPs": "0",
             "price": 15000,
             "upgradePrice": 1500
         },
@@ -49,7 +50,7 @@
             "staffName": "신사찍찍이",
             "staffNum": 5,
             "level": 0,
-            "mPs": 0,
+            "savemPs": "0",
             "price": 30000,
             "upgradePrice": 1750
         },
@@ -57,7 +58,7 @@
             "staffName": "기사찍찍이",
             "staffNum": 6,
             "level": 0,
-            "mPs": 0,
+            "savemPs": "0",
             "price": 50000,
             "upgradePrice": 2000
         },
@@ -65,7 +66,7 @@
             "staffName": "집사찍찍이",
             "staffNum": 7,
             "level": 0,
-            "mPs": 0,
+            "savemPs": "0",
             "price": 100000,
             "upgradePrice": 2500
         },
@@ -73,7 +74,7 @@
             "staffName": "왕찍찍이",
             "staffNum": 8,
             "level": 0,
-            "mPs": 0,
+            "savemPs": "0",
             "price": 300000,
             "upgradePrice": 3000
         },
@@ -81,7 +82,7 @@
             "staffName": "사이보그찍찍이",
             "staffNum": 9,
             "level": 0,
-            "mPs": 0,
+            "savemPs": "0",
             "price": 500000,
             "upgradePrice": 5000
         },
@@ -89,7 +90,7 @@
             "staffName": "AI찍찍이",
             "staffNum": 10,
             "level": 0,
-            "mPs": 0,
+            "savemPs": "0",
             "price": 1000000,
             "upgradePrice": 10000
         }
@@ -98,15 +99,15 @@
         {
             "skillName": "트이유",
             "skillNum": 0,
-            "level": 4,
-            "price": 2440,
+            "level": 0,
+            "price": 1000,
             "isSold": false,
             "skilltype": 0,
             "baseCoolTime": 100,
             "baseDuration": 30,
-            "isUsed": true,
-            "endTime": "2021-09-20 PM 11:32:26",
-            "endDurationTime": "2021-09-20 PM 11:31:26"
+            "isUsed": false,
+            "endTime": "",
+            "endDurationTime": ""
         },
         {
             "skillName": "응애",
@@ -118,8 +119,8 @@
             "baseCoolTime": 200,
             "baseDuration": 0,
             "isUsed": false,
-            "endTime": "2021-09-20 PM 11:23:43",
-            "endDurationTime": "2021-09-20 PM 11:20:23"
+            "endTime": "",
+            "endDurationTime": ""
         },
         {
             "skillName": "유으내모드",
@@ -131,8 +132,8 @@
             "baseCoolTime": 300,
             "baseDuration": 30,
             "isUsed": false,
-            "endTime": "2021-09-20 PM 11:26:15",
-            "endDurationTime": "2021-09-20 PM 11:21:45"
+            "endTime": "",
+            "endDurationTime": ""
         }
     ],
     "pets": [
