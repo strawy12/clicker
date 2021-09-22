@@ -16,19 +16,7 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: c2270f20e42cf1042b6205d05ea0bdb1
-  m_SerializeEntries:
-  - m_GUID: d7f2d65716b15b84f9a9f828319ea9aa
-    m_Address: Assets/Images/SahyangClickerSoldier.png
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    m_MainAsset: {fileID: 0}
-    m_TargetAsset: {fileID: 0}
-  - m_GUID: d7d2a857f7686394e91a4687033baf32
-    m_Address: Assets/Images/Clicker Button UI.png
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    m_MainAsset: {fileID: 0}
-    m_TargetAsset: {fileID: 0}
+  m_SerializeEntries: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 4c948f45b6bde6547aacf6e64e006fcc, type: 2}
   m_SchemaSet:

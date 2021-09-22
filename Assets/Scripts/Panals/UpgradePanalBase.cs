@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
-using UnityEngine.ResourceManagement.AsyncOperations;
-using UnityEngine.AddressableAssets;
+using BigInteger = System.Numerics.BigInteger;
+//using UnityEngine.ResourceManagement.AsyncOperations;
+//using UnityEngine.AddressableAssets;
 
 public class UpgradePanalBase : MonoBehaviour
 {
@@ -19,13 +20,15 @@ public class UpgradePanalBase : MonoBehaviour
     protected Text buyBtnInfoText = null;
     protected bool isLocked = true;
     protected bool isShow = false;
+    protected float timer = 0f;
 
-    private string spritePath = "Assets/Images/Clicker Button UI.png";
+    private string spritePath = "Clicker Button UI";
 
     public virtual void Awake()
     {
-        AsyncOperationHandle<Sprite[]> spriteHandle = Addressables.LoadAssetAsync<Sprite[]>(spritePath);
-        spriteHandle.Completed += LoadSpriteWhenReady;
+        //AsyncOperationHandle<Sprite[]> spriteHandle = Addressables.LoadAssetAsync<Sprite[]>(spritePath);
+        //spriteHandle.Completed += LoadSpriteWhenReady;
+        buyBtnSprites = Resources.LoadAll<Sprite>(spritePath);
         backgroundImage = GetComponent<Image>();
         buyBtnImages = upgradeBtns.transform.GetComponentsInChildren<Image>();
         buyBtnInfoText = buyBtnImages[2].transform.GetChild(0).GetComponent<Text>();
@@ -35,15 +38,36 @@ public class UpgradePanalBase : MonoBehaviour
             buyBtnImages[i].gameObject.SetActive(false);
         }
     }
-    protected virtual void LoadSpriteWhenReady(AsyncOperationHandle<Sprite[]> handleToCheck)
+    public void Start()
     {
-        if (handleToCheck.Status == AsyncOperationStatus.Succeeded)
-        {
-            buyBtnSprites = handleToCheck.Result;
-        }
         UpdateValues();
     }
+    //protected virtual void LoadSpriteWhenReady(AsyncOperationHandle<Sprite[]> handleToCheck)
+    //{
+    //    if (handleToCheck.Status == AsyncOperationStatus.Succeeded)
+    //    {
+    //        buyBtnSprites = handleToCheck.Result;
+    //    }
+    //    
+    //}
 
+
+    public virtual void LateUpdate()
+    {
+        if(isShow)
+        {
+            timer += Time.deltaTime;
+            if(timer >= 3f)
+            {
+                ReloadBulkPurchaseBtn();
+            }
+        }
+    }
+
+    public void OnDisable()
+    {
+        ReloadBulkPurchaseBtn();
+    }
     public virtual void SetPanalNum(int num)
     {
 
@@ -57,36 +81,52 @@ public class UpgradePanalBase : MonoBehaviour
         }
     }
 
+    public virtual void OnClickBulkPurchaseBtn(int num)
+    {
+        timer = 0f;
+    }
 
-
-    public void OnClickBulkPurchaseBtn()
+    public virtual void ShowBulkPurchaseBtn()
     {
         isShow = true;
 
-        buyBtnImages[2].sprite = buyBtnSprites[3];
         bulkPurchaseBtn.gameObject.SetActive(false);
         for (int i = 0; i < buyBtnImages.Length; i++)
         {
             buyBtnImages[i].gameObject.SetActive(true);
         }
-        buyBtnImages[1].sprite = buyBtnSprites[2];
-        buyBtnImages[0].sprite = buyBtnSprites[0];
+
         buyBtnImages[1].rectTransform.DOAnchorPosX(40f, 0.3f).OnComplete(() =>
         {
-            buyBtnImages[0].rectTransform.DOAnchorPosX(-10f, 0.25f).OnComplete(() => Invoke("ReloadBulkPurchaseBtn", 3f));
+            buyBtnImages[0].rectTransform.DOAnchorPosX(-10f, 0.25f);
         });
-        
+    }
+
+    protected void ChangeBtnSprite(BigInteger price, bool isShow)
+    {
+        if(isShow)
+        {
+            buyBtnImages[2].sprite = GameManager.Inst.CurrentUser.money >= price ? buyBtnSprites[3] : buyBtnSprites[2];
+            buyBtnImages[1].sprite = GameManager.Inst.CurrentUser.money >= price * 10 ? buyBtnSprites[3] : buyBtnSprites[2];
+            buyBtnImages[0].sprite = GameManager.Inst.CurrentUser.money >= price * 100 ? buyBtnSprites[1] : buyBtnSprites[0];
+        }
+        else
+        {
+            buyBtnImages[2].sprite = GameManager.Inst.CurrentUser.money >= price ? buyBtnSprites[1] : buyBtnSprites[0];
+        }
+            
     }
     
-    public void ReloadBulkPurchaseBtn()
+    public virtual void ReloadBulkPurchaseBtn()
     {
         isShow = false;
+        timer = 0f;
         for (int i = 0; i < 2; i++)
         {
             buyBtnImages[i].rectTransform.DOAnchorPosX(95f, 0f);
             buyBtnImages[i].gameObject.SetActive(false);
         }
-        buyBtnImages[2].sprite = buyBtnSprites[1];
+        
         bulkPurchaseBtn.gameObject.SetActive(true);
 
     }    

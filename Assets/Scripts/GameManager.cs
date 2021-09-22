@@ -8,7 +8,6 @@ using Random = UnityEngine.Random;
 
 public class GameManager : MonoSingleton<GameManager>
 {
-    public enum ESkillType { Active, Passive, Normal }
     public enum EPoolingType { clickEffect, coinText }
 
     private User user = null;
@@ -29,7 +28,7 @@ public class GameManager : MonoSingleton<GameManager>
 
     private string SAVE_FILENAME = "/SaveFile.txt";
 
-    private string moneyUnits = ",A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z";
+    private string moneyUnits = ",¸¸,¾ï,Á¶,°æ,ÇØ,ÀÀ,¾Ö,±İ,»ç,Çâ,Èï,ÇÏ,ÀÚ,Âï";
 
     public string[] moneyUnit
     {
@@ -48,8 +47,8 @@ public class GameManager : MonoSingleton<GameManager>
         get
         {
             Vector3 result = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            result.x = Mathf.Clamp(result.x, MinPos.x, MaxPos.x);
-            result.y = Mathf.Clamp(result.y, MinPos.y, MaxPos.y);
+            //result.x = Mathf.Clamp(result.x, MinPos.x, MaxPos.x);
+            //result.y = Mathf.Clamp(result.y, MinPos.y, MaxPos.y);
             result.z = -10;
             return result;
         }
@@ -58,7 +57,7 @@ public class GameManager : MonoSingleton<GameManager>
     private int cnt = 3;
     private void Awake()
     {
-        SAVE_PATH = Application.dataPath + "/Save";
+        SAVE_PATH = Application.persistentDataPath + "/Save";
         if (!Directory.Exists(SAVE_PATH))
         {
             Directory.CreateDirectory(SAVE_PATH);
@@ -69,7 +68,7 @@ public class GameManager : MonoSingleton<GameManager>
         LoadFromJson();
         SetDict();
 
-        
+
     }
 
     private void Start()
@@ -78,6 +77,14 @@ public class GameManager : MonoSingleton<GameManager>
         InvokeRepeating("SaveToJson", 5f, 60f);
         InvokeRepeating("AutoClick", 5f, user.autoClickTime);
         InvokeRepeating("MoneyPerSecond", 5f, 1f);
+    }
+
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
     }
 
     private void SetDict()
@@ -90,7 +97,7 @@ public class GameManager : MonoSingleton<GameManager>
     private void LoadFromJson()
     {
         string json = "";
-        if(File.Exists(SAVE_PATH + SAVE_FILENAME))
+        if (File.Exists(SAVE_PATH + SAVE_FILENAME))
         {
             json = File.ReadAllText(SAVE_PATH + SAVE_FILENAME);
             user = JsonUtility.FromJson<User>(json);
@@ -105,32 +112,32 @@ public class GameManager : MonoSingleton<GameManager>
             user.money = 10000;
             user.mileage = 0;
 
-            user.staffs.Add(new Staff("ÀÀ¾ÖÂïÂïÀÌ", 0, 0, 0, 1000, 500));
-            user.staffs.Add(new Staff("Ã»¼Ò³âÂïÂïÀÌ", 1, 0, 0, 3000, 700));
-            user.staffs.Add(new Staff("Áß2º´ÂïÂïÀÌ", 2, 0, 0, 5000, 1000));
-            user.staffs.Add(new Staff("»õ³»±âÂïÂïÀÌ", 3, 0, 0, 10000, 1250)); 
-            user.staffs.Add(new Staff("º¹ÇĞ»ıÂïÂïÀÌ", 4, 0, 0, 15000, 1500)); 
-            user.staffs.Add(new Staff("½Å»çÂïÂïÀÌ", 5, 0, 0, 30000, 1750));
-            user.staffs.Add(new Staff("±â»çÂïÂïÀÌ", 6, 0, 0, 50000, 2000));
-            user.staffs.Add(new Staff("Áı»çÂïÂïÀÌ", 7, 0, 0, 100000, 2500));
-            user.staffs.Add(new Staff("¿ÕÂïÂïÀÌ", 8, 0, 0, 300000, 3000));
-            user.staffs.Add(new Staff("»çÀÌº¸±×ÂïÂïÀÌ", 9, 0, 0, 500000, 5000)); 
-            user.staffs.Add(new Staff("AIÂïÂïÀÌ", 10, 0, 0, 1000000, 10000)); 
+            user.staffs.Add(new Staff("ÀÀ¾ÖÂïÂïÀÌ", 0, 0, 0, 1000));
+            user.staffs.Add(new Staff("Ã»¼Ò³âÂïÂïÀÌ", 1, 0, 0, 3000));
+            user.staffs.Add(new Staff("Áß2º´ÂïÂïÀÌ", 2, 0, 0, 5000));
+            user.staffs.Add(new Staff("»õ³»±âÂïÂïÀÌ", 3, 0, 0, 10000));
+            user.staffs.Add(new Staff("º¹ÇĞ»ıÂïÂïÀÌ", 4, 0, 0, 15000));
+            user.staffs.Add(new Staff("½Å»çÂïÂïÀÌ", 5, 0, 0, 30000));
+            user.staffs.Add(new Staff("±â»çÂïÂïÀÌ", 6, 0, 0, 50000));
+            user.staffs.Add(new Staff("Áı»çÂïÂïÀÌ", 7, 0, 0, 100000));
+            user.staffs.Add(new Staff("¿ÕÂïÂïÀÌ", 8, 0, 0, 300000));
+            user.staffs.Add(new Staff("»çÀÌº¸±×ÂïÂïÀÌ", 9, 0, 0, 500000));
+            user.staffs.Add(new Staff("AIÂïÂïÀÌ", 10, 0, 0, 1000000));
 
-            user.skills.Add(new Skill("Æ®ÀÌÀ¯", 0, 0, 1000, 30, 100, ESkillType.Active));
-            user.skills.Add(new Skill("ÀÀ¾Ö", 1, 0, 2000, 0, 200,ESkillType.Active));
-            user.skills.Add(new Skill("À¯À¸³»¸ğµå", 2, 0, 3000, 30, 300, ESkillType.Active));
+            user.skills.Add(new Skill("Æ®ÀÌÀ¯", 0, 1, 1000, 30, 100));
+            user.skills.Add(new Skill("ÀÀ¾Ö", 1, 1, 1000, 0, 200));
+            user.skills.Add(new Skill("À¯À¸³»¸ğµå", 2, 1, 1000, 30, 300));
 
-            user.pets.Add(new Pet(0, "°­¾ÆÁö", 0, 0, 20));
-            user.pets.Add(new Pet(1, "Åä³¢", 0, 0, 20));
-            user.pets.Add(new Pet(2, "¿©¿ì", 0, 0, 15));
-            user.pets.Add(new Pet(3, "°õ", 0, 0, 10));
-            user.pets.Add(new Pet(4, "Æë±Ï", 0, 0, 10));
-            user.pets.Add(new Pet(5, "³Ê±¸¸®", 0, 0, 7));
-            user.pets.Add(new Pet(6, "µÅÁö", 0, 0, 7));
-            user.pets.Add(new Pet(7, "¾ç", 0, 0, 5));
-            user.pets.Add(new Pet(8, "´Ù¶÷Áã", 0, 0, 5));
-            user.pets.Add(new Pet(9, "±î¹Ì", 0, 0, 1));
+            user.pets.Add(new Pet(0, "°­¾ÆÁö", 0, 0, 20, 1000));
+            user.pets.Add(new Pet(1, "Åä³¢", 0, 0, 20, 1000));
+            user.pets.Add(new Pet(2, "¿©¿ì", 0, 0, 15, 1000));
+            user.pets.Add(new Pet(3, "°õ", 0, 0, 10, 1000));
+            user.pets.Add(new Pet(4, "Æë±Ï", 0, 0, 10, 1000));
+            user.pets.Add(new Pet(5, "³Ê±¸¸®", 0, 0, 7, 1000));
+            user.pets.Add(new Pet(6, "µÅÁö", 0, 0, 7, 1000));
+            user.pets.Add(new Pet(7, "¾ç", 0, 0, 5, 1000));
+            user.pets.Add(new Pet(8, "´Ù¶÷Áã", 0, 0, 5, 1000));
+            user.pets.Add(new Pet(9, "±î¹Ì", 0, 0, 1, 1000));
 
             SaveToJson();
         }
@@ -160,9 +167,9 @@ public class GameManager : MonoSingleton<GameManager>
         TimeSpan datediff = DateTime.Now - DateTime.Parse(user.exitTime);
         int diffSec = datediff.Seconds;
         BigInteger mPsSum = 0;
-        foreach(Staff staff in user.staffs)
+        foreach (Staff staff in user.staffs)
         {
-            if(staff.level > 0)
+            if (staff.level > 0)
             {
                 mPsSum += staff.mPs;
             }
@@ -174,17 +181,35 @@ public class GameManager : MonoSingleton<GameManager>
     }
     public void MoneyPerSecond()
     {
-        foreach(Staff staff in user.staffs)
+        foreach (Staff staff in user.staffs)
         {
             user.money += staff.mPs;
         }
         uiManager.UpdateMoneyPanal();
     }
+    public string MoneyUnitConversion(BigInteger value)
+    {
+        List<int> moneyList = new List<int>();
+        int place = (int)Mathf.Pow(10, 4);
+        string retStr = "";
+        do
+        {
+            moneyList.Add((int)(value % place));
+            value /= place;
+        } while (value > 0);
+        
 
+        for (int i = Mathf.Max(0 ,moneyList.Count - 2); i < moneyList.Count; i++)
+        {
+            retStr = moneyList[i] + moneyUnit[i] + retStr;
+        }
+
+        return retStr;
+    }
     public void AutoClick()
     {
         StartCoroutine(AutoClickAnim());
-        for(int i = 0; i < user.petAmount; i++)
+        for (int i = 0; i < user.petAmount; i++)
         {
             user.money += user.mPc;
         }
@@ -204,4 +229,10 @@ public class GameManager : MonoSingleton<GameManager>
     {
         SaveToJson();
     }
+    private void OnApplicationPause()
+    {
+        SaveToJson();
+    }
+
+
 }

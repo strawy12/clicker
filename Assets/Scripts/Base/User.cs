@@ -63,47 +63,6 @@ public class User
 
     //public void AddMoney(int money)
 
-    public string MoneyUnitConversion(BigInteger value)
-    {
-        List<int> moneyList = new List<int>();
-        int place = (int)Mathf.Pow(10, 4);
-        string retStr = "";
-        string unit = "";
-        do
-        {
-            moneyList.Add((int)(value % place));
-            value /= place;
-        } while (value > 0);
-
-        if (moneyList.Count > GameManager.Inst.moneyUnit.Length)
-        {
-            int cnt = (moneyList.Count - 1) / (GameManager.Inst.moneyUnit.Length - 1);
-            int newCnt = (int)Mathf.Log10(cnt) + 1;
-            string newUnit;
-            unit = GameManager.Inst.moneyUnit[newCnt].ToString();
-            newUnit = GameManager.Inst.moneyUnit[cnt].ToString();
-            unit = unit + newUnit;
-        }
-
-        else
-        {
-            unit = GameManager.Inst.moneyUnit[moneyList.Count - 1].ToString();
-        }
-        if (moneyList.Count - 1 > 0)
-        {
-
-            retStr = string.Format("{0}{1}.{2}", moneyList[moneyList.Count - 1], unit, moneyList[moneyList.Count - 2]);
-        }
-        else
-        {
-            retStr = string.Format("{0}{1}", moneyList[moneyList.Count - 1], unit);
-        }
-
-        
-
-        return retStr;
-    }
-
     public void ConversionType(bool isSave)
     {
         if(isSave)
@@ -113,6 +72,15 @@ public class User
             foreach(Staff staff in staffs)
             {
                 staff.savemPs = staff.mPs.ToString();
+                staff.savePrice = staff.price.ToString();
+            }
+            foreach (Pet pet in pets)
+            {
+                pet.savePrice = pet.price.ToString();
+            }
+            foreach (Skill skill in skills)
+            {
+                skill.savePrice = skill.price.ToString();
             }
         }
         else
@@ -123,6 +91,15 @@ public class User
             foreach (Staff staff in staffs)
             {
                 staff.mPs = BigInteger.Parse(staff.savemPs);
+                staff.price = BigInteger.Parse(staff.savePrice);
+            }
+            foreach (Pet pet in pets)
+            {
+                pet.price = BigInteger.Parse(pet.savePrice);
+            }
+            foreach (Skill skill in skills)
+            {
+                skill.price = BigInteger.Parse(skill.savePrice);
             }
         }
     }

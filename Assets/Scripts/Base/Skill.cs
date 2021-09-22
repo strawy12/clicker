@@ -1,7 +1,7 @@
 
 using System.Collections.Generic;
+using System.Numerics;
 using UnityEngine;
-using ESkillSType = GameManager.ESkillType;
 
 [System.Serializable]
 public class Skill
@@ -9,9 +9,9 @@ public class Skill
     public string skillName;
     public int skillNum;
     public int level;
-    public long price;
+    public string savePrice;
+    public BigInteger price;
     public bool isSold;
-    public ESkillSType skilltype;
     public int baseCoolTime;
     public int baseDuration;
     public int duration
@@ -33,7 +33,7 @@ public class Skill
     public string endTime;
     public string endDurationTime;
 
-    public Skill(string skillName, int skillNum, int level, int price, int baseDuration, int baseCoolTime,  ESkillSType skilltype)
+    public Skill(string skillName, int skillNum, int level, BigInteger price, int baseDuration, int baseCoolTime)
     {
         this.skillName = skillName;
         this.skillNum = skillNum;
@@ -41,6 +41,5 @@ public class Skill
         this.price = price;
         this.baseDuration = baseDuration;
         this.baseCoolTime = baseCoolTime;
-        this.skilltype = skilltype;
     }
 }

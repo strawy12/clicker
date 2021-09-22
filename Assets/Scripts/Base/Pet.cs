@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using System.Numerics;
 using UnityEngine;
 
 [System.Serializable]
@@ -17,7 +16,8 @@ public class Pet
     }
     public int level;
     public int percent;
-    public long price = 1000;
+    public string savePrice;
+    public BigInteger price;
     public int clickCnt
     {
         get
@@ -54,11 +54,12 @@ public class Pet
 
     public bool isEquip;
 
-    public Pet(int petNum, string petName, int amount, int level, int percent)
+    public Pet(int petNum, string petName, int amount, int level, int percent, BigInteger price)
     {
         this.petNum = petNum;
         this.petName = petName;
         this.amount = amount;
+        this.price = price;
         this.level = level;
         this.percent = percent;
     }

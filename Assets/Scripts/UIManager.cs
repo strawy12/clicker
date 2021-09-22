@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 using DG.Tweening;
-using UnityEngine.ResourceManagement.AsyncOperations;
-using UnityEngine.AddressableAssets;
+//using UnityEngine.ResourceManagement.AsyncOperations;
+//using UnityEngine.AddressableAssets;
 using EPoolingType = GameManager.EPoolingType;
 using BigInteger = System.Numerics.BigInteger;
 
@@ -62,7 +62,7 @@ public class UIManager : MonoBehaviour
     private int clickNum = 0;
     private int randNum;
 
-    private string spritePath = "Assets/Images/SahyangClickerSoldier.png";
+    private string spritePath = "SahyangClickerSoldier";
 
     private Canvas canvas;
 
@@ -70,22 +70,23 @@ public class UIManager : MonoBehaviour
 
     private void Awake()
     {
-        AsyncOperationHandle<Sprite[]> spriteHandle = Addressables.LoadAssetAsync<Sprite[]>(spritePath);
-        spriteHandle.Completed += LoadSpriteWhenReady;
-
+        //AsyncOperationHandle<Sprite[]> spriteHandle = Addressables.LoadAssetAsync<Sprite[]>(spritePath);
+        //spriteHandle.Completed += LoadSpriteWhenReady;
+        soldierSprites = Resources.LoadAll<Sprite>(spritePath);
         messageText = messageObject.transform.GetChild(0).GetComponent<Text>();
         canvas = FindObjectOfType<Canvas>();
         randomPickImage = randomPickPanal.transform.GetChild(0).GetComponent<Image>();
         rewardText = rewardPanal.transform.GetChild(1).GetChild(1).GetComponent<Text>();
-    }
-    private void LoadSpriteWhenReady(AsyncOperationHandle<Sprite[]> handleToCheck)
-    {
-        if (handleToCheck.Status == AsyncOperationStatus.Succeeded)
-        {
-            soldierSprites = handleToCheck.Result;
-        }
         GameStartStart();
     }
+    //private void LoadSpriteWhenReady(AsyncOperationHandle<Sprite[]> handleToCheck)
+    //{
+    //    if (handleToCheck.Status == AsyncOperationStatus.Succeeded)
+    //    {
+    //        soldierSprites = handleToCheck.Result;
+    //    }
+        
+    //}
 
     private void Update()
     {
@@ -182,7 +183,7 @@ public class UIManager : MonoBehaviour
     public void ShowRewardPanal(BigInteger money)
     {
         if (money <= 0) return;
-        rewardText.text = string.Format("+ {0}", GameManager.Inst.CurrentUser.MoneyUnitConversion(money));
+        rewardText.text = string.Format("+ {0}", GameManager.Inst.MoneyUnitConversion(money));
         rewardPanal.SetActive(true);
     }
 
@@ -389,7 +390,7 @@ public class UIManager : MonoBehaviour
     }
     public void UpdateMoneyPanal()
     {
-        moneyText.text = string.Format("{0}원",GameManager.Inst.CurrentUser.MoneyUnitConversion(GameManager.Inst.CurrentUser.money));
+        moneyText.text = string.Format("{0}원",GameManager.Inst.MoneyUnitConversion(GameManager.Inst.CurrentUser.money));
         mileageText.text = string.Format("{0} 마일리지", GameManager.Inst.CurrentUser.mileage);
         foreach(UpgradePanalBase upgradePanal in upgradePanalList)
         {

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using ESkillType = GameManager.ESkillType;
+using BigInteger = System.Numerics.BigInteger;
 
 public class SkillUpgradePanal : UpgradePanalBase
 {
@@ -15,9 +15,10 @@ public class SkillUpgradePanal : UpgradePanalBase
     private DateTime endTime;
     private DateTime endDurationTime;
 
-    public void LateUpdate()
+    public override void LateUpdate()
     {
-        if(skill.isUsed && skill.skilltype == ESkillType.Active)
+        base.LateUpdate();
+        if(skill.isUsed)
         {
             coolTime.fillAmount = (float)CheckCoolTime(endTime, DateTime.Now) / skill.coolTime;
             if(DateTime.Now > endDurationTime)
@@ -69,7 +70,7 @@ public class SkillUpgradePanal : UpgradePanalBase
     {
         base.UpdateValues();
         skillNameText.text = skill.skillName;
-        priceText.text = string.Format("{0} 원", skill.price);
+        priceText.text = string.Format("{0} 원", GameManager.Inst.MoneyUnitConversion(skill.price));
         //staffImage.sprite = staffSprite;
     }
 
@@ -79,7 +80,7 @@ public class SkillUpgradePanal : UpgradePanalBase
         {
             GameManager.Inst.CurrentUser.money -= skill.price;
             skill.level++;
-            skill.price = (long)(skill.price * 1.25f);
+            skill.price = (BigInteger)((float)skill.price * 1.25f);
             UpdateValues();
             GameManager.Inst.UI.UpdateMoneyPanal();
             GameManager.Inst.UI.ShowMessage("구매 완료");
@@ -92,7 +93,6 @@ public class SkillUpgradePanal : UpgradePanalBase
 
     public void OnClickUseSkill()
     {
-        if (skill.skilltype != ESkillType.Active) return;
         if (skill.isUsed) return;
         skill.endTime = DateTime.Now.AddSeconds(skill.coolTime).ToString("G");
         skill.endDurationTime = DateTime.Now.AddSeconds(skill.duration).ToString("G");
@@ -101,5 +101,16 @@ public class SkillUpgradePanal : UpgradePanalBase
         GameManager.Inst.UI.UpdateMoneyPanal();
         skill.isUsed = true;
         GameManager.Inst.UI.OnOffSkill(skillNum, true);
+    }
+    public override void ShowBulkPurchaseBtn()
+    {
+        ChangeBtnSprite(skill.price, true);
+        base.ShowBulkPurchaseBtn();
+    }
+
+    public override void ReloadBulkPurchaseBtn()
+    {
+        base.ReloadBulkPurchaseBtn();
+        ChangeBtnSprite(skill.price, false);
     }
 }

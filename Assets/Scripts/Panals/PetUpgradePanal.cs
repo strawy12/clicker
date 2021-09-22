@@ -4,8 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using BigInteger = System.Numerics.BigInteger;
 
-    public class PetUpgradePanal : UpgradePanalBase
+public class PetUpgradePanal : UpgradePanalBase
     {
         [SerializeField] private Text petNameText = null;
         [SerializeField] private Text amountText = null;
@@ -35,7 +36,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
             petMountingBtn.interactable = true;
             buyBtnInfoText.text = "강화";
             petNameText.text = string.Format("Lv.{0} {1}", pet.level, pet.petName);
-            priceText.text = string.Format("{0} / {1}\n{2} 원",pet.amount, pet.maxAmount , pet.price);
+            priceText.text = string.Format("{0} / {1}\n{2} 원",pet.amount, pet.maxAmount , GameManager.Inst.MoneyUnitConversion(pet.price));
             backgroundImage.color = Color.white;
             amountText.text = string.Format("{0}", pet.amount);
             bulkPurchaseBtn.gameObject.SetActive(!isShow);
@@ -62,7 +63,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
         GameManager.Inst.CurrentUser.money -= pet.price;
         pet.amount -= pet.maxAmount;
         pet.level++;
-        pet.price = (long)(pet.price * 1.25f);
+        pet.price = (BigInteger)((float)pet.price * 1.25f);
     }
 
     public void OnClickMounting(bool isOn)
@@ -83,5 +84,17 @@ using UnityEngine.ResourceManagement.AsyncOperations;
         {
             petBuffObj.transform.DOScale(Vector3.zero, 0.25f).SetEase(Ease.InOutBack).OnComplete(() => petBuffObj.SetActive(false));
         }
+    }
+
+    public override void ShowBulkPurchaseBtn()
+    {
+        ChangeBtnSprite(pet.price, true);
+        base.ShowBulkPurchaseBtn();
+    }
+
+    public override void ReloadBulkPurchaseBtn()
+    {
+        base.ReloadBulkPurchaseBtn();
+        ChangeBtnSprite(pet.price, false);
     }
 }

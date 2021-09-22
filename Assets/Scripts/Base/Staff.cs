@@ -10,8 +10,8 @@ public class Staff
     public int level;
     public string savemPs;
     public BigInteger mPs;
-    public long price;
-    public long upgradePrice;
+    public BigInteger price;
+    public string savePrice;
 
     public bool isSold
     {
@@ -35,14 +35,13 @@ public class Staff
         }
     }
 
-    public Staff(string staffName, int staffNum, int level, BigInteger mPs, long price, long upgradePrice)
+    public Staff(string staffName, int staffNum, int level, BigInteger mPs, BigInteger price)
     {
         this.staffName = staffName;
         this.staffNum = staffNum;
         this.level = level;
         this.mPs = mPs;
         this.price = price;
-        this.upgradePrice = upgradePrice;
     }
 }
 
