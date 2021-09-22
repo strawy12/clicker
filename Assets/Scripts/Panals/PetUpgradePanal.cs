@@ -18,6 +18,14 @@ public class PetUpgradePanal : UpgradePanalBase
         private int petNum;
     private GameObject petBuffObj = null;
 
+    public override void Awake()
+    {
+        buyBtnSprites = Resources.LoadAll<Sprite>(spritePath);
+        backgroundImage = GetComponent<Image>();
+        buyBtnImages = upgradeBtns.transform.GetComponentsInChildren<Image>();
+        buyBtnInfoText = buyBtnImages[0].transform.GetChild(0).GetComponent<Text>();
+        priceText = buyBtnImages[0].transform.GetChild(1).GetComponent<Text>();
+    }
 
     public override void SetPanalNum(int num)
     {
@@ -28,7 +36,6 @@ public class PetUpgradePanal : UpgradePanalBase
 
     public override void UpdateValues()
     {
-        base.UpdateValues();
 
         if (!pet.isLocked)
         {
@@ -40,7 +47,7 @@ public class PetUpgradePanal : UpgradePanalBase
             backgroundImage.color = Color.white;
             amountText.text = string.Format("{0}", pet.amount);
             bulkPurchaseBtn.gameObject.SetActive(!isShow);
-            buyBtnImages[2].sprite = GameManager.Inst.CurrentUser.money >= pet.price && pet.amount >= pet.maxAmount ? buyBtnSprites[isShow ? 3 : 1] : buyBtnSprites[0];
+            buyBtnImages[0].sprite = GameManager.Inst.CurrentUser.money >= pet.price && pet.amount >= pet.maxAmount ? buyBtnSprites[isShow ? 3 : 1] : buyBtnSprites[0];
             
         }
         else
@@ -50,20 +57,30 @@ public class PetUpgradePanal : UpgradePanalBase
             priceText.text = "";
             buyBtnInfoText.text = "";
             backgroundImage.color = Color.gray;
-            buyBtnImages[2].sprite = buyBtnSprites[4];
-            bulkPurchaseBtn.gameObject.SetActive(false);
+            buyBtnImages[0].sprite = buyBtnSprites[4];
         }
         //petImage.sprite = mainSprite;
     }
 
     public void OnClickLevelUpBtn()
     {
-        if (pet.level >= 10 || pet.amount < pet.maxAmount) return;
-        if (GameManager.Inst.CurrentUser.money < pet.price) return;
+        if (pet.isLocked) return;
+        if (pet.level >= 10 || pet.amount < pet.maxAmount)
+        {
+
+            GameManager.Inst.UI.ShowMessage(pet.level >= 10 ? "펫의 레벨이 최대레벨입니다." : "펫의 갯수가 부족합니다.");
+            return;
+        }
+        if (GameManager.Inst.CurrentUser.money < pet.price)
+        {
+            GameManager.Inst.UI.ShowMessage("돈이 부족합니다.");
+            return;
+        }
         GameManager.Inst.CurrentUser.money -= pet.price;
         pet.amount -= pet.maxAmount;
         pet.level++;
         pet.price = (BigInteger)((float)pet.price * 1.25f);
+        GameManager.Inst.UI.ShowMessage("레벨업!");
     }
 
     public void OnClickMounting(bool isOn)
@@ -84,17 +101,5 @@ public class PetUpgradePanal : UpgradePanalBase
         {
             petBuffObj.transform.DOScale(Vector3.zero, 0.25f).SetEase(Ease.InOutBack).OnComplete(() => petBuffObj.SetActive(false));
         }
-    }
-
-    public override void ShowBulkPurchaseBtn()
-    {
-        ChangeBtnSprite(pet.price, true);
-        base.ShowBulkPurchaseBtn();
-    }
-
-    public override void ReloadBulkPurchaseBtn()
-    {
-        base.ReloadBulkPurchaseBtn();
-        ChangeBtnSprite(pet.price, false);
     }
 }

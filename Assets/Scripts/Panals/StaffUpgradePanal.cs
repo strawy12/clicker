@@ -16,6 +16,11 @@ public class StaffUpgradePanal : UpgradePanalBase
     private Staff staff = null;
     private int staffNum;
 
+    public override void LateUpdate()
+    {
+        base.LateUpdate();
+        ChangeBtnSprite(staff.price, true);
+    }
 
     public override void SetPanalNum(int num)
     {
@@ -26,7 +31,7 @@ public class StaffUpgradePanal : UpgradePanalBase
 
     public override void UpdateValues()
     {
-        base.UpdateValues();
+
 
         staffImage.sprite = staffSprite;
 
@@ -61,27 +66,41 @@ public class StaffUpgradePanal : UpgradePanalBase
         }
         
     }
-    public void OnClickStaffBuyBtn()
+    public void OnClickStaffBuyBtn(int amount)
     {
-        if (staff.isLocked) return;
-        if (GameManager.Inst.CurrentUser.money >= staff.price)
+        UpgradeStaff(amount);
+        if (amount != 1)
         {
-            GameManager.Inst.CurrentUser.money -= staff.price;
-            staff.level++;
-            staff.price = (BigInteger)((float)staff.price * 1.25f);
-            staff.mPs = (BigInteger)Mathf.Max((float)staff.mPs * 1.25f, 10);
+            timer = 0f;
+        }
+    }
+
+    private bool UpgradeStaff(int amount)
+    {
+        if (staff.isLocked) return false;
+        if (GameManager.Inst.CurrentUser.money >= staff.price * amount)
+        {
+            GameManager.Inst.CurrentUser.money -= staff.price * amount;
+            staff.level+=amount;
+            for(int i = 0; i < amount; i++)
+            {
+                staff.price = (BigInteger)((float)staff.price * 1.25f);
+                staff.mPs = (BigInteger)Mathf.Max((float)staff.mPs * 1.25f, 10);
+            }
+           
             UpdateValues();
             GameManager.Inst.UI.UpdateMoneyPanal();
             GameManager.Inst.UI.ShowMessage("구매 완료");
+            return true;
         }
         else
         {
             GameManager.Inst.UI.ShowMessage("돈이 부족합니다");
+            return false;
         }
     }
     public override void ShowBulkPurchaseBtn()
     {
-        ChangeBtnSprite(staff.price, true);
         base.ShowBulkPurchaseBtn();
     }
 

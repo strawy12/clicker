@@ -22,7 +22,7 @@ public class UpgradePanalBase : MonoBehaviour
     protected bool isShow = false;
     protected float timer = 0f;
 
-    private string spritePath = "Clicker Button UI";
+    protected string spritePath = "Clicker Button UI";
 
     public virtual void Awake()
     {
@@ -54,19 +54,20 @@ public class UpgradePanalBase : MonoBehaviour
 
     public virtual void LateUpdate()
     {
-        if(isShow)
+        if (!isShow) return;
+        timer += Time.deltaTime;
+        if (timer >= 3f)
         {
-            timer += Time.deltaTime;
-            if(timer >= 3f)
-            {
-                ReloadBulkPurchaseBtn();
-            }
+            ReloadBulkPurchaseBtn();
         }
     }
 
     public void OnDisable()
     {
-        ReloadBulkPurchaseBtn();
+        if(isShow)
+        {
+            ReloadBulkPurchaseBtn();
+        }
     }
     public virtual void SetPanalNum(int num)
     {
@@ -75,16 +76,8 @@ public class UpgradePanalBase : MonoBehaviour
 
     public virtual void UpdateValues()
     {
-        if (buyBtnSprites == null)
-        {
-            return;
-        }
     }
 
-    public virtual void OnClickBulkPurchaseBtn(int num)
-    {
-        timer = 0f;
-    }
 
     public virtual void ShowBulkPurchaseBtn()
     {
@@ -104,7 +97,9 @@ public class UpgradePanalBase : MonoBehaviour
 
     protected void ChangeBtnSprite(BigInteger price, bool isShow)
     {
-        if(isShow)
+        if (!this.isShow) return;
+        Debug.Log("¾Ó¤·");
+        if (isShow)
         {
             buyBtnImages[2].sprite = GameManager.Inst.CurrentUser.money >= price ? buyBtnSprites[3] : buyBtnSprites[2];
             buyBtnImages[1].sprite = GameManager.Inst.CurrentUser.money >= price * 10 ? buyBtnSprites[3] : buyBtnSprites[2];
@@ -114,9 +109,9 @@ public class UpgradePanalBase : MonoBehaviour
         {
             buyBtnImages[2].sprite = GameManager.Inst.CurrentUser.money >= price ? buyBtnSprites[1] : buyBtnSprites[0];
         }
-            
+
     }
-    
+
     public virtual void ReloadBulkPurchaseBtn()
     {
         isShow = false;
@@ -126,8 +121,8 @@ public class UpgradePanalBase : MonoBehaviour
             buyBtnImages[i].rectTransform.DOAnchorPosX(95f, 0f);
             buyBtnImages[i].gameObject.SetActive(false);
         }
-        
+
         bulkPurchaseBtn.gameObject.SetActive(true);
 
-    }    
+    }
 }

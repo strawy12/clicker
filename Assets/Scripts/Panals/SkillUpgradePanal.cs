@@ -17,11 +17,10 @@ public class SkillUpgradePanal : UpgradePanalBase
 
     public override void LateUpdate()
     {
-        base.LateUpdate();
-        if(skill.isUsed)
+        if (skill.isUsed)
         {
             coolTime.fillAmount = (float)CheckCoolTime(endTime, DateTime.Now) / skill.coolTime;
-            if(DateTime.Now > endDurationTime)
+            if (DateTime.Now > endDurationTime)
             {
                 GameManager.Inst.UI.OnOffSkill(skillNum, false);
             }
@@ -30,16 +29,21 @@ public class SkillUpgradePanal : UpgradePanalBase
                 skill.isUsed = false;
             }
         }
+
+        base.LateUpdate();
+        ChangeBtnSprite(skill.price, true);
+
+
     }
     public int CheckCoolTime(DateTime dateTime_1, DateTime dateTime_2)
     {
-        if(dateTime_1.Minute == dateTime_2.Minute)
+        if (dateTime_1.Minute == dateTime_2.Minute)
         {
             return dateTime_1.Second - dateTime_2.Second;
         }
         else
         {
-            if(dateTime_1.Minute < dateTime_2.Minute)
+            if (dateTime_1.Minute < dateTime_2.Minute)
             {
                 return 0;
             }
@@ -55,7 +59,7 @@ public class SkillUpgradePanal : UpgradePanalBase
         skill = GameManager.Inst.CurrentUser.skills[num];
         //staffSprite = GameManager.Inst.UI.SoldierSpriteArray[num];
         skillNum = num;
-        if(skill.isUsed)
+        if (skill.isUsed)
         {
             endTime = DateTime.Parse(skill.endTime);
             endDurationTime = DateTime.Parse(skill.endDurationTime);
@@ -68,26 +72,40 @@ public class SkillUpgradePanal : UpgradePanalBase
 
     public override void UpdateValues()
     {
-        base.UpdateValues();
-        skillNameText.text = skill.skillName;
+        skillNameText.text = string.Format("Lv.{0} {1}", skill.level, skill.skillName);
         priceText.text = string.Format("{0} 원", GameManager.Inst.MoneyUnitConversion(skill.price));
-        //staffImage.sprite = staffSprite;
+        buyBtnImages[2].sprite = GameManager.Inst.CurrentUser.money >= skill.price ? buyBtnSprites[1] : buyBtnSprites[0];
     }
 
-    public void OnClickUpgradeSkill()
+    public void OnClickUpgradeSkill(int amount)
     {
-        if (GameManager.Inst.CurrentUser.money >= skill.price)
+        if (!UpgradeSkill(amount)) return;
+
+        if (amount != 1)
         {
-            GameManager.Inst.CurrentUser.money -= skill.price;
-            skill.level++;
-            skill.price = (BigInteger)((float)skill.price * 1.25f);
+            timer = 0f;
+        }
+    }
+
+    private bool UpgradeSkill(int amount)
+    {
+        if (GameManager.Inst.CurrentUser.money >= skill.price * amount)
+        {
+            GameManager.Inst.CurrentUser.money -= skill.price * amount;
+            skill.level += amount;
+            for (int i = 0; i < amount; i++)
+            {
+                skill.price = (BigInteger)((float)skill.price * 1.25f);
+            }
             UpdateValues();
             GameManager.Inst.UI.UpdateMoneyPanal();
             GameManager.Inst.UI.ShowMessage("구매 완료");
+            return true;
         }
         else
         {
             GameManager.Inst.UI.ShowMessage("돈이 부족합니다");
+            return false;
         }
     }
 
@@ -102,9 +120,10 @@ public class SkillUpgradePanal : UpgradePanalBase
         skill.isUsed = true;
         GameManager.Inst.UI.OnOffSkill(skillNum, true);
     }
+
+
     public override void ShowBulkPurchaseBtn()
     {
-        ChangeBtnSprite(skill.price, true);
         base.ShowBulkPurchaseBtn();
     }
 
