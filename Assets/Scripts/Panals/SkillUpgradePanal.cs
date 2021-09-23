@@ -74,7 +74,7 @@ public class SkillUpgradePanal : UpgradePanalBase
     {
         skillNameText.text = string.Format("Lv.{0} {1}", skill.level, skill.skillName);
         priceText.text = string.Format("{0} 원", GameManager.Inst.MoneyUnitConversion(skill.price));
-        buyBtnImages[2].sprite = GameManager.Inst.CurrentUser.money >= skill.price ? buyBtnSprites[1] : buyBtnSprites[0];
+        buyBtnImages[2].sprite = GameManager.Inst.CurrentUser.money >= skill.price ? GameManager.Inst.UI.BuyBtnSpriteArray[1] : GameManager.Inst.UI.BuyBtnSpriteArray[0];
     }
 
     public void OnClickUpgradeSkill(int amount)
@@ -89,14 +89,11 @@ public class SkillUpgradePanal : UpgradePanalBase
 
     private bool UpgradeSkill(int amount)
     {
-        if (GameManager.Inst.CurrentUser.money >= skill.price * amount)
+        if (GameManager.Inst.CurrentUser.goldCoin >= skill.price * amount)
         {
-            GameManager.Inst.CurrentUser.money -= skill.price * amount;
+            GameManager.Inst.CurrentUser.goldCoin -= skill.price * amount;
+            GameManager.Inst.CurrentUser.levelUpCnt++;
             skill.level += amount;
-            for (int i = 0; i < amount; i++)
-            {
-                skill.price = (BigInteger)((float)skill.price * 1.25f);
-            }
             UpdateValues();
             GameManager.Inst.UI.UpdateMoneyPanal();
             GameManager.Inst.UI.ShowMessage("구매 완료");
@@ -115,9 +112,11 @@ public class SkillUpgradePanal : UpgradePanalBase
         skill.endTime = DateTime.Now.AddSeconds(skill.coolTime).ToString("G");
         skill.endDurationTime = DateTime.Now.AddSeconds(skill.duration).ToString("G");
         endTime = DateTime.Parse(skill.endTime);
+        GameManager.Inst.CurrentUser.skillUseCnt++;
         endDurationTime = DateTime.Parse(skill.endDurationTime);
         GameManager.Inst.UI.UpdateMoneyPanal();
         skill.isUsed = true;
+        GameManager.Inst.CurrentUser.clickCnt++;
         GameManager.Inst.UI.OnOffSkill(skillNum, true);
     }
 

@@ -20,7 +20,6 @@ public class PetUpgradePanal : UpgradePanalBase
 
     public override void Awake()
     {
-        buyBtnSprites = Resources.LoadAll<Sprite>(spritePath);
         backgroundImage = GetComponent<Image>();
         buyBtnImages = upgradeBtns.transform.GetComponentsInChildren<Image>();
         buyBtnInfoText = buyBtnImages[0].transform.GetChild(0).GetComponent<Text>();
@@ -46,8 +45,7 @@ public class PetUpgradePanal : UpgradePanalBase
             priceText.text = string.Format("{0} / {1}\n{2} 원",pet.amount, pet.maxAmount , GameManager.Inst.MoneyUnitConversion(pet.price));
             backgroundImage.color = Color.white;
             amountText.text = string.Format("{0}", pet.amount);
-            bulkPurchaseBtn.gameObject.SetActive(!isShow);
-            buyBtnImages[0].sprite = GameManager.Inst.CurrentUser.money >= pet.price && pet.amount >= pet.maxAmount ? buyBtnSprites[isShow ? 3 : 1] : buyBtnSprites[0];
+            buyBtnImages[0].sprite = GameManager.Inst.CurrentUser.money >= pet.price && pet.amount >= pet.maxAmount ? GameManager.Inst.UI.BuyBtnSpriteArray[isShow ? 3 : 1] : GameManager.Inst.UI.BuyBtnSpriteArray[0];
             
         }
         else
@@ -57,7 +55,7 @@ public class PetUpgradePanal : UpgradePanalBase
             priceText.text = "";
             buyBtnInfoText.text = "";
             backgroundImage.color = Color.gray;
-            buyBtnImages[0].sprite = buyBtnSprites[4];
+            buyBtnImages[0].sprite = GameManager.Inst.UI.BuyBtnSpriteArray[4];
         }
         //petImage.sprite = mainSprite;
     }
@@ -76,7 +74,8 @@ public class PetUpgradePanal : UpgradePanalBase
             GameManager.Inst.UI.ShowMessage("돈이 부족합니다.");
             return;
         }
-        GameManager.Inst.CurrentUser.money -= pet.price;
+        GameManager.Inst.CurrentUser.UpdateMoney(pet.price, false);
+        GameManager.Inst.CurrentUser.levelUpCnt++;
         pet.amount -= pet.maxAmount;
         pet.level++;
         pet.price = (BigInteger)((float)pet.price * 1.25f);

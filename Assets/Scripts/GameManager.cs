@@ -8,7 +8,7 @@ using Random = UnityEngine.Random;
 
 public class GameManager : MonoSingleton<GameManager>
 {
-    public enum EPoolingType { clickEffect, coinText }
+    public enum EPoolingType { clickEffect, coinText, somSaTang }
 
     private User user = null;
 
@@ -47,8 +47,8 @@ public class GameManager : MonoSingleton<GameManager>
         get
         {
             Vector3 result = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            //result.x = Mathf.Clamp(result.x, MinPos.x, MaxPos.x);
-            //result.y = Mathf.Clamp(result.y, MinPos.y, MaxPos.y);
+            result.x = Mathf.Clamp(result.x, MinPos.x, MaxPos.x);
+            result.y = Mathf.Clamp(result.y, MinPos.y, MaxPos.y);
             result.z = -10;
             return result;
         }
@@ -57,22 +57,22 @@ public class GameManager : MonoSingleton<GameManager>
     private int cnt = 3;
     private void Awake()
     {
-        SAVE_PATH = Application.persistentDataPath + "/Save";
+        SAVE_PATH = Application.dataPath + "/Save";
         if (!Directory.Exists(SAVE_PATH))
         {
             Directory.CreateDirectory(SAVE_PATH);
         }
         uiManager = GetComponent<UIManager>();
-        MaxPos = new Vector2(4.1f, 1.7f);
-        MinPos = new Vector2(-3.6f, -1.7f);
+        MaxPos = new Vector2(2.05f, 4.2f);
+        MinPos = new Vector2(-2.05f, -4.2f);
         LoadFromJson();
         SetDict();
-
 
     }
 
     private void Start()
     {
+        SettingUser();
         CheckReJoinTime();
         InvokeRepeating("SaveToJson", 5f, 60f);
         InvokeRepeating("AutoClick", 5f, user.autoClickTime);
@@ -81,7 +81,7 @@ public class GameManager : MonoSingleton<GameManager>
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             Application.Quit();
         }
@@ -91,6 +91,7 @@ public class GameManager : MonoSingleton<GameManager>
     {
         poolingList.Add(EPoolingType.clickEffect, new Queue<GameObject>());
         poolingList.Add(EPoolingType.coinText, new Queue<GameObject>());
+        poolingList.Add(EPoolingType.somSaTang, new Queue<GameObject>());
     }
 
 
@@ -102,6 +103,7 @@ public class GameManager : MonoSingleton<GameManager>
             json = File.ReadAllText(SAVE_PATH + SAVE_FILENAME);
             user = JsonUtility.FromJson<User>(json);
             user.ConversionType(false);
+
         }
         if (user == null)
         {
@@ -109,8 +111,8 @@ public class GameManager : MonoSingleton<GameManager>
             user.userName = "금사향";
             user.basemPc = 10;
             user.additionMoney = 1;
+            user.goldCoin = 0;
             user.money = 10000;
-            user.mileage = 0;
 
             user.staffs.Add(new Staff("응애찍찍이", 0, 0, 0, 1000));
             user.staffs.Add(new Staff("청소년찍찍이", 1, 0, 0, 3000));
@@ -124,9 +126,9 @@ public class GameManager : MonoSingleton<GameManager>
             user.staffs.Add(new Staff("사이보그찍찍이", 9, 0, 0, 500000));
             user.staffs.Add(new Staff("AI찍찍이", 10, 0, 0, 1000000));
 
-            user.skills.Add(new Skill("트이유", 0, 1, 1000, 30, 100));
-            user.skills.Add(new Skill("응애", 1, 1, 1000, 0, 200));
-            user.skills.Add(new Skill("유으내모드", 2, 1, 1000, 30, 300));
+            user.skills.Add(new Skill("트이유", 0, 1, 100, 30, 100));
+            user.skills.Add(new Skill("응애", 1, 1, 100, 0, 200));
+            user.skills.Add(new Skill("유으내모드", 2, 1, 100, 30, 300));
 
             user.pets.Add(new Pet(0, "강아지", 0, 0, 20, 1000));
             user.pets.Add(new Pet(1, "토끼", 0, 0, 20, 1000));
@@ -157,13 +159,36 @@ public class GameManager : MonoSingleton<GameManager>
     private void SaveToJson()
     {
         user.ConversionType(true);
-        user.exitTime = DateTime.Now.ToString("G");
         string json = JsonUtility.ToJson(user, true);
         File.WriteAllText(SAVE_PATH + SAVE_FILENAME, json, System.Text.Encoding.UTF8);
     }
 
+    public bool CheckDate()
+    {
+        if (user.exitTime != null)
+        {
+            TimeSpan dateDiff = DateTime.Now - DateTime.Parse(user.exitTime);
+            int diffDay = dateDiff.Days;
+            if (diffDay == 0) return false;
+        }
+        return true;
+    }
+
+    private void SettingUser()
+    {
+        if(CheckDate())
+        {
+            user.playTime = 0f;
+            user.skillUseCnt = 0;
+            user.clickCnt = 0;
+            user.bigHeartClickCnt = 0;
+            user.levelUpCnt = 0;
+        }
+    }
+
     public void CheckReJoinTime()
     {
+        if (user.exitTime == null) return;
         TimeSpan datediff = DateTime.Now - DateTime.Parse(user.exitTime);
         int diffSec = datediff.Seconds;
         BigInteger mPsSum = 0;
@@ -176,14 +201,14 @@ public class GameManager : MonoSingleton<GameManager>
         }
 
         mPsSum /= 10;
-        user.money += mPsSum * diffSec;
+        user.UpdateMoney(mPsSum * diffSec, true);
         uiManager.ShowRewardPanal(mPsSum * diffSec);
     }
     public void MoneyPerSecond()
     {
         foreach (Staff staff in user.staffs)
         {
-            user.money += staff.mPs;
+            user.UpdateMoney(staff.mPs, true);
         }
         uiManager.UpdateMoneyPanal();
     }
@@ -197,9 +222,9 @@ public class GameManager : MonoSingleton<GameManager>
             moneyList.Add((int)(value % place));
             value /= place;
         } while (value > 0);
-        
 
-        for (int i = Mathf.Max(0 ,moneyList.Count - 2); i < moneyList.Count; i++)
+
+        for (int i = Mathf.Max(0, moneyList.Count - 2); i < moneyList.Count; i++)
         {
             retStr = moneyList[i] + moneyUnit[i] + retStr;
         }
@@ -211,7 +236,7 @@ public class GameManager : MonoSingleton<GameManager>
         StartCoroutine(AutoClickAnim());
         for (int i = 0; i < user.petAmount; i++)
         {
-            user.money += user.mPc;
+            user.UpdateMoney(user.mPc, true);
         }
         uiManager.UpdateMoneyPanal();
     }
@@ -227,10 +252,12 @@ public class GameManager : MonoSingleton<GameManager>
     }
     private void OnApplicationQuit()
     {
+        user.exitTime = DateTime.Now.ToString("G");
         SaveToJson();
     }
     private void OnApplicationPause()
     {
+        //user.exitTime = DateTime.Now.ToString("G");
         SaveToJson();
     }
 

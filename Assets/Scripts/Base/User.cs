@@ -7,13 +7,47 @@ using System;
 public class User
 {
     public string userName;
+    public float playTime;
     public string exitTime;
     public string saveMoney;
+    public long goldCoin;
+    public bool[] missions
+    {
+        get
+        {
+            bool[] _mission = new bool[5];
+            _mission[0] = clickCnt >= 2000;
+            _mission[1] = bigHeartClickCnt >= 30;
+            _mission[2] = skillUseCnt >= 5;
+            _mission[3] = playTime >= 1800f;
+            _mission[4] = levelUpCnt >= 5;
+            return _mission;
+        }
+    }
+    public int missionClear
+    {
+        get
+        {
+            int cnt = 0;
+            for (int i = 0; i < missions.Length; i++)
+            {
+                if (missions[i])
+                {
+                    cnt++;
+                }
+            }
+            return cnt;
+        }
+    }
 
     public BigInteger money;
 
+
+    public int clickCnt;
+    public int bigHeartClickCnt;
+    public int skillUseCnt;
+    public int levelUpCnt;
     public int additionMoney;
-    public long mileage;
     public string saveBasemPc;
     public BigInteger basemPc;
     public BigInteger mPc
@@ -47,12 +81,12 @@ public class User
             float time = 120f;
             foreach (Pet pet in pets)
             {
-                if(pet.isEquip && pet.amount != 0)
+                if (pet.isEquip && pet.amount != 0)
                 {
                     time -= pet.clickTime;
                 }
             }
-            
+
             time = Mathf.Max(5f, time);
             return time;
         }
@@ -65,11 +99,11 @@ public class User
 
     public void ConversionType(bool isSave)
     {
-        if(isSave)
+        if (isSave)
         {
             saveMoney = money.ToString();
             saveBasemPc = basemPc.ToString();
-            foreach(Staff staff in staffs)
+            foreach (Staff staff in staffs)
             {
                 staff.savemPs = staff.mPs.ToString();
                 staff.savePrice = staff.price.ToString();
@@ -77,10 +111,6 @@ public class User
             foreach (Pet pet in pets)
             {
                 pet.savePrice = pet.price.ToString();
-            }
-            foreach (Skill skill in skills)
-            {
-                skill.savePrice = skill.price.ToString();
             }
         }
         else
@@ -97,10 +127,19 @@ public class User
             {
                 pet.price = BigInteger.Parse(pet.savePrice);
             }
-            foreach (Skill skill in skills)
-            {
-                skill.price = BigInteger.Parse(skill.savePrice);
-            }
         }
+    }
+
+    public void UpdateMoney(BigInteger updateMoney, bool isAdd)
+    {
+        if(isAdd)
+        {
+            money += updateMoney;
+        }
+        else
+        {
+            money -= updateMoney;
+        }
+        GameManager.Inst.UI.UpdateMoneyPanal();
     }
 }

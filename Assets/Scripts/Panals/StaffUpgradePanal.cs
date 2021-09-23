@@ -50,7 +50,7 @@ public class StaffUpgradePanal : UpgradePanalBase
             staffInfoText.text = string.Format("+ {0} / s", GameManager.Inst.MoneyUnitConversion(staff.mPs));
             staffImage.color = Color.white;
             backgroundImage.color = Color.white;
-            buyBtnImages[2].sprite = GameManager.Inst.CurrentUser.money >= staff.price ? buyBtnSprites[isShow ? 3 : 1] : buyBtnSprites[isShow ? 2 : 0];
+            buyBtnImages[2].sprite = GameManager.Inst.CurrentUser.money >= staff.price ? GameManager.Inst.UI.BuyBtnSpriteArray[isShow ? 3 : 1] : GameManager.Inst.UI.BuyBtnSpriteArray[isShow ? 2 : 0];
             bulkPurchaseBtn.gameObject.SetActive(!isShow);
         }
         else
@@ -61,7 +61,7 @@ public class StaffUpgradePanal : UpgradePanalBase
             staffInfoText.text = string.Format("조건: {0}의 Lv. 10 이상 달성", GameManager.Inst.CurrentUser.staffs[staffNum - 1].staffName);
             staffImage.color = Color.black;
             backgroundImage.color = Color.gray;
-            buyBtnImages[2].sprite = buyBtnSprites[4];
+            buyBtnImages[2].sprite = GameManager.Inst.UI.BuyBtnSpriteArray[4];
             bulkPurchaseBtn.gameObject.SetActive(false);
         }
         
@@ -80,9 +80,10 @@ public class StaffUpgradePanal : UpgradePanalBase
         if (staff.isLocked) return false;
         if (GameManager.Inst.CurrentUser.money >= staff.price * amount)
         {
-            GameManager.Inst.CurrentUser.money -= staff.price * amount;
-            staff.level+=amount;
-            for(int i = 0; i < amount; i++)
+            GameManager.Inst.CurrentUser.UpdateMoney(staff.price * amount, false);
+            staff.level += amount;
+            GameManager.Inst.CurrentUser.levelUpCnt++;
+            for (int i = 0; i < amount; i++)
             {
                 staff.price = (BigInteger)((float)staff.price * 1.25f);
                 staff.mPs = (BigInteger)Mathf.Max((float)staff.mPs * 1.25f, 10);

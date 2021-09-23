@@ -1,0 +1,222 @@
+﻿{
+    "userName": "금사향",
+    "playTime": 44.78734588623047,
+    "exitTime": "2021-09-24 AM 12:26:39",
+    "saveMoney": "19700",
+    "goldCoin": 0,
+    "clickCnt": 760,
+    "bigHeartClickCnt": 0,
+    "skillUseCnt": 0,
+    "levelUpCnt": 0,
+    "additionMoney": 1,
+    "saveBasemPc": "10",
+    "staffs": [
+        {
+            "staffName": "응애찍찍이",
+            "staffNum": 0,
+            "level": 0,
+            "savemPs": "0",
+            "savePrice": "1000"
+        },
+        {
+            "staffName": "청소년찍찍이",
+            "staffNum": 1,
+            "level": 0,
+            "savemPs": "0",
+            "savePrice": "3000"
+        },
+        {
+            "staffName": "중2병찍찍이",
+            "staffNum": 2,
+            "level": 0,
+            "savemPs": "0",
+            "savePrice": "5000"
+        },
+        {
+            "staffName": "새내기찍찍이",
+            "staffNum": 3,
+            "level": 0,
+            "savemPs": "0",
+            "savePrice": "10000"
+        },
+        {
+            "staffName": "복학생찍찍이",
+            "staffNum": 4,
+            "level": 0,
+            "savemPs": "0",
+            "savePrice": "15000"
+        },
+        {
+            "staffName": "신사찍찍이",
+            "staffNum": 5,
+            "level": 0,
+            "savemPs": "0",
+            "savePrice": "30000"
+        },
+        {
+            "staffName": "기사찍찍이",
+            "staffNum": 6,
+            "level": 0,
+            "savemPs": "0",
+            "savePrice": "50000"
+        },
+        {
+            "staffName": "집사찍찍이",
+            "staffNum": 7,
+            "level": 0,
+            "savemPs": "0",
+            "savePrice": "100000"
+        },
+        {
+            "staffName": "왕찍찍이",
+            "staffNum": 8,
+            "level": 0,
+            "savemPs": "0",
+            "savePrice": "300000"
+        },
+        {
+            "staffName": "사이보그찍찍이",
+            "staffNum": 9,
+            "level": 0,
+            "savemPs": "0",
+            "savePrice": "500000"
+        },
+        {
+            "staffName": "AI찍찍이",
+            "staffNum": 10,
+            "level": 0,
+            "savemPs": "0",
+            "savePrice": "1000000"
+        }
+    ],
+    "skills": [
+        {
+            "skillName": "트이유",
+            "skillNum": 0,
+            "level": 1,
+            "price": 100,
+            "isSold": false,
+            "baseCoolTime": 100,
+            "baseDuration": 30,
+            "isUsed": false,
+            "endTime": "",
+            "endDurationTime": ""
+        },
+        {
+            "skillName": "응애",
+            "skillNum": 1,
+            "level": 1,
+            "price": 100,
+            "isSold": false,
+            "baseCoolTime": 200,
+            "baseDuration": 0,
+            "isUsed": false,
+            "endTime": "",
+            "endDurationTime": ""
+        },
+        {
+            "skillName": "유으내모드",
+            "skillNum": 2,
+            "level": 1,
+            "price": 100,
+            "isSold": false,
+            "baseCoolTime": 300,
+            "baseDuration": 30,
+            "isUsed": false,
+            "endTime": "",
+            "endDurationTime": ""
+        }
+    ],
+    "pets": [
+        {
+            "petNum": 0,
+            "petName": "강아지",
+            "amount": 0,
+            "level": 0,
+            "percent": 20,
+            "savePrice": "1000",
+            "isEquip": false
+        },
+        {
+            "petNum": 1,
+            "petName": "토끼",
+            "amount": 0,
+            "level": 0,
+            "percent": 20,
+            "savePrice": "1000",
+            "isEquip": false
+        },
+        {
+            "petNum": 2,
+            "petName": "여우",
+            "amount": 0,
+            "level": 0,
+            "percent": 15,
+            "savePrice": "1000",
+            "isEquip": false
+        },
+        {
+            "petNum": 3,
+            "petName": "곰",
+            "amount": 0,
+            "level": 0,
+            "percent": 10,
+            "savePrice": "1000",
+            "isEquip": false
+        },
+        {
+            "petNum": 4,
+            "petName": "펭귄",
+            "amount": 0,
+            "level": 0,
+            "percent": 10,
+            "savePrice": "1000",
+            "isEquip": false
+        },
+        {
+            "petNum": 5,
+            "petName": "너구리",
+            "amount": 0,
+            "level": 0,
+            "percent": 7,
+            "savePrice": "1000",
+            "isEquip": false
+        },
+        {
+            "petNum": 6,
+            "petName": "돼지",
+            "amount": 0,
+            "level": 0,
+            "percent": 7,
+            "savePrice": "1000",
+            "isEquip": false
+        },
+        {
+            "petNum": 7,
+            "petName": "양",
+            "amount": 0,
+            "level": 0,
+            "percent": 5,
+            "savePrice": "1000",
+            "isEquip": false
+        },
+        {
+            "petNum": 8,
+            "petName": "다람쥐",
+            "amount": 0,
+            "level": 0,
+            "percent": 5,
+            "savePrice": "1000",
+            "isEquip": false
+        },
+        {
+            "petNum": 9,
+            "petName": "까미",
+            "amount": 0,
+            "level": 0,
+            "percent": 1,
+            "savePrice": "1000",
+            "isEquip": false
+        }
+    ]
+}

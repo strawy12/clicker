@@ -9,7 +9,7 @@ public class CoinText : MonoBehaviour
 
     public void Show()
     {
-        if(coinImage == null)
+        if (coinImage == null)
         {
             coinImage = transform.GetChild(0).GetComponent<Image>();
         }
@@ -20,7 +20,7 @@ public class CoinText : MonoBehaviour
 
         RectTransform rectTransform = GetComponent<RectTransform>();
         coinText.text = string.Format("+{0}", GameManager.Inst.CurrentUser.mPc);
-        transform.position = GameManager.Inst.MousePos;
+        transform.localPosition = new Vector3(-5.8f, 220f, 0f);
         float targetPositionY = rectTransform.anchoredPosition.y + 100f;
         gameObject.SetActive(true);
 

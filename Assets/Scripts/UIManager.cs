@@ -19,7 +19,7 @@ public class UIManager : MonoBehaviour
     [Header("시스템")]
     [SerializeField] private ScrollRect scrollRect = null;
     [SerializeField] private Text randomText = null;
-    
+
 
     [Header("프리팹")]
     [SerializeField] private GameObject staffPanalTemp = null;
@@ -27,6 +27,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject petPanalTemp = null;
     [SerializeField] private Button staffObjectTemp = null;
     [SerializeField] private CoinText coinTextTemp = null;
+    [SerializeField] private SomSaTang somSaTangTemp = null;
     [SerializeField] private GameObject clickEffectTemp = null;
 
     [SerializeField] private GameObject messageObject = null;
@@ -35,34 +36,42 @@ public class UIManager : MonoBehaviour
     [Header("패널들")]
     [SerializeField] private GameObject settingPanal = null;
     [SerializeField] private RectTransform controlPanal = null;
+    [SerializeField] private GameObject missionPanal = null;
     [SerializeField] private PetInfo petinfoPanal = null;
     [SerializeField] private Image randomPickPanal = null;
     [SerializeField] private GameObject rewardPanal = null;
 
     [Header("돈")]
     [SerializeField] private Text moneyText = null;
-    [SerializeField] private Text mileageText = null;
-    
+    [SerializeField] private Text goldCoinText = null;
+
     [Header("컨텐츠 스크롤")]
     [SerializeField] private GameObject[] scrollObject = null;
 
     private Text rewardText = null;
+    private MissionPanal[] missionPanalArray = null;
     private Sprite[] soldierSprites = null;
+    private Sprite[] buyBtnSprites = null;
+    private Sprite[] missionSprites = null;
     private Coroutine messageCo = null;
     private Image randomPickImage = null;
 
     private Text messageText = null;
     private bool isPicking = false;
     public Sprite[] SoldierSpriteArray { get { return soldierSprites; } }
+    public Sprite[] BuyBtnSpriteArray { get { return buyBtnSprites; } }
+    public Sprite[] MissionSpriteArray { get { return missionSprites; } }
 
     private bool isShow = false;
     private bool isShow_Setting = false;
     private bool isAdditionClick = false;
     private int scrollNum;
-    private int clickNum = 0;
+    private int additionClickCnt = 0;
+    private int clickCnt = 0;
     private int randNum;
 
     private string spritePath = "SahyangClickerSoldier";
+    private string spriteUIPath = "Clicker Button UI";
 
     private Canvas canvas;
 
@@ -72,8 +81,10 @@ public class UIManager : MonoBehaviour
     {
         //AsyncOperationHandle<Sprite[]> spriteHandle = Addressables.LoadAssetAsync<Sprite[]>(spritePath);
         //spriteHandle.Completed += LoadSpriteWhenReady;
+        buyBtnSprites = Resources.LoadAll<Sprite>(spriteUIPath);
         soldierSprites = Resources.LoadAll<Sprite>(spritePath);
         messageText = messageObject.transform.GetChild(0).GetComponent<Text>();
+        missionPanalArray = missionPanal.GetComponentsInChildren<MissionPanal>();
         canvas = FindObjectOfType<Canvas>();
         randomPickImage = randomPickPanal.transform.GetChild(0).GetComponent<Image>();
         rewardText = rewardPanal.transform.GetChild(1).GetChild(1).GetComponent<Text>();
@@ -85,24 +96,39 @@ public class UIManager : MonoBehaviour
     //    {
     //        soldierSprites = handleToCheck.Result;
     //    }
-        
+
     //}
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        if(GameManager.Inst.CurrentUser.playTime < 1800f)
         {
-            GameManager.Inst.CurrentUser.money *= 2;
+            GameManager.Inst.CurrentUser.playTime += Time.deltaTime;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            GameManager.Inst.CurrentUser.UpdateMoney(GameManager.Inst.CurrentUser.money * 2, true);
         }
     }
 
     private void GameStartStart()
     {
+        MissionPanalGoStart();
         UpdateMoneyPanal();
         CreatePanals();
-        SetScrollActive(2);
+        SetScrollActive(1);
         isShow = false;
+        randNum = Random.Range(230, 500);
 
+    }
+
+    private void MissionPanalGoStart()
+    {
+        foreach(MissionPanal missionPanal in missionPanalArray)
+        {
+            missionPanal.GoStart();
+        }
     }
 
     public List<T> Mix<T>(List<T> pets)
@@ -131,7 +157,7 @@ public class UIManager : MonoBehaviour
             newUpgradePanal = newPanal.GetComponent<UpgradePanalBase>();
             upgradePanalList.Add(newUpgradePanal);
             newUpgradePanal.SetPanalNum(staff.staffNum);
-            newPanal.SetActive(true);   
+            newPanal.SetActive(true);
         }
 
         foreach (Skill skill in GameManager.Inst.CurrentUser.skills)
@@ -155,29 +181,36 @@ public class UIManager : MonoBehaviour
 
     }
 
-    private void OnClick()
+    private void CheckBigHeart()
     {
-        if (clickNum == randNum)
+        if (clickCnt == randNum)
         {
-            clickNum = 0;
+            clickCnt = 0;
             randNum = Random.Range(230, 500);
+            ShowSomSaTang();
         }
 
     }
 
     public void OnClickDisPlay()
     {
-        clickNum++;
-        if(isAdditionClick && clickNum > 3)
+        GameManager.Inst.CurrentUser.clickCnt++;
+        if (isAdditionClick)
         {
-            clickNum = 0;
-            StartCoroutine(AdditionClick());
-        }    
+            additionClickCnt++;
+            if (additionClickCnt > 3)
+            {
+                additionClickCnt = 0;
+                StartCoroutine(AdditionClick());
+            }
+        }
+        clickCnt++;
+        CheckBigHeart();
         //CheckSpawnPresent();
-        GameManager.Inst.CurrentUser.money += GameManager.Inst.CurrentUser.mPc;
+        GameManager.Inst.CurrentUser.UpdateMoney(GameManager.Inst.CurrentUser.mPc, true);
         UpdateMoneyPanal();
         ShowClickEffect(GameManager.Inst.MousePos);
-        //ShowCoinText();
+        ShowCoinText();
     }
 
     public void ShowRewardPanal(BigInteger money)
@@ -218,11 +251,31 @@ public class UIManager : MonoBehaviour
             });
         });
     }
+    public void ShowSomSaTang()
+    {
+        SomSaTang somSaTang = null;
+        Queue<GameObject> queue = GameManager.Inst.PoolingList[EPoolingType.somSaTang];
+        Vector2 randPos = new Vector2(GameManager.Inst.MinPos.x, Random.Range(isShow ? 0 : GameManager.Inst.MinPos.y, GameManager.Inst.MaxPos.y));
+        if (queue.Count > 0)
+        {
+            GameManager.Inst.Pool.GetChild(0).GetComponent<CoinText>();
+            somSaTang.transform.SetParent(somSaTangTemp.transform.parent);
+            somSaTang.transform.position = randPos;
+        }
+        else
+        {
+            somSaTang = Instantiate(somSaTangTemp, somSaTangTemp.transform.parent);
+            somSaTang.transform.position = randPos;
+        }
+        somSaTang.gameObject.SetActive(true);
+
+    }
+
     public void ShowCoinText()
     {
         CoinText coinText = null;
-
-        if (GameManager.Inst.Pool.childCount > 0)
+        Queue<GameObject> queue = GameManager.Inst.PoolingList[EPoolingType.coinText];
+        if (queue.Count > 0)
         {
             GameManager.Inst.Pool.GetChild(0).GetComponent<CoinText>();
             coinText.transform.SetParent(coinTextTemp.transform.parent);
@@ -243,15 +296,15 @@ public class UIManager : MonoBehaviour
                 isAdditionClick = isOn;
                 break;
             case 1:
-                if(isOn)
+                if (isOn)
                 {
                     Debug.Log("응애");
-                    GameManager.Inst.CurrentUser.money += (GameManager.Inst.CurrentUser.mPc * 1000);
+                    GameManager.Inst.CurrentUser.UpdateMoney(GameManager.Inst.CurrentUser.mPc * 1000, true);
                     UpdateMoneyPanal();
                 }
                 break;
             case 2:
-                if(isOn)
+                if (isOn)
                 {
                     GameManager.Inst.CurrentUser.additionMoney = 4;
                 }
@@ -265,9 +318,9 @@ public class UIManager : MonoBehaviour
 
     private IEnumerator AdditionClick()
     {
-        for(int i = 0; i < 2; i++)
+        for (int i = 0; i < 2; i++)
         {
-            GameManager.Inst.CurrentUser.money += GameManager.Inst.CurrentUser.mPc;
+            GameManager.Inst.CurrentUser.UpdateMoney(GameManager.Inst.CurrentUser.mPc, true);
             UpdateMoneyPanal();
             ShowClickEffect(new Vector3(Random.Range(-1.7f, 1.7f), Random.Range(-4f, 4f), -5f));
             yield return new WaitForSeconds(0.1f);
@@ -286,8 +339,7 @@ public class UIManager : MonoBehaviour
             ShowMessage("돈이 부족합니다.");
             return;
         }
-
-        GameManager.Inst.CurrentUser.money -= 10000;
+        GameManager.Inst.CurrentUser.UpdateMoney(10000, false);
         UpdateMoneyPanal();
         RandomPets();
         isPicking = true;
@@ -322,17 +374,17 @@ public class UIManager : MonoBehaviour
             randomPickImage.rectTransform.DOShakeScale(1f);
             randomPickImage.rectTransform.DOShakeRotation(1f);
         });
-        
+
         //SpawnPet(soldierSprites[num], num);
 
         if (pet.level >= 10)
         {
-            GameManager.Inst.CurrentUser.money += num * 1000;
+            GameManager.Inst.CurrentUser.UpdateMoney(num * 1000, true);
         }
         else
         {
             pet.amount++;
-            if(pet.amount == 1)
+            if (pet.amount == 1)
             {
                 pet.level++;
             }
@@ -368,7 +420,7 @@ public class UIManager : MonoBehaviour
         controlPanal.DOAnchorPosY(isShow ? 27f : -242f, 0.2f).SetEase(Ease.InCirc);
         SetScrollActive(num);
     }
-  
+
 
     public void OnClickSettingBtn()
     {
@@ -390,9 +442,9 @@ public class UIManager : MonoBehaviour
     }
     public void UpdateMoneyPanal()
     {
-        moneyText.text = string.Format("{0}원",GameManager.Inst.MoneyUnitConversion(GameManager.Inst.CurrentUser.money));
-        mileageText.text = string.Format("{0} 마일리지", GameManager.Inst.CurrentUser.mileage);
-        foreach(UpgradePanalBase upgradePanal in upgradePanalList)
+        moneyText.text = string.Format("{0}원", GameManager.Inst.MoneyUnitConversion(GameManager.Inst.CurrentUser.money));
+        goldCoinText.text = string.Format("{0} 골드", GameManager.Inst.CurrentUser.goldCoin);
+        foreach (UpgradePanalBase upgradePanal in upgradePanalList)
         {
             upgradePanal.UpdateValues();
         }

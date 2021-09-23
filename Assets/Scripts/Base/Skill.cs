@@ -9,8 +9,7 @@ public class Skill
     public string skillName;
     public int skillNum;
     public int level;
-    public string savePrice;
-    public BigInteger price;
+    public int price;
     public bool isSold;
     public int baseCoolTime;
     public int baseDuration;
@@ -33,7 +32,7 @@ public class Skill
     public string endTime;
     public string endDurationTime;
 
-    public Skill(string skillName, int skillNum, int level, BigInteger price, int baseDuration, int baseCoolTime)
+    public Skill(string skillName, int skillNum, int level, int price, int baseDuration, int baseCoolTime)
     {
         this.skillName = skillName;
         this.skillNum = skillNum;

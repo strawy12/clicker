@@ -13,7 +13,7 @@ public class UpgradePanalBase : MonoBehaviour
     [SerializeField] protected Button bulkPurchaseBtn = null;
     protected Image backgroundImage = null;
 
-    protected Sprite[] buyBtnSprites = null;
+    
 
     protected Image[] buyBtnImages = null;
     protected Text priceText = null;
@@ -22,13 +22,11 @@ public class UpgradePanalBase : MonoBehaviour
     protected bool isShow = false;
     protected float timer = 0f;
 
-    protected string spritePath = "Clicker Button UI";
 
     public virtual void Awake()
     {
         //AsyncOperationHandle<Sprite[]> spriteHandle = Addressables.LoadAssetAsync<Sprite[]>(spritePath);
         //spriteHandle.Completed += LoadSpriteWhenReady;
-        buyBtnSprites = Resources.LoadAll<Sprite>(spritePath);
         backgroundImage = GetComponent<Image>();
         buyBtnImages = upgradeBtns.transform.GetComponentsInChildren<Image>();
         buyBtnInfoText = buyBtnImages[2].transform.GetChild(0).GetComponent<Text>();
@@ -101,13 +99,13 @@ public class UpgradePanalBase : MonoBehaviour
         Debug.Log("¾Ó¤·");
         if (isShow)
         {
-            buyBtnImages[2].sprite = GameManager.Inst.CurrentUser.money >= price ? buyBtnSprites[3] : buyBtnSprites[2];
-            buyBtnImages[1].sprite = GameManager.Inst.CurrentUser.money >= price * 10 ? buyBtnSprites[3] : buyBtnSprites[2];
-            buyBtnImages[0].sprite = GameManager.Inst.CurrentUser.money >= price * 100 ? buyBtnSprites[1] : buyBtnSprites[0];
+            buyBtnImages[2].sprite = GameManager.Inst.CurrentUser.money >= price ? GameManager.Inst.UI.BuyBtnSpriteArray[3] : GameManager.Inst.UI.BuyBtnSpriteArray[2];
+            buyBtnImages[1].sprite = GameManager.Inst.CurrentUser.money >= price * 10 ? GameManager.Inst.UI.BuyBtnSpriteArray[3] : GameManager.Inst.UI.BuyBtnSpriteArray[2];
+            buyBtnImages[0].sprite = GameManager.Inst.CurrentUser.money >= price * 100 ? GameManager.Inst.UI.BuyBtnSpriteArray[1] : GameManager.Inst.UI.BuyBtnSpriteArray[0];
         }
         else
         {
-            buyBtnImages[2].sprite = GameManager.Inst.CurrentUser.money >= price ? buyBtnSprites[1] : buyBtnSprites[0];
+            buyBtnImages[2].sprite = GameManager.Inst.CurrentUser.money >= price ? GameManager.Inst.UI.BuyBtnSpriteArray[1] : GameManager.Inst.UI.BuyBtnSpriteArray[0];
         }
 
     }
