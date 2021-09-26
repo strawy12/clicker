@@ -35,6 +35,16 @@ public class Staff
         }
     }
 
+    public BigInteger PriceSum(int multiple)
+    {
+        BigInteger priceSum = price;
+        for(int i = 0; i < multiple; i++)
+        {
+            priceSum = (BigInteger)((float)priceSum * 1.25f);
+        }
+        return priceSum;
+    }
+
     public Staff(string staffName, int staffNum, int level, BigInteger mPs, BigInteger price)
     {
         this.staffName = staffName;

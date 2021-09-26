@@ -190,6 +190,8 @@ public class GameManager : MonoSingleton<GameManager>
     {
         if (user.exitTime == null) return;
         TimeSpan datediff = DateTime.Now - DateTime.Parse(user.exitTime);
+        if (datediff.Minutes < 20) return;
+
         int diffSec = datediff.Seconds;
         BigInteger mPsSum = 0;
         foreach (Staff staff in user.staffs)

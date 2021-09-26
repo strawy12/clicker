@@ -13,11 +13,9 @@ public class UpgradePanalBase : MonoBehaviour
     [SerializeField] protected Button bulkPurchaseBtn = null;
     protected Image backgroundImage = null;
 
-    
-
     protected Image[] buyBtnImages = null;
-    protected Text priceText = null;
-    protected Text buyBtnInfoText = null;
+    protected Text[] priceText = null;
+    protected Text[] buyBtnInfoText = null;
     protected bool isLocked = true;
     protected bool isShow = false;
     protected float timer = 0f;
@@ -29,13 +27,20 @@ public class UpgradePanalBase : MonoBehaviour
         //spriteHandle.Completed += LoadSpriteWhenReady;
         backgroundImage = GetComponent<Image>();
         buyBtnImages = upgradeBtns.transform.GetComponentsInChildren<Image>();
-        buyBtnInfoText = buyBtnImages[2].transform.GetChild(0).GetComponent<Text>();
-        priceText = buyBtnImages[2].transform.GetChild(1).GetComponent<Text>();
+        buyBtnInfoText = new Text[buyBtnImages.Length];
+        priceText = new Text[buyBtnImages.Length];
+        for (int i = 0; i < buyBtnImages.Length; i++)
+        {
+            buyBtnInfoText[i] = buyBtnImages[i].transform.GetChild(0).GetComponent<Text>();
+            priceText[i] = buyBtnImages[i].transform.GetChild(1).GetComponent<Text>();
+
+        }
         for (int i = 0; i < 2; i++)
         {
             buyBtnImages[i].gameObject.SetActive(false);
         }
     }
+
     public void Start()
     {
         UpdateValues();
@@ -62,7 +67,7 @@ public class UpgradePanalBase : MonoBehaviour
 
     public void OnDisable()
     {
-        if(isShow)
+        if (isShow)
         {
             ReloadBulkPurchaseBtn();
         }
@@ -87,25 +92,50 @@ public class UpgradePanalBase : MonoBehaviour
             buyBtnImages[i].gameObject.SetActive(true);
         }
 
-        buyBtnImages[1].rectTransform.DOAnchorPosX(40f, 0.3f).OnComplete(() =>
+        buyBtnImages[1].rectTransform.DOAnchorPosX(25f, 0.3f).OnComplete(() =>
         {
-            buyBtnImages[0].rectTransform.DOAnchorPosX(-10f, 0.25f);
+            buyBtnImages[0].rectTransform.DOAnchorPosX(-45f, 0.25f);
         });
     }
 
-    protected void ChangeBtnSprite(BigInteger price, bool isShow)
+    protected void ChangeBuyBtnInfo(string infoText)
+    {
+        for (int i = 0; i < buyBtnInfoText.Length; i++)
+        {
+            buyBtnInfoText[i].text = infoText;
+        }
+    }
+    protected void ChangeBuyBtnPriceText(string text, BigInteger priceText, BigInteger priceText_10, BigInteger priceText_100)
+    {
+
+        this.priceText[0].text = string.Format("{0} {1}", GameManager.Inst.MoneyUnitConversion(priceText_100), text);
+        this.priceText[1].text = string.Format("{0} {1}", GameManager.Inst.MoneyUnitConversion(priceText_10), text);
+        this.priceText[2].text = string.Format("{0} {1}", GameManager.Inst.MoneyUnitConversion(priceText), text);
+
+    }
+    protected void ChangeBuyBtnPriceText(string text)
+    {
+
+        for (int i = 0; i < priceText.Length; i++)
+        {
+            priceText[i].text = text;
+        }
+
+    }
+
+    protected void ChangeBtnSprite(BigInteger money, BigInteger price, BigInteger price_10, BigInteger price_100, bool isShow)
     {
         if (!this.isShow) return;
-        Debug.Log("¾Ó¤·");
+
         if (isShow)
         {
-            buyBtnImages[2].sprite = GameManager.Inst.CurrentUser.money >= price ? GameManager.Inst.UI.BuyBtnSpriteArray[3] : GameManager.Inst.UI.BuyBtnSpriteArray[2];
-            buyBtnImages[1].sprite = GameManager.Inst.CurrentUser.money >= price * 10 ? GameManager.Inst.UI.BuyBtnSpriteArray[3] : GameManager.Inst.UI.BuyBtnSpriteArray[2];
-            buyBtnImages[0].sprite = GameManager.Inst.CurrentUser.money >= price * 100 ? GameManager.Inst.UI.BuyBtnSpriteArray[1] : GameManager.Inst.UI.BuyBtnSpriteArray[0];
+            buyBtnImages[2].sprite = money >= price ? GameManager.Inst.UI.BuyBtnSpriteArray[3] : GameManager.Inst.UI.BuyBtnSpriteArray[2];
+            buyBtnImages[1].sprite = money >= price_10 ? GameManager.Inst.UI.BuyBtnSpriteArray[3] : GameManager.Inst.UI.BuyBtnSpriteArray[2];
+            buyBtnImages[0].sprite = money >= price_100 ? GameManager.Inst.UI.BuyBtnSpriteArray[1] : GameManager.Inst.UI.BuyBtnSpriteArray[0];
         }
         else
         {
-            buyBtnImages[2].sprite = GameManager.Inst.CurrentUser.money >= price ? GameManager.Inst.UI.BuyBtnSpriteArray[1] : GameManager.Inst.UI.BuyBtnSpriteArray[0];
+            buyBtnImages[2].sprite = money >= price ? GameManager.Inst.UI.BuyBtnSpriteArray[1] : GameManager.Inst.UI.BuyBtnSpriteArray[0];
         }
 
     }

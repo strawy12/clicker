@@ -29,9 +29,9 @@ public class SkillUpgradePanal : UpgradePanalBase
                 skill.isUsed = false;
             }
         }
-
+        if (!isShow) return;
         base.LateUpdate();
-        ChangeBtnSprite(skill.price, true);
+        ChangeBtnSprite(GameManager.Inst.CurrentUser.goldCoin,skill.price, skill.price * 10, skill.price * 100, true);
 
 
     }
@@ -73,8 +73,9 @@ public class SkillUpgradePanal : UpgradePanalBase
     public override void UpdateValues()
     {
         skillNameText.text = string.Format("Lv.{0} {1}", skill.level, skill.skillName);
-        priceText.text = string.Format("{0} ¿ø", GameManager.Inst.MoneyUnitConversion(skill.price));
-        buyBtnImages[2].sprite = GameManager.Inst.CurrentUser.money >= skill.price ? GameManager.Inst.UI.BuyBtnSpriteArray[1] : GameManager.Inst.UI.BuyBtnSpriteArray[0];
+        ChangeBuyBtnPriceText("°ñµå", skill.price, skill.price * 10, skill.price * 100);
+        ChangeBuyBtnInfo("±¸¸Å"); 
+        buyBtnImages[2].sprite = GameManager.Inst.CurrentUser.goldCoin >= skill.price ? GameManager.Inst.UI.BuyBtnSpriteArray[1] : GameManager.Inst.UI.BuyBtnSpriteArray[0];
     }
 
     public void OnClickUpgradeSkill(int amount)
@@ -129,6 +130,6 @@ public class SkillUpgradePanal : UpgradePanalBase
     public override void ReloadBulkPurchaseBtn()
     {
         base.ReloadBulkPurchaseBtn();
-        ChangeBtnSprite(skill.price, false);
+        ChangeBtnSprite(GameManager.Inst.CurrentUser.goldCoin, skill.price, skill.price * 10, skill.price * 100, false);
     }
 }

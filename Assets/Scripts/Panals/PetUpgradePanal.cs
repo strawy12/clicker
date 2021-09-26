@@ -7,23 +7,24 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using BigInteger = System.Numerics.BigInteger;
 
 public class PetUpgradePanal : UpgradePanalBase
-    {
-        [SerializeField] private Text petNameText = null;
-        [SerializeField] private Text amountText = null;
-        [SerializeField] private Image petImage = null;
-        [SerializeField] GameObject petObjectTemp = null;
-        [SerializeField] private Toggle petMountingBtn = null;
-
-        private Pet pet = null;
-        private int petNum;
+{
+    [SerializeField] private Text petNameText = null;
+    [SerializeField] private Text amountText = null;
+    [SerializeField] private Image petImage = null;
+    [SerializeField] GameObject petObjectTemp = null;
+    [SerializeField] private Toggle petMountingBtn = null;
+    [SerializeField] new private Image buyBtnImages = null;
+    private new Text buyBtnInfoText = null;
+    private new Text priceText = null;
+    private Pet pet = null;
+    private int petNum;
     private GameObject petBuffObj = null;
 
     public override void Awake()
     {
         backgroundImage = GetComponent<Image>();
-        buyBtnImages = upgradeBtns.transform.GetComponentsInChildren<Image>();
-        buyBtnInfoText = buyBtnImages[0].transform.GetChild(0).GetComponent<Text>();
-        priceText = buyBtnImages[0].transform.GetChild(1).GetComponent<Text>();
+        buyBtnInfoText = buyBtnImages.transform.GetChild(0).GetComponent<Text>();
+        priceText = buyBtnImages.transform.GetChild(1).GetComponent<Text>();
     }
 
     public override void SetPanalNum(int num)
@@ -42,11 +43,11 @@ public class PetUpgradePanal : UpgradePanalBase
             petMountingBtn.interactable = true;
             buyBtnInfoText.text = "강화";
             petNameText.text = string.Format("Lv.{0} {1}", pet.level, pet.petName);
-            priceText.text = string.Format("{0} / {1}\n{2} 원",pet.amount, pet.maxAmount , GameManager.Inst.MoneyUnitConversion(pet.price));
+            priceText.text = string.Format("{0} / {1}\n{2} 원", pet.amount, pet.maxAmount, GameManager.Inst.MoneyUnitConversion(pet.price));
             backgroundImage.color = Color.white;
             amountText.text = string.Format("{0}", pet.amount);
-            buyBtnImages[0].sprite = GameManager.Inst.CurrentUser.money >= pet.price && pet.amount >= pet.maxAmount ? GameManager.Inst.UI.BuyBtnSpriteArray[isShow ? 3 : 1] : GameManager.Inst.UI.BuyBtnSpriteArray[0];
-            
+            buyBtnImages.sprite = GameManager.Inst.CurrentUser.money >= pet.price && pet.amount >= pet.maxAmount ? GameManager.Inst.UI.BuyBtnSpriteArray[isShow ? 3 : 1] : GameManager.Inst.UI.BuyBtnSpriteArray[0];
+
         }
         else
         {
@@ -55,7 +56,7 @@ public class PetUpgradePanal : UpgradePanalBase
             priceText.text = "";
             buyBtnInfoText.text = "";
             backgroundImage.color = Color.gray;
-            buyBtnImages[0].sprite = GameManager.Inst.UI.BuyBtnSpriteArray[4];
+            buyBtnImages.sprite = GameManager.Inst.UI.BuyBtnSpriteArray[4];
         }
         //petImage.sprite = mainSprite;
     }

@@ -18,8 +18,9 @@ public class StaffUpgradePanal : UpgradePanalBase
 
     public override void LateUpdate()
     {
+        if (!isShow) return;
         base.LateUpdate();
-        ChangeBtnSprite(staff.price, true);
+        ChangeBtnSprite(GameManager.Inst.CurrentUser.money, staff.price, staff.PriceSum(10), staff.PriceSum(100), true);;
     }
 
     public override void SetPanalNum(int num)
@@ -39,14 +40,14 @@ public class StaffUpgradePanal : UpgradePanalBase
         {
             if(staff.isSold)
             {
-                buyBtnInfoText.text = "강화";
+                ChangeBuyBtnInfo("강화");
             }
             else
             {
-                buyBtnInfoText.text = "구매";
+                ChangeBuyBtnInfo("구매");
             }
             staffNameText.text = string.Format("Lv.{0} {1}", staff.level, staff.staffName);
-            priceText.text = string.Format("{0} 원", GameManager.Inst.MoneyUnitConversion(staff.price));
+            ChangeBuyBtnPriceText("원",staff.price, staff.PriceSum(10), staff.PriceSum(100));
             staffInfoText.text = string.Format("+ {0} / s", GameManager.Inst.MoneyUnitConversion(staff.mPs));
             staffImage.color = Color.white;
             backgroundImage.color = Color.white;
@@ -56,8 +57,8 @@ public class StaffUpgradePanal : UpgradePanalBase
         else
         {
             staffNameText.text = "????";
-            priceText.text = "";
-            buyBtnInfoText.text = "";
+            ChangeBuyBtnPriceText("");
+            ChangeBuyBtnInfo("");
             staffInfoText.text = string.Format("조건: {0}의 Lv. 10 이상 달성", GameManager.Inst.CurrentUser.staffs[staffNum - 1].staffName);
             staffImage.color = Color.black;
             backgroundImage.color = Color.gray;
@@ -108,6 +109,6 @@ public class StaffUpgradePanal : UpgradePanalBase
     public override void ReloadBulkPurchaseBtn()
     {
         base.ReloadBulkPurchaseBtn();
-        ChangeBtnSprite(staff.price, false);
+        ChangeBtnSprite(GameManager.Inst.CurrentUser.money, staff.price, staff.PriceSum(10), staff.PriceSum(100), false);
     }
 }

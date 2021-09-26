@@ -1,22 +1,22 @@
 ﻿{
     "userName": "금사향",
-    "playTime": 44.78734588623047,
-    "exitTime": "2021-09-24 AM 12:26:39",
-    "saveMoney": "19700",
+    "playTime": 212.5738525390625,
+    "exitTime": "2021-09-24 PM 8:58:30",
+    "saveMoney": "10084",
     "goldCoin": 0,
-    "clickCnt": 760,
+    "clickCnt": 822,
     "bigHeartClickCnt": 0,
     "skillUseCnt": 0,
-    "levelUpCnt": 0,
+    "levelUpCnt": 1,
     "additionMoney": 1,
     "saveBasemPc": "10",
     "staffs": [
         {
             "staffName": "응애찍찍이",
             "staffNum": 0,
-            "level": 0,
-            "savemPs": "0",
-            "savePrice": "1000"
+            "level": 1,
+            "savemPs": "10",
+            "savePrice": "1250"
         },
         {
             "staffName": "청소년찍찍이",
@@ -131,8 +131,8 @@
         {
             "petNum": 0,
             "petName": "강아지",
-            "amount": 0,
-            "level": 0,
+            "amount": 1,
+            "level": 1,
             "percent": 20,
             "savePrice": "1000",
             "isEquip": false
