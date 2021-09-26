@@ -18,7 +18,7 @@ public class Character : MonoBehaviour
     {
         if (!EventSystem.current.IsPointerOverGameObject())
         {
-            spriteRenderer.sprite = clickCharaCterSprite;
+            transform.Rotate(0f, 0f, -10f);
         }
     }
 
@@ -27,8 +27,10 @@ public class Character : MonoBehaviour
         if (!EventSystem.current.IsPointerOverGameObject())
         {
             GameManager.Inst.UI.OnClickDisPlay();
-            spriteRenderer.sprite = normalCharaCterSprite;
+
         }
+        transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+
     }
 
 }

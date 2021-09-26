@@ -41,4 +41,14 @@ public class Skill
         this.baseDuration = baseDuration;
         this.baseCoolTime = baseCoolTime;
     }
+
+    public long PriceSum(int multiple)
+    {
+        long priceSum = price;
+        for(int i = 0; i < multiple; i++)
+        {
+            priceSum += 10;
+        }
+        return priceSum;
+    }
 }

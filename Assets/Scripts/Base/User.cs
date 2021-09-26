@@ -4,6 +4,24 @@ using System.Numerics;
 using System;
 
 [Serializable]
+public class Sahayang
+{
+    public BigInteger price;
+    public string savePrice;
+    public int level;
+    public BigInteger PriceSum(int multiple)
+    {
+        BigInteger priceSum = price;
+        for (int i = 0; i < multiple; i++)
+        {
+            priceSum += GameManager.Inst.MultiflyBigInteger(priceSum, 1.25f, 2);
+        }
+        return priceSum;
+    }
+}
+
+
+[Serializable]
 public class User
 {
     public string userName;
@@ -40,6 +58,7 @@ public class User
         }
     }
 
+    public Sahayang sahayang;
     public BigInteger money;
 
 
@@ -112,6 +131,7 @@ public class User
             {
                 pet.savePrice = pet.price.ToString();
             }
+            sahayang.savePrice = sahayang.price.ToString();
         }
         else
         {
@@ -128,6 +148,7 @@ public class User
                 pet.price = BigInteger.Parse(pet.savePrice);
             }
         }
+        sahayang.price = BigInteger.Parse(sahayang.savePrice);
     }
 
     public void UpdateMoney(BigInteger updateMoney, bool isAdd)

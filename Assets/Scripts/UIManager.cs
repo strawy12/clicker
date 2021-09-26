@@ -29,32 +29,36 @@ public class UIManager : MonoBehaviour
     [SerializeField] private CoinText coinTextTemp = null;
     [SerializeField] private SomSaTang somSaTangTemp = null;
     [SerializeField] private GameObject clickEffectTemp = null;
+    [SerializeField] private Image randomPickTemp = null;
 
     [SerializeField] private GameObject messageObject = null;
 
 
     [Header("패널들")]
     [SerializeField] private GameObject settingPanal = null;
+    [SerializeField] private GameObject staffObjPanal = null;
     [SerializeField] private RectTransform controlPanal = null;
     [SerializeField] private GameObject missionPanal = null;
     [SerializeField] private PetInfo petinfoPanal = null;
     [SerializeField] private Image randomPickPanal = null;
     [SerializeField] private GameObject rewardPanal = null;
+    [SerializeField] private UpgradeSahyangPanal sahyangPanal = null;
 
     [Header("돈")]
     [SerializeField] private Text moneyText = null;
     [SerializeField] private Text goldCoinText = null;
 
-    [Header("컨텐츠 스크롤")]
+    [Header("컨텐츠 배열")]
     [SerializeField] private GameObject[] scrollObject = null;
+    [SerializeField] private GameObject[] staffObjects = null;
 
     private Text rewardText = null;
     private MissionPanal[] missionPanalArray = null;
     private Sprite[] soldierSprites = null;
     private Sprite[] buyBtnSprites = null;
     private Sprite[] missionSprites = null;
+    private List<GameObject> randomPickObj = new List<GameObject>();
     private Coroutine messageCo = null;
-    private Image randomPickImage = null;
 
     private Text messageText = null;
     private bool isPicking = false;
@@ -70,7 +74,7 @@ public class UIManager : MonoBehaviour
     private int clickCnt = 0;
     private int randNum;
 
-    private string spritePath = "SahyangClickerSoldier";
+    private string spritePath = "StaffSprites";
     private string spriteUIPath = "Clicker Button UI";
 
     private Canvas canvas;
@@ -86,7 +90,6 @@ public class UIManager : MonoBehaviour
         messageText = messageObject.transform.GetChild(0).GetComponent<Text>();
         missionPanalArray = missionPanal.GetComponentsInChildren<MissionPanal>();
         canvas = FindObjectOfType<Canvas>();
-        randomPickImage = randomPickPanal.transform.GetChild(0).GetComponent<Image>();
         rewardText = rewardPanal.transform.GetChild(1).GetChild(1).GetComponent<Text>();
         GameStartStart();
     }
@@ -101,7 +104,7 @@ public class UIManager : MonoBehaviour
 
     private void Update()
     {
-        if(GameManager.Inst.CurrentUser.playTime < 1800f)
+        if (GameManager.Inst.CurrentUser.playTime < 1800f)
         {
             GameManager.Inst.CurrentUser.playTime += Time.deltaTime;
         }
@@ -125,7 +128,7 @@ public class UIManager : MonoBehaviour
 
     private void MissionPanalGoStart()
     {
-        foreach(MissionPanal missionPanal in missionPanalArray)
+        foreach (MissionPanal missionPanal in missionPanalArray)
         {
             missionPanal.GoStart();
         }
@@ -158,6 +161,7 @@ public class UIManager : MonoBehaviour
             upgradePanalList.Add(newUpgradePanal);
             newUpgradePanal.SetPanalNum(staff.staffNum);
             newPanal.SetActive(true);
+            ActiveStaffObj(staff.isSold, staff.staffNum);
         }
 
         foreach (Skill skill in GameManager.Inst.CurrentUser.skills)
@@ -178,9 +182,14 @@ public class UIManager : MonoBehaviour
             newUpgradePanal.SetPanalNum(pet.petNum);
             newPanal.SetActive(true);
         }
-
+        sahyangPanal.SetPanalSahayng();
+        upgradePanalList.Add(sahyangPanal);
     }
 
+    public void ActiveStaffObj(bool isShow, int num)
+    {
+        staffObjects[num].SetActive(isShow);
+    }
     private void CheckBigHeart()
     {
         if (clickCnt == randNum)
@@ -327,25 +336,47 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void OnClickRandomPets()
+    public void OnClickRandomPets(int amount)
     {
         if (isPicking)
         {
             ShowMessage("캐릭터를 이미 뽑고 있습니다.");
             return;
         }
-        if (GameManager.Inst.CurrentUser.money < 10000)
+        if (GameManager.Inst.CurrentUser.goldCoin < 100 * amount)
         {
             ShowMessage("돈이 부족합니다.");
             return;
         }
-        GameManager.Inst.CurrentUser.UpdateMoney(10000, false);
+        GameManager.Inst.CurrentUser.goldCoin -= 100 * amount;
         UpdateMoneyPanal();
-        RandomPets();
         isPicking = true;
+        StartCoroutine(RandomPickAnim(amount));
         ShowMessage("구매 완료");
     }
-    public void RandomPets()
+
+    private IEnumerator RandomPickAnim(int amount)
+    {
+        randomPickPanal.rectTransform.DOScale(Vector3.one, 0.2f);
+        yield return new WaitForSeconds(0.2f);
+        for(int i = 0; i < amount; i++)
+        {
+            StartCoroutine(RandomPets());
+            yield return new WaitForSeconds(1f);
+        }
+        yield return new WaitForSeconds(0.5f);
+
+        randomPickPanal.rectTransform.DOScale(Vector3.zero, 0.3f);
+        int cnt = randomPickObj.Count;
+        for (int i = 0; i < cnt; i++)
+        {
+            Destroy(randomPickObj[0]);
+            randomPickObj.RemoveAt(0);
+        }
+
+        isPicking = false;
+    }
+    public IEnumerator RandomPets()
     {
         int rand = 0;
         int num;
@@ -354,26 +385,17 @@ public class UIManager : MonoBehaviour
         rand = Random.Range(0, 100);
         num = CheckRandPetNum(list, rand);
         pet = GameManager.Inst.CurrentUser.pets[num];
-        randomText.text = pet.petName;
+        Image randomPickImage = Instantiate(randomPickTemp, randomPickTemp.transform.parent);
+        randomPickObj.Add(randomPickImage.gameObject);
+        randomPickImage.gameObject.SetActive(true);
         randomPickImage.DOFade(0f, 0f);
-        randomPickPanal.rectTransform.DOScale(Vector3.one, 0.2f).OnComplete(() =>
-        {
-            randomPickImage.sprite = SoldierSpriteArray[num];
-            randomPickImage.DOFade(1f, 1f).OnComplete(() =>
-            {
-                randomPickImage.rectTransform.DOScale(new Vector3(1.5f, 1f, 1.5f), 0.2f).OnComplete(() =>
-                {
-                    randomPickImage.rectTransform.DOScale(Vector3.one, 0.1f).OnComplete(() =>
-                    {
-                        randomPickPanal.rectTransform.DOScale(Vector3.zero, 0.3f);
-                        isPicking = false;
-                    });
-                });
-            });
-            randomPickImage.rectTransform.DOShakePosition(1f);
-            randomPickImage.rectTransform.DOShakeScale(1f);
-            randomPickImage.rectTransform.DOShakeRotation(1f);
-        });
+        randomPickImage.sprite = SoldierSpriteArray[num];
+        randomPickImage.DOFade(1f, 1f);
+        randomPickImage.rectTransform.DOShakePosition(0.5f);
+        randomPickImage.rectTransform.DOShakeScale(0.5f);
+        randomPickImage.rectTransform.DOShakeRotation(0.5f);
+        yield return new WaitForSeconds(0.5f);
+        randomPickImage.rectTransform.DOScale(new Vector3(1.5f, 1f, 1.5f), 0.2f).OnComplete(() => randomPickImage.rectTransform.DOScale(Vector3.one, 0.1f));
 
         //SpawnPet(soldierSprites[num], num);
 
@@ -417,7 +439,32 @@ public class UIManager : MonoBehaviour
         }
         scrollNum = num;
         isShow = !isShow;
-        controlPanal.DOAnchorPosY(isShow ? 27f : -242f, 0.2f).SetEase(Ease.InCirc);
+
+        StartCoroutine(ActivePanal(num));
+    }
+
+    public IEnumerator ActivePanal(int num)
+    {
+        if (!isShow)
+        {
+            controlPanal.DOAnchorPosY(-242f, 0.2f).SetEase(Ease.InCirc);
+            yield return new WaitForSeconds(0.2f);
+            staffObjPanal.SetActive(true);
+            staffObjPanal.transform.DOScale(1f, 0.3f);
+        }
+        else
+        {
+            staffObjPanal.transform.DOScaleY(0f, 0.2f).OnComplete(() =>
+            {
+                staffObjPanal.SetActive(false);
+                staffObjPanal.transform.localScale = Vector3.zero;
+            });
+
+            yield return new WaitForSeconds(0.2f);
+            controlPanal.DOAnchorPosY(27f, 0.2f).SetEase(Ease.InCirc);
+        }
+
+
         SetScrollActive(num);
     }
 

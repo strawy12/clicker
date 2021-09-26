@@ -69,25 +69,31 @@ public class StaffUpgradePanal : UpgradePanalBase
     }
     public void OnClickStaffBuyBtn(int amount)
     {
-        UpgradeStaff(amount);
+        if (!UpgradeStaff(amount)) return;
         if (amount != 1)
         {
             timer = 0f;
         }
     }
 
-    private bool UpgradeStaff(int amount)
+    public bool UpgradeStaff(int amount)
     {
         if (staff.isLocked) return false;
         if (GameManager.Inst.CurrentUser.money >= staff.price * amount)
         {
+            BigInteger mPsSum;
             GameManager.Inst.CurrentUser.UpdateMoney(staff.price * amount, false);
+            if(!staff.isSold)
+            {
+                GameManager.Inst.UI.ActiveStaffObj(true, staff.staffNum);
+            }
             staff.level += amount;
             GameManager.Inst.CurrentUser.levelUpCnt++;
             for (int i = 0; i < amount; i++)
             {
-                staff.price = (BigInteger)((float)staff.price * 1.25f);
-                staff.mPs = (BigInteger)Mathf.Max((float)staff.mPs * 1.25f, 10);
+                staff.price = GameManager.Inst.MultiflyBigInteger(staff.price, 1.25f, 2);
+                mPsSum = GameManager.Inst.MultiflyBigInteger(staff.mPs, 1.25f, 2);
+                staff.mPs = mPsSum < 10 ? 10 : mPsSum;
             }
            
             UpdateValues();
@@ -98,6 +104,7 @@ public class StaffUpgradePanal : UpgradePanalBase
         else
         {
             GameManager.Inst.UI.ShowMessage("돈이 부족합니다");
+        UpgradeStaff(amount);
             return false;
         }
     }

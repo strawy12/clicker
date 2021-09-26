@@ -111,20 +111,22 @@ public class GameManager : MonoSingleton<GameManager>
             user.userName = "±İ»çÇâ";
             user.basemPc = 10;
             user.additionMoney = 1;
-            user.goldCoin = 0;
+            user.goldCoin = 10000000;
             user.money = 10000;
+            user.sahayang = new Sahayang();
+            user.sahayang.price = 1000;
 
             user.staffs.Add(new Staff("ÀÀ¾ÖÂïÂïÀÌ", 0, 0, 0, 1000));
-            user.staffs.Add(new Staff("Ã»¼Ò³âÂïÂïÀÌ", 1, 0, 0, 3000));
-            user.staffs.Add(new Staff("Áß2º´ÂïÂïÀÌ", 2, 0, 0, 5000));
-            user.staffs.Add(new Staff("»õ³»±âÂïÂïÀÌ", 3, 0, 0, 10000));
-            user.staffs.Add(new Staff("º¹ÇĞ»ıÂïÂïÀÌ", 4, 0, 0, 15000));
-            user.staffs.Add(new Staff("½Å»çÂïÂïÀÌ", 5, 0, 0, 30000));
-            user.staffs.Add(new Staff("±â»çÂïÂïÀÌ", 6, 0, 0, 50000));
-            user.staffs.Add(new Staff("Áı»çÂïÂïÀÌ", 7, 0, 0, 100000));
-            user.staffs.Add(new Staff("¿ÕÂïÂïÀÌ", 8, 0, 0, 300000));
-            user.staffs.Add(new Staff("»çÀÌº¸±×ÂïÂïÀÌ", 9, 0, 0, 500000));
-            user.staffs.Add(new Staff("AIÂïÂïÀÌ", 10, 0, 0, 1000000));
+            user.staffs.Add(new Staff("¼Ò³âÂïÂïÀÌ", 1, 0, 0, 3000));
+            user.staffs.Add(new Staff("¼Ò³àÂïÂïÀÌ", 2, 0, 0, 5000));
+            user.staffs.Add(new Staff("¾Ë¹ÙÂïÂïÀÌ", 3, 0, 0, 10000));
+            user.staffs.Add(new Staff("³óºÎÂïÂïÀÌ", 4, 0, 0, 15000));
+            user.staffs.Add(new Staff("º¹¼­ÂïÂïÀÌ", 5, 0, 0, 30000));
+            user.staffs.Add(new Staff("ÀÇ»çÂïÂïÀÌ", 6, 0, 0, 50000));
+            user.staffs.Add(new Staff("¼Ò¹æ°üÂïÂïÀÌ", 7, 0, 0, 100000));
+            user.staffs.Add(new Staff("ÇïÃ¢ÂïÂïÀÌ", 8, 0, 0, 300000));
+            user.staffs.Add(new Staff("±ºÀÎÂïÂïÀÌ", 9, 0, 0, 500000));
+            user.staffs.Add(new Staff("OIFÂïÂïÀÌ", 10, 0, 0, 1000000));
 
             user.skills.Add(new Skill("Æ®ÀÌÀ¯", 0, 1, 100, 30, 100));
             user.skills.Add(new Skill("ÀÀ¾Ö", 1, 1, 100, 0, 200));
@@ -174,6 +176,16 @@ public class GameManager : MonoSingleton<GameManager>
         return true;
     }
 
+    public BigInteger MultiflyBigInteger(BigInteger num1, float num2, int dight)
+    {
+        int multiflyNum =(int)Mathf.Pow(10, dight);
+        BigInteger nums = (BigInteger)(num2 * multiflyNum);
+        BigInteger sum = num1 * nums;
+
+        sum /= multiflyNum;
+
+        return sum;
+    }
     private void SettingUser()
     {
         if(CheckDate())

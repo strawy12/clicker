@@ -73,7 +73,7 @@ public class SkillUpgradePanal : UpgradePanalBase
     public override void UpdateValues()
     {
         skillNameText.text = string.Format("Lv.{0} {1}", skill.level, skill.skillName);
-        ChangeBuyBtnPriceText("°ñµå", skill.price, skill.price * 10, skill.price * 100);
+        ChangeBuyBtnPriceText("°ñµå", skill.price, skill.PriceSum(10), skill.PriceSum(100));
         ChangeBuyBtnInfo("±¸¸Å"); 
         buyBtnImages[2].sprite = GameManager.Inst.CurrentUser.goldCoin >= skill.price ? GameManager.Inst.UI.BuyBtnSpriteArray[1] : GameManager.Inst.UI.BuyBtnSpriteArray[0];
     }
@@ -90,11 +90,12 @@ public class SkillUpgradePanal : UpgradePanalBase
 
     private bool UpgradeSkill(int amount)
     {
-        if (GameManager.Inst.CurrentUser.goldCoin >= skill.price * amount)
+        if (GameManager.Inst.CurrentUser.goldCoin >= skill.PriceSum(amount))
         {
-            GameManager.Inst.CurrentUser.goldCoin -= skill.price * amount;
+            GameManager.Inst.CurrentUser.goldCoin -= skill.PriceSum(amount);
             GameManager.Inst.CurrentUser.levelUpCnt++;
             skill.level += amount;
+            skill.price += 10 * amount;
             UpdateValues();
             GameManager.Inst.UI.UpdateMoneyPanal();
             GameManager.Inst.UI.ShowMessage("±¸¸Å ¿Ï·á");

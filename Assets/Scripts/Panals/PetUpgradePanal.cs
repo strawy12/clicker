@@ -13,9 +13,9 @@ public class PetUpgradePanal : UpgradePanalBase
     [SerializeField] private Image petImage = null;
     [SerializeField] GameObject petObjectTemp = null;
     [SerializeField] private Toggle petMountingBtn = null;
-    [SerializeField] new private Image buyBtnImages = null;
-    private new Text buyBtnInfoText = null;
-    private new Text priceText = null;
+    [SerializeField] private Image buyBtnImage = null;
+    private Text petBuyBtnInfoText = null;
+    private Text petPriceText = null;
     private Pet pet = null;
     private int petNum;
     private GameObject petBuffObj = null;
@@ -23,8 +23,8 @@ public class PetUpgradePanal : UpgradePanalBase
     public override void Awake()
     {
         backgroundImage = GetComponent<Image>();
-        buyBtnInfoText = buyBtnImages.transform.GetChild(0).GetComponent<Text>();
-        priceText = buyBtnImages.transform.GetChild(1).GetComponent<Text>();
+        petBuyBtnInfoText = buyBtnImage.transform.GetChild(0).GetComponent<Text>();
+        petPriceText = buyBtnImage.transform.GetChild(1).GetComponent<Text>();
     }
 
     public override void SetPanalNum(int num)
@@ -41,22 +41,22 @@ public class PetUpgradePanal : UpgradePanalBase
         {
             petMountingBtn.isOn = pet.isEquip;
             petMountingBtn.interactable = true;
-            buyBtnInfoText.text = "강화";
+            petBuyBtnInfoText.text = "강화";
             petNameText.text = string.Format("Lv.{0} {1}", pet.level, pet.petName);
-            priceText.text = string.Format("{0} / {1}\n{2} 원", pet.amount, pet.maxAmount, GameManager.Inst.MoneyUnitConversion(pet.price));
+            petPriceText.text = string.Format("{0} / {1}\n{2} 원", pet.amount, pet.maxAmount, GameManager.Inst.MoneyUnitConversion(pet.price));
             backgroundImage.color = Color.white;
             amountText.text = string.Format("{0}", pet.amount);
-            buyBtnImages.sprite = GameManager.Inst.CurrentUser.money >= pet.price && pet.amount >= pet.maxAmount ? GameManager.Inst.UI.BuyBtnSpriteArray[isShow ? 3 : 1] : GameManager.Inst.UI.BuyBtnSpriteArray[0];
+            buyBtnImage.sprite = GameManager.Inst.CurrentUser.money >= pet.price && pet.amount >= pet.maxAmount ? GameManager.Inst.UI.BuyBtnSpriteArray[isShow ? 3 : 1] : GameManager.Inst.UI.BuyBtnSpriteArray[0];
 
         }
         else
         {
             petMountingBtn.interactable = false;
             petNameText.text = "????";
-            priceText.text = "";
-            buyBtnInfoText.text = "";
+            petPriceText.text = "";
+            petBuyBtnInfoText.text = "";
             backgroundImage.color = Color.gray;
-            buyBtnImages.sprite = GameManager.Inst.UI.BuyBtnSpriteArray[4];
+            buyBtnImage.sprite = GameManager.Inst.UI.BuyBtnSpriteArray[4];
         }
         //petImage.sprite = mainSprite;
     }
@@ -79,7 +79,7 @@ public class PetUpgradePanal : UpgradePanalBase
         GameManager.Inst.CurrentUser.levelUpCnt++;
         pet.amount -= pet.maxAmount;
         pet.level++;
-        pet.price = (BigInteger)((float)pet.price * 1.25f);
+        pet.price = GameManager.Inst.MultiflyBigInteger(pet.price, 1.25f, 2);
         GameManager.Inst.UI.ShowMessage("레벨업!");
     }
 

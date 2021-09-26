@@ -17,6 +17,9 @@ TextureImporter:
   - first:
       213: -3791421098451541354
     second: Retouching_Sahyang_4
+  - first:
+      213: 1540130315611776760
+    second: Retouching_Sahyang_5
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -61,7 +64,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 300
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -121,12 +124,12 @@ TextureImporter:
       name: Retouching_Sahyang_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
+        x: 55
+        y: 915
         width: 1150
-        height: 2620
+        height: 1705
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -142,12 +145,12 @@ TextureImporter:
       name: Retouching_Sahyang_1
       rect:
         serializedVersion: 2
-        x: 1150
-        y: 0
+        x: 1205
+        y: 915
         width: 1150
-        height: 2620
+        height: 1705
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -163,12 +166,12 @@ TextureImporter:
       name: Retouching_Sahyang_2
       rect:
         serializedVersion: 2
-        x: 2300
-        y: 0
+        x: 2361
+        y: 915
         width: 1150
-        height: 2620
+        height: 1705
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -184,12 +187,12 @@ TextureImporter:
       name: Retouching_Sahyang_3
       rect:
         serializedVersion: 2
-        x: 3450
-        y: 0
+        x: 3505
+        y: 915
         width: 1150
-        height: 2620
+        height: 1705
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -205,12 +208,12 @@ TextureImporter:
       name: Retouching_Sahyang_4
       rect:
         serializedVersion: 2
-        x: 4600
-        y: 0
+        x: 4655
+        y: 915
         width: 1150
-        height: 2620
+        height: 1705
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -218,6 +221,27 @@ TextureImporter:
       bones: []
       spriteID: 692efd8499a226bc0800000000000000
       internalID: -3791421098451541354
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Retouching_Sahyang_5
+      rect:
+        serializedVersion: 2
+        x: 6082
+        y: 915
+        width: 1151
+        height: 1705
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8f6a9d1bc54af5510800000000000000
+      internalID: 1540130315611776760
       vertices: []
       indices: 
       edges: []

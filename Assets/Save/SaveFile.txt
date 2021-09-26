@@ -1,10 +1,14 @@
 ﻿{
     "userName": "금사향",
-    "playTime": 212.5738525390625,
-    "exitTime": "2021-09-24 PM 8:58:30",
-    "saveMoney": "10084",
-    "goldCoin": 0,
-    "clickCnt": 822,
+    "playTime": 39.444602966308597,
+    "exitTime": "2021-09-27 AM 12:11:24",
+    "saveMoney": "9670",
+    "goldCoin": 9999000,
+    "sahayang": {
+        "savePrice": "1000",
+        "level": 0
+    },
+    "clickCnt": 42,
     "bigHeartClickCnt": 0,
     "skillUseCnt": 0,
     "levelUpCnt": 1,
@@ -19,72 +23,72 @@
             "savePrice": "1250"
         },
         {
-            "staffName": "청소년찍찍이",
+            "staffName": "소년찍찍이",
             "staffNum": 1,
             "level": 0,
             "savemPs": "0",
             "savePrice": "3000"
         },
         {
-            "staffName": "중2병찍찍이",
+            "staffName": "소녀찍찍이",
             "staffNum": 2,
             "level": 0,
             "savemPs": "0",
             "savePrice": "5000"
         },
         {
-            "staffName": "새내기찍찍이",
+            "staffName": "알바찍찍이",
             "staffNum": 3,
             "level": 0,
             "savemPs": "0",
             "savePrice": "10000"
         },
         {
-            "staffName": "복학생찍찍이",
+            "staffName": "농부찍찍이",
             "staffNum": 4,
             "level": 0,
             "savemPs": "0",
             "savePrice": "15000"
         },
         {
-            "staffName": "신사찍찍이",
+            "staffName": "복서찍찍이",
             "staffNum": 5,
             "level": 0,
             "savemPs": "0",
             "savePrice": "30000"
         },
         {
-            "staffName": "기사찍찍이",
+            "staffName": "의사찍찍이",
             "staffNum": 6,
             "level": 0,
             "savemPs": "0",
             "savePrice": "50000"
         },
         {
-            "staffName": "집사찍찍이",
+            "staffName": "소방관찍찍이",
             "staffNum": 7,
             "level": 0,
             "savemPs": "0",
             "savePrice": "100000"
         },
         {
-            "staffName": "왕찍찍이",
+            "staffName": "헬창찍찍이",
             "staffNum": 8,
             "level": 0,
             "savemPs": "0",
             "savePrice": "300000"
         },
         {
-            "staffName": "사이보그찍찍이",
+            "staffName": "군인찍찍이",
             "staffNum": 9,
             "level": 0,
             "savemPs": "0",
             "savePrice": "500000"
         },
         {
-            "staffName": "AI찍찍이",
+            "staffName": "OIF찍찍이",
             "staffNum": 10,
-            "level": 0,
+            "level": 1,
             "savemPs": "0",
             "savePrice": "1000000"
         }
@@ -131,17 +135,17 @@
         {
             "petNum": 0,
             "petName": "강아지",
-            "amount": 1,
+            "amount": 5,
             "level": 1,
             "percent": 20,
             "savePrice": "1000",
-            "isEquip": false
+            "isEquip": true
         },
         {
             "petNum": 1,
             "petName": "토끼",
-            "amount": 0,
-            "level": 0,
+            "amount": 1,
+            "level": 1,
             "percent": 20,
             "savePrice": "1000",
             "isEquip": false
@@ -158,8 +162,8 @@
         {
             "petNum": 3,
             "petName": "곰",
-            "amount": 0,
-            "level": 0,
+            "amount": 1,
+            "level": 1,
             "percent": 10,
             "savePrice": "1000",
             "isEquip": false
@@ -176,8 +180,8 @@
         {
             "petNum": 5,
             "petName": "너구리",
-            "amount": 0,
-            "level": 0,
+            "amount": 2,
+            "level": 1,
             "percent": 7,
             "savePrice": "1000",
             "isEquip": false
@@ -212,8 +216,8 @@
         {
             "petNum": 9,
             "petName": "까미",
-            "amount": 0,
-            "level": 0,
+            "amount": 1,
+            "level": 1,
             "percent": 1,
             "savePrice": "1000",
             "isEquip": false

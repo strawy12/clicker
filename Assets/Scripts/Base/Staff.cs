@@ -40,7 +40,7 @@ public class Staff
         BigInteger priceSum = price;
         for(int i = 0; i < multiple; i++)
         {
-            priceSum = (BigInteger)((float)priceSum * 1.25f);
+            priceSum += GameManager.Inst.MultiflyBigInteger(priceSum, 1.25f, 2);
         }
         return priceSum;
     }

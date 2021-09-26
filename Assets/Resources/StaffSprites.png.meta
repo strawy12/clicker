@@ -1,46 +1,43 @@
 fileFormatVersion: 2
-guid: d7f2d65716b15b84f9a9f828319ea9aa
+guid: c13d9d303182c2c48b55c1af9de425af
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5897832219398827629
-    second: SahyangClickerSoldier_2
+      213: 1520712219404594397
+    second: StaffSprites_0
   - first:
-      213: 1196111945618082067
-    second: SahyangClickerSoldier_3
+      213: 5419358604413039420
+    second: StaffSprites_1
   - first:
-      213: -2713916141667737706
-    second: SahyangClickerSoldier_4
+      213: -2430832293001920034
+    second: StaffSprites_2
   - first:
-      213: -2560528327804526401
-    second: SahyangClickerSoldier_5
+      213: 6641106032945150302
+    second: StaffSprites_3
   - first:
-      213: -265085313863461419
-    second: SahyangClickerSoldier_6
+      213: -5680037439513630890
+    second: StaffSprites_4
   - first:
-      213: -4560912170816159242
-    second: SahyangClickerSoldier_7
+      213: 8382624369021609746
+    second: StaffSprites_5
   - first:
-      213: -6833053116587816107
-    second: SahyangClickerSoldier_8
+      213: 5414883308359883387
+    second: StaffSprites_6
   - first:
-      213: -4139269039222151939
-    second: SahyangClickerSoldier_9
+      213: 4621669647294986257
+    second: StaffSprites_7
   - first:
-      213: 5186788299518172889
-    second: SahyangClickerSoldier_10
+      213: 3969124025067669265
+    second: StaffSprites_8
   - first:
-      213: -1041776183744902827
-    second: SahyangClickerSoldier_11
+      213: 1431084331860270347
+    second: StaffSprites_9
   - first:
-      213: -2336598124239373346
-    second: SahyangClickerSoldier_0
+      213: -3575071240591708273
+    second: StaffSprites_10
   - first:
-      213: 4026399474759475041
-    second: SahyangClickerSoldier_1
-  - first:
-      213: 967733853052508446
-    second: SahyangClickerSoldier_12
+      213: -8253409943158711779
+    second: StaffSprites_11
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -85,7 +82,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 700
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -142,274 +139,253 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: SahyangClickerSoldier_0
+      name: StaffSprites_0
       rect:
         serializedVersion: 2
-        x: 26
-        y: 214
-        width: 72
-        height: 72
+        x: 106
+        y: 595
+        width: 324
+        height: 401
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: edb3ed5c26cb29fd0800000000000000
-      internalID: -2336598124239373346
+      spriteID: ddce43bd4b7aa1510800000000000000
+      internalID: 1520712219404594397
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SahyangClickerSoldier_1
+      name: StaffSprites_1
       rect:
         serializedVersion: 2
-        x: 125
-        y: 214
-        width: 72
-        height: 72
+        x: 593
+        y: 588
+        width: 324
+        height: 408
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 16f9bd05df4a0e730800000000000000
-      internalID: 4026399474759475041
+      spriteID: c33fe7e00fd653b40800000000000000
+      internalID: 5419358604413039420
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SahyangClickerSoldier_2
+      name: StaffSprites_2
       rect:
         serializedVersion: 2
-        x: 223
-        y: 214
-        width: 72
-        height: 72
+        x: 1081
+        y: 595
+        width: 324
+        height: 401
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d6eee1ec72f49d150800000000000000
-      internalID: 5897832219398827629
+      spriteID: ed1821b98e2f34ed0800000000000000
+      internalID: -2430832293001920034
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SahyangClickerSoldier_3
+      name: StaffSprites_3
       rect:
         serializedVersion: 2
-        x: 322
-        y: 214
-        width: 72
-        height: 72
+        x: 1568
+        y: 588
+        width: 324
+        height: 408
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 319ca2e2a71799010800000000000000
-      internalID: 1196111945618082067
+      spriteID: e59366930c2f92c50800000000000000
+      internalID: 6641106032945150302
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SahyangClickerSoldier_4
+      name: StaffSprites_4
       rect:
         serializedVersion: 2
-        x: 420
-        y: 214
-        width: 72
-        height: 72
+        x: 2056
+        y: 588
+        width: 346
+        height: 408
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 69f12b9e5ab365ad0800000000000000
-      internalID: -2713916141667737706
+      spriteID: 657eedafa047c21b0800000000000000
+      internalID: -5680037439513630890
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SahyangClickerSoldier_5
+      name: StaffSprites_5
       rect:
         serializedVersion: 2
-        x: 519
-        y: 214
-        width: 72
-        height: 72
+        x: 2543
+        y: 588
+        width: 324
+        height: 408
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fb0e2e75d0d277cd0800000000000000
-      internalID: -2560528327804526401
+      spriteID: 217e0195370155470800000000000000
+      internalID: 8382624369021609746
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SahyangClickerSoldier_6
+      name: StaffSprites_6
       rect:
         serializedVersion: 2
-        x: 27
-        y: 114
-        width: 72
-        height: 72
+        x: 106
+        y: 92
+        width: 324
+        height: 402
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5d5deffbf4a325cf0800000000000000
-      internalID: -265085313863461419
+      spriteID: b7a9bfefda7852b40800000000000000
+      internalID: 5414883308359883387
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SahyangClickerSoldier_7
+      name: StaffSprites_7
       rect:
         serializedVersion: 2
-        x: 126
-        y: 114
-        width: 72
-        height: 72
+        x: 605
+        y: 86
+        width: 324
+        height: 408
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6f14fbe9b8264b0c0800000000000000
-      internalID: -4560912170816159242
+      spriteID: 118f83cbe08732040800000000000000
+      internalID: 4621669647294986257
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SahyangClickerSoldier_8
+      name: StaffSprites_8
       rect:
         serializedVersion: 2
-        x: 225
-        y: 114
-        width: 72
-        height: 72
+        x: 1103
+        y: 86
+        width: 324
+        height: 408
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 55b486eb46e1c21a0800000000000000
-      internalID: -6833053116587816107
+      spriteID: 11780af7549251730800000000000000
+      internalID: 3969124025067669265
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SahyangClickerSoldier_9
+      name: StaffSprites_9
       rect:
         serializedVersion: 2
-        x: 324
-        y: 120
-        width: 72
-        height: 61
+        x: 1601
+        y: 86
+        width: 387
+        height: 408
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: df424675dbc5e86c0800000000000000
-      internalID: -4139269039222151939
+      spriteID: b0d982c1e9b3cd310800000000000000
+      internalID: 1431084331860270347
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SahyangClickerSoldier_10
+      name: StaffSprites_10
       rect:
         serializedVersion: 2
-        x: 423
-        y: 120
-        width: 72
-        height: 61
+        x: 2099
+        y: 86
+        width: 326
+        height: 408
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9dedee54a7c2bf740800000000000000
-      internalID: 5186788299518172889
+      spriteID: f8fe0d1f5abc26ec0800000000000000
+      internalID: -3575071240591708273
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SahyangClickerSoldier_11
+      name: StaffSprites_11
       rect:
         serializedVersion: 2
-        x: 522
-        y: 126
-        width: 56
-        height: 56
+        x: 2564
+        y: 283
+        width: 326
+        height: 220
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5594c68941eda81f0800000000000000
-      internalID: -1041776183744902827
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SahyangClickerSoldier_12
-      rect:
-        serializedVersion: 2
-        x: 26
-        y: 26
-        width: 72
-        height: 72
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e199054efc41e6d00800000000000000
-      internalID: 967733853052508446
+      spriteID: d1a1958926ff57d80800000000000000
+      internalID: -8253409943158711779
       vertices: []
       indices: 
       edges: []
