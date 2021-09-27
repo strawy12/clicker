@@ -24,7 +24,7 @@ public class Skill
     {
         get
         {
-            return (int)(baseCoolTime - (level * 1.25f));
+            return (int)Mathf.Max((baseCoolTime - (level * 1.25f)), 10);
         }
     }
     public bool isUsed;
@@ -44,10 +44,12 @@ public class Skill
 
     public long PriceSum(int multiple)
     {
-        long priceSum = price;
+        long priceSum = this.price;
+        long price = this.price;
         for(int i = 0; i < multiple; i++)
         {
-            priceSum += 10;
+            price += 10;
+            priceSum += price;
         }
         return priceSum;
     }

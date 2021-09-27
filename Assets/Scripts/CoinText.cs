@@ -19,7 +19,7 @@ public class CoinText : MonoBehaviour
         }
 
         RectTransform rectTransform = GetComponent<RectTransform>();
-        coinText.text = string.Format("+{0}", GameManager.Inst.CurrentUser.mPc);
+        coinText.text = string.Format("+{0} ¿ø", GameManager.Inst.MoneyUnitConversion(GameManager.Inst.CurrentUser.mPc));
         transform.localPosition = new Vector3(-5.8f, 220f, 0f);
         float targetPositionY = rectTransform.anchoredPosition.y + 100f;
         gameObject.SetActive(true);

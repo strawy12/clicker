@@ -11,10 +11,13 @@ public class Sahayang
     public int level;
     public BigInteger PriceSum(int multiple)
     {
-        BigInteger priceSum = price;
-        for (int i = 0; i < multiple; i++)
+
+        BigInteger priceSum = this.price;
+        BigInteger price = this.price;
+        for (int i = 1; i < multiple; i++)
         {
-            priceSum += GameManager.Inst.MultiflyBigInteger(priceSum, 1.25f, 2);
+            price = GameManager.Inst.MultiflyBigInteger(price, 1.25f, 2);
+            priceSum += price;
         }
         return priceSum;
     }
@@ -153,7 +156,7 @@ public class User
 
     public void UpdateMoney(BigInteger updateMoney, bool isAdd)
     {
-        if(isAdd)
+        if (isAdd)
         {
             money += updateMoney;
         }

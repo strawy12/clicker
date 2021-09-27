@@ -18,7 +18,6 @@ public class UIManager : MonoBehaviour
 
     [Header("시스템")]
     [SerializeField] private ScrollRect scrollRect = null;
-    [SerializeField] private Text randomText = null;
 
 
     [Header("프리팹")]
@@ -280,6 +279,28 @@ public class UIManager : MonoBehaviour
 
     }
 
+    public void ShowPanal(GameObject panal, bool isShow)
+    {
+        if(isShow)
+        {
+            panal.SetActive(true);
+            panal.transform.DOScale(Vector3.one, 0.3f);
+        }
+        else
+        {
+            panal.transform.DOScaleX(0f , 0.2f).OnComplete(() => { panal.SetActive(false); panal.transform.localScale = Vector3.zero; });
+        }
+    }
+    public void ShowPanal(GameObject panal)
+    {
+        panal.SetActive(true);
+            panal.transform.DOScale(Vector3.one, 0.3f);
+    }
+    public void UnShowPanal(GameObject panal)
+    {
+        panal.transform.DOScaleX(0f, 0.2f).OnComplete(() => { panal.SetActive(false); panal.transform.localScale = Vector3.zero; });
+    }
+
     public void ShowCoinText()
     {
         CoinText coinText = null;
@@ -357,7 +378,7 @@ public class UIManager : MonoBehaviour
 
     private IEnumerator RandomPickAnim(int amount)
     {
-        randomPickPanal.rectTransform.DOScale(Vector3.one, 0.2f);
+        ShowPanal(randomPickPanal.gameObject, true);
         yield return new WaitForSeconds(0.2f);
         for(int i = 0; i < amount; i++)
         {
@@ -365,8 +386,7 @@ public class UIManager : MonoBehaviour
             yield return new WaitForSeconds(1f);
         }
         yield return new WaitForSeconds(0.5f);
-
-        randomPickPanal.rectTransform.DOScale(Vector3.zero, 0.3f);
+        ShowPanal(randomPickPanal.gameObject, false);
         int cnt = randomPickObj.Count;
         for (int i = 0; i < cnt; i++)
         {
@@ -450,13 +470,13 @@ public class UIManager : MonoBehaviour
             controlPanal.DOAnchorPosY(-242f, 0.2f).SetEase(Ease.InCirc);
             yield return new WaitForSeconds(0.2f);
             staffObjPanal.SetActive(true);
-            staffObjPanal.transform.DOScale(1f, 0.3f);
+            ShowPanal(staffObjPanal, true);
         }
         else
         {
             staffObjPanal.transform.DOScaleY(0f, 0.2f).OnComplete(() =>
             {
-                staffObjPanal.SetActive(false);
+                ShowPanal(staffObjPanal, false);
                 staffObjPanal.transform.localScale = Vector3.zero;
             });
 
