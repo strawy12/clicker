@@ -13,6 +13,8 @@ public class Skill
     public bool isSold;
     public int baseCoolTime;
     public int baseDuration;
+    public string info;
+
     public int duration
     {
         get
@@ -46,7 +48,7 @@ public class Skill
     {
         long priceSum = this.price;
         long price = this.price;
-        for(int i = 0; i < multiple; i++)
+        for(int i = 1; i < multiple; i++)
         {
             price += 10;
             priceSum += price;

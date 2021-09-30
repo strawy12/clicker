@@ -19,6 +19,8 @@ public class PetUpgradePanal : UpgradePanalBase
     private Pet pet = null;
     private int petNum;
     private GameObject petBuffObj = null;
+    private Image petBuffImage = null;
+    private Sprite petSprite;
 
     public override void Awake()
     {
@@ -31,6 +33,8 @@ public class PetUpgradePanal : UpgradePanalBase
     {
         pet = GameManager.Inst.CurrentUser.pets[num];
         petNum = num;
+        petSprite = GameManager.Inst.UI.PetSpriteArray[num];
+        petImage.sprite = petSprite;
         OnClickMounting(pet.isEquip);
     }
 
@@ -68,11 +72,13 @@ public class PetUpgradePanal : UpgradePanalBase
         {
 
             GameManager.Inst.UI.ShowMessage(pet.level >= 10 ? "펫의 레벨이 최대레벨입니다." : "펫의 갯수가 부족합니다.");
+            SoundManager.Inst.SetEffectSound(1);
             return;
         }
         if (GameManager.Inst.CurrentUser.money < pet.price)
         {
             GameManager.Inst.UI.ShowMessage("돈이 부족합니다.");
+            SoundManager.Inst.SetEffectSound(1);
             return;
         }
         GameManager.Inst.CurrentUser.UpdateMoney(pet.price, false);
@@ -81,6 +87,7 @@ public class PetUpgradePanal : UpgradePanalBase
         pet.level++;
         pet.price = GameManager.Inst.MultiflyBigInteger(pet.price, 1.25f, 2);
         GameManager.Inst.UI.ShowMessage("레벨업!");
+        SoundManager.Inst.SetEffectSound(3);
     }
 
     public void OnClickMounting(bool isOn)
@@ -89,17 +96,18 @@ public class PetUpgradePanal : UpgradePanalBase
         if (petBuffObj == null)
         {
             petBuffObj = Instantiate(petObjectTemp, petObjectTemp.transform.parent);
+            petBuffImage = petBuffObj.transform.GetChild(0).GetComponent<Image>();
         }
         if (isOn)
         {
-            //buffPanal.transform.GetChild(0).GetComponent<Image>().sprite = petSprite;
-            petBuffObj.SetActive(true);
+            petBuffImage.sprite = petSprite;
+            petBuffObj.gameObject.SetActive(true);
             petBuffObj.transform.DOScale(Vector3.one, 0.25f).SetEase(Ease.InOutBack);
         }
 
         else
         {
-            petBuffObj.transform.DOScale(Vector3.zero, 0.25f).SetEase(Ease.InOutBack).OnComplete(() => petBuffObj.SetActive(false));
+            petBuffObj.transform.DOScale(Vector3.zero, 0.25f).SetEase(Ease.InOutBack).OnComplete(() => petBuffObj.gameObject.SetActive(false));
         }
     }
 }

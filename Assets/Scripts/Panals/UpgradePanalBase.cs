@@ -41,10 +41,6 @@ public class UpgradePanalBase : MonoBehaviour
         }
     }
 
-    public void Start()
-    {
-        UpdateValues();
-    }
     //protected virtual void LoadSpriteWhenReady(AsyncOperationHandle<Sprite[]> handleToCheck)
     //{
     //    if (handleToCheck.Status == AsyncOperationStatus.Succeeded)

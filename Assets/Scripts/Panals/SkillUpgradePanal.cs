@@ -59,7 +59,7 @@ public class SkillUpgradePanal : UpgradePanalBase
         skill = GameManager.Inst.CurrentUser.skills[num];
         //staffSprite = GameManager.Inst.UI.SoldierSpriteArray[num];
         skillNum = num;
-        if (skill.isUsed)
+        if (skill.isUsed )
         {
             endTime = DateTime.Parse(skill.endTime);
             endDurationTime = DateTime.Parse(skill.endDurationTime);
@@ -80,6 +80,13 @@ public class SkillUpgradePanal : UpgradePanalBase
 
     public void OnClickUpgradeSkill(int amount)
     {
+        if (GameManager.Inst.isTutorial)
+        {
+            if(skillNum != 0)
+            {
+                return;
+            }
+        }
         if (!UpgradeSkill(amount)) return;
 
         if (amount != 1)
@@ -99,10 +106,12 @@ public class SkillUpgradePanal : UpgradePanalBase
             UpdateValues();
             GameManager.Inst.UI.UpdateMoneyPanal();
             GameManager.Inst.UI.ShowMessage("구매 완료");
+            SoundManager.Inst.SetEffectSound(3);
             return true;
         }
         else
         {
+            SoundManager.Inst.SetEffectSound(1);
             GameManager.Inst.UI.ShowMessage("돈이 부족합니다");
             return false;
         }
@@ -110,6 +119,13 @@ public class SkillUpgradePanal : UpgradePanalBase
 
     public void OnClickUseSkill()
     {
+        if (GameManager.Inst.isTutorial)
+        {
+            if (skillNum != 0)
+            {
+                return;
+            }
+        }
         if (skill.isUsed) return;
         skill.endTime = DateTime.Now.AddSeconds(skill.coolTime).ToString("G");
         skill.endDurationTime = DateTime.Now.AddSeconds(skill.duration).ToString("G");

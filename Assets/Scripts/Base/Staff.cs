@@ -8,10 +8,18 @@ public class Staff
     public string staffName;
     public int staffNum;
     public int level;
-    public string savemPs;
-    public BigInteger mPs;
+    public string saveBasemPs;
+    public BigInteger basemPs;
+    public BigInteger mPs
+    {
+        get
+        {
+            return (basemPs * staffNum / 2) * level;
+        }
+    }
     public BigInteger price;
     public string savePrice;
+    public string info;
 
     public bool isSold
     {
@@ -52,7 +60,7 @@ public class Staff
         this.staffName = staffName;
         this.staffNum = staffNum;
         this.level = level;
-        this.mPs = mPs;
+        this.basemPs = mPs;
         this.price = price;
     }
 }

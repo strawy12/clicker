@@ -29,9 +29,12 @@ public class User
 {
     public string userName;
     public float playTime;
-    public string exitTime;
+    public int frame;
+    public string exitTime; 
     public string saveMoney;
     public long goldCoin;
+
+    public bool[] isTuto;
     public bool[] missions
     {
         get
@@ -45,6 +48,7 @@ public class User
             return _mission;
         }
     }
+    public bool[] missionsClear;
     public int missionClear
     {
         get
@@ -63,8 +67,8 @@ public class User
 
     public Sahayang sahayang;
     public BigInteger money;
-
-
+    public float bgmVolume;
+    public float effectVolume;
     public int clickCnt;
     public int bigHeartClickCnt;
     public int skillUseCnt;
@@ -76,7 +80,7 @@ public class User
     {
         get
         {
-            return basemPc * Mathf.Max(1, (petAmount * 2)) * additionMoney;
+            return basemPc * Mathf.Max(1, petAmount) * additionMoney;
         }
     }
 
@@ -127,7 +131,7 @@ public class User
             saveBasemPc = basemPc.ToString();
             foreach (Staff staff in staffs)
             {
-                staff.savemPs = staff.mPs.ToString();
+                staff.saveBasemPs = staff.basemPs.ToString();
                 staff.savePrice = staff.price.ToString();
             }
             foreach (Pet pet in pets)
@@ -143,7 +147,7 @@ public class User
             basemPc = BigInteger.Parse(saveBasemPc);
             foreach (Staff staff in staffs)
             {
-                staff.mPs = BigInteger.Parse(staff.savemPs);
+                staff.basemPs = BigInteger.Parse(staff.saveBasemPs);
                 staff.price = BigInteger.Parse(staff.savePrice);
             }
             foreach (Pet pet in pets)

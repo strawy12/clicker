@@ -3,8 +3,32 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using BigInteger = System.Numerics.BigInteger;
 using Random = UnityEngine.Random;
+public class ScreenSize
+{
+    public static float GetScreenToWorldHeight
+    {
+        get
+        {
+            Vector2 topRightCorner = new Vector2(1, 1);
+            Vector2 edgeVector = Camera.main.ViewportToWorldPoint(topRightCorner);
+            var height = edgeVector.y * 0.5f;
+            return height;
+        }
+    }
+    public static float GetScreenToWorldWidth
+    {
+        get
+        {
+            Vector2 topRightCorner = new Vector2(1, 1);
+            Vector2 edgeVector = Camera.main.ViewportToWorldPoint(topRightCorner);
+            var width = edgeVector.x * 0.5f;
+            return width;
+        }
+    }
+}
 
 public class GameManager : MonoSingleton<GameManager>
 {
@@ -14,15 +38,52 @@ public class GameManager : MonoSingleton<GameManager>
 
     private UIManager uiManager = null;
 
-    [SerializeField] private Transform pool = null;
+    private TutorialManager tutorialManager = null;
+
+    private Transform pool = null;
 
     private Dictionary<EPoolingType, Queue<GameObject>> poolingList = new Dictionary<EPoolingType, Queue<GameObject>>();
     public User CurrentUser { get { return user; } }
 
-    public UIManager UI { get { return uiManager; } }
+    public TutorialManager Tutorial
+    {
+        get
+        {
+            if (tutorialManager == null)
+            {
+                tutorialManager = GetComponent<TutorialManager>();
+            }
+            return tutorialManager;
+        }
+    }
 
-    public Transform Pool { get { return pool; } }
+
+    public UIManager UI
+    {
+        get
+        {
+            if(uiManager == null)
+            {
+                uiManager = GetComponent<UIManager>();
+            }
+            return uiManager;
+        }
+    }
+
+    public Transform Pool
+    {
+        get
+        {
+            if (pool == null)
+            {
+                pool = GameObject.Find("Pool").transform;
+            }
+            return pool;
+        }
+    }
     public Dictionary<EPoolingType, Queue<GameObject>> PoolingList { get { return poolingList; } }
+
+    public bool isTutorial = false;
 
     private string SAVE_PATH = "";
 
@@ -55,23 +116,29 @@ public class GameManager : MonoSingleton<GameManager>
     }
 
     private int cnt = 3;
-    private void Awake()
+    public void Awake()
     {
-        SAVE_PATH = Application.dataPath + "/Save";
+        SAVE_PATH = Application.persistentDataPath + "/Save";
         if (!Directory.Exists(SAVE_PATH))
         {
             Directory.CreateDirectory(SAVE_PATH);
         }
-        uiManager = GetComponent<UIManager>();
         MaxPos = new Vector2(2.05f, 4.2f);
         MinPos = new Vector2(-2.05f, -4.2f);
+
         LoadFromJson();
+        Application.targetFrameRate = user.frame;
         SetDict();
 
     }
 
     private void Start()
     {
+        SoundManager.Inst.VolumeSetting();
+
+        SoundManager.Inst.SetBGM(0);
+        SoundManager.Inst.SetEffectSound(0);
+
         SettingUser();
         CheckReJoinTime();
         InvokeRepeating("SaveToJson", 5f, 60f);
@@ -94,7 +161,18 @@ public class GameManager : MonoSingleton<GameManager>
         poolingList.Add(EPoolingType.somSaTang, new Queue<GameObject>());
     }
 
+    public void OnClickDeleteJson()
+    {
+        uiManager.ShowMessage("데이터를 삭제합니다. 초기화를 위해 게임을 종료합니다.", 0.3f, 0.1f, 1.5f, 22);
+        Invoke("DeleteJson", 1.5f);
+    }
 
+    public void DeleteJson()
+    {
+        File.Delete(SAVE_PATH + SAVE_FILENAME);
+        user = null;
+        Application.Quit();
+    }
     private void LoadFromJson()
     {
         string json = "";
@@ -111,10 +189,15 @@ public class GameManager : MonoSingleton<GameManager>
             user.userName = "금사향";
             user.basemPc = 10;
             user.additionMoney = 1;
-            user.goldCoin = 10000000;
-            user.money = 10000;
+            user.frame = 60;
+            user.goldCoin = 0;
+            user.money = 100;
             user.sahayang = new Sahayang();
+            user.isTuto = new bool[5];
+            user.missionsClear = new bool[6];
             user.sahayang.price = 1000;
+            user.bgmVolume = 0.5f;
+            user.effectVolume = 0.5f;
 
             user.staffs.Add(new Staff("응애찍찍이", 0, 0, 0, 1000));
             user.staffs.Add(new Staff("소년찍찍이", 1, 0, 0, 3000));
@@ -160,6 +243,7 @@ public class GameManager : MonoSingleton<GameManager>
 
     private void SaveToJson()
     {
+        if (user == null) return;
         user.ConversionType(true);
         string json = JsonUtility.ToJson(user, true);
         File.WriteAllText(SAVE_PATH + SAVE_FILENAME, json, System.Text.Encoding.UTF8);
@@ -178,7 +262,7 @@ public class GameManager : MonoSingleton<GameManager>
 
     public BigInteger MultiflyBigInteger(BigInteger num1, float num2, int dight)
     {
-        int multiflyNum =(int)Mathf.Pow(10, dight);
+        int multiflyNum = (int)Mathf.Pow(10, dight);
         BigInteger nums = (BigInteger)(num2 * multiflyNum);
         BigInteger sum = num1 * nums;
 
@@ -188,8 +272,12 @@ public class GameManager : MonoSingleton<GameManager>
     }
     private void SettingUser()
     {
-        if(CheckDate())
+        if (CheckDate())
         {
+            for(int i = 0; i < user.missionsClear.Length; i++)
+            {
+                user.missionsClear[i] = false;
+            }
             user.playTime = 0f;
             user.skillUseCnt = 0;
             user.clickCnt = 0;
@@ -220,10 +308,12 @@ public class GameManager : MonoSingleton<GameManager>
     }
     public void MoneyPerSecond()
     {
+        BigInteger mPsSum = 0;
         foreach (Staff staff in user.staffs)
         {
-            user.UpdateMoney(staff.mPs, true);
+            mPsSum = staff.mPs;
         }
+        user.money += mPsSum;
         uiManager.UpdateMoneyPanal();
     }
     public string MoneyUnitConversion(BigInteger value)
@@ -264,15 +354,25 @@ public class GameManager : MonoSingleton<GameManager>
             yield return new WaitForSeconds(0.05f);
         }
     }
+
+    public void SettingFrame(int frame)
+    {
+        user.frame = frame;
+        Application.targetFrameRate = user.frame;
+    }
     private void OnApplicationQuit()
     {
         user.exitTime = DateTime.Now.ToString("G");
         SaveToJson();
+        Debug.Log(DateTime.Now.ToString("G"));
     }
     private void OnApplicationPause()
     {
-        //user.exitTime = DateTime.Now.ToString("G");
+        user.exitTime = DateTime.Now.ToString("G");
         SaveToJson();
+        Debug.Log(DateTime.Now.ToString("G"));
+
+
     }
 
 

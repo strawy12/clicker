@@ -12,17 +12,16 @@ public class MissionPanal : MonoBehaviour
     [SerializeField] private Text missionBtnText = null;
 
     [SerializeField] private int missionNum;
-    private bool canReceive = true;
     private bool CanReceive
     {
         get
         {
             if(missionNum == 5)
             {
-                return GameManager.Inst.CurrentUser.missionClear == 5 && canReceive;
+                return GameManager.Inst.CurrentUser.missionClear == 5 && !GameManager.Inst.CurrentUser.missionsClear[5];
             }
 
-            else if(GameManager.Inst.CurrentUser.missions[missionNum] && canReceive)
+            else if(GameManager.Inst.CurrentUser.missions[missionNum] && !GameManager.Inst.CurrentUser.missionsClear[missionNum])
             {
                 return true;
             }
@@ -36,10 +35,6 @@ public class MissionPanal : MonoBehaviour
 
     public void GoStart()
     {
-        if(GameManager.Inst.CheckDate())
-        {
-            canReceive = true;
-        }
         UpdatePanal();
     }
 
@@ -93,8 +88,14 @@ public class MissionPanal : MonoBehaviour
     {
         if(CanReceive)
         {
+            SoundManager.Inst.SetEffectSound(2);
             GameManager.Inst.CurrentUser.goldCoin += goldCoinAmount;
-            canReceive = false;
+            GameManager.Inst.CurrentUser.missionsClear[missionNum] = true;
+        }
+        else
+        {
+            SoundManager.Inst.SetEffectSound(1);
+
         }
     }
 }

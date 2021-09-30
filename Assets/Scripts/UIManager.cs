@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using System.Linq;
 using DG.Tweening;
 //using UnityEngine.ResourceManagement.AsyncOperations;
@@ -18,6 +19,9 @@ public class UIManager : MonoBehaviour
 
     [Header("시스템")]
     [SerializeField] private ScrollRect scrollRect = null;
+    [SerializeField] private GameObject moneyImage = null;
+    [SerializeField] private GameObject coinImage = null;
+    [SerializeField] private RectTransform buffs = null;
 
 
     [Header("프리팹")]
@@ -42,30 +46,36 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Image randomPickPanal = null;
     [SerializeField] private GameObject rewardPanal = null;
     [SerializeField] private UpgradeSahyangPanal sahyangPanal = null;
+    [SerializeField] GameObject selectingPanal = null;
+    [SerializeField] InFoPanal inFoPanal = null;
+    [SerializeField] IllustratedBookPanal iBookPanal = null;
 
     [Header("돈")]
     [SerializeField] private Text moneyText = null;
     [SerializeField] private Text goldCoinText = null;
 
     [Header("컨텐츠 배열")]
-    [SerializeField] private GameObject[] scrollObject = null;
+    [SerializeField] private RectTransform[] scrollObject = null;
     [SerializeField] private GameObject[] staffObjects = null;
 
     private Text rewardText = null;
     private MissionPanal[] missionPanalArray = null;
     private Sprite[] soldierSprites = null;
     private Sprite[] buyBtnSprites = null;
+    private Sprite[] petSprites = null;
     private Sprite[] missionSprites = null;
     private List<GameObject> randomPickObj = new List<GameObject>();
     private Coroutine messageCo = null;
+    public Button[] seletingBtns { get; private set; } = null;
 
     private Text messageText = null;
     private bool isPicking = false;
     public Sprite[] SoldierSpriteArray { get { return soldierSprites; } }
+    public Sprite[] PetSpriteArray { get { return petSprites; } }
     public Sprite[] BuyBtnSpriteArray { get { return buyBtnSprites; } }
     public Sprite[] MissionSpriteArray { get { return missionSprites; } }
 
-    private bool isShow = false;
+    public bool isShow { get; private set; } = false;
     private bool isShow_Setting = false;
     private bool isAdditionClick = false;
     private int scrollNum;
@@ -75,6 +85,7 @@ public class UIManager : MonoBehaviour
 
     private string spritePath = "StaffSprites";
     private string spriteUIPath = "Clicker Button UI";
+    private string petSpritePath = "Pet Animal";
 
     private Canvas canvas;
 
@@ -86,11 +97,12 @@ public class UIManager : MonoBehaviour
         //spriteHandle.Completed += LoadSpriteWhenReady;
         buyBtnSprites = Resources.LoadAll<Sprite>(spriteUIPath);
         soldierSprites = Resources.LoadAll<Sprite>(spritePath);
+        petSprites = Resources.LoadAll<Sprite>(petSpritePath);
         messageText = messageObject.transform.GetChild(0).GetComponent<Text>();
         missionPanalArray = missionPanal.GetComponentsInChildren<MissionPanal>();
         canvas = FindObjectOfType<Canvas>();
-        rewardText = rewardPanal.transform.GetChild(1).GetChild(1).GetComponent<Text>();
-        GameStartStart();
+        rewardText = rewardPanal.transform.GetChild(1).GetComponent<Text>();
+        seletingBtns = selectingPanal.transform.GetComponentsInChildren<Button>();
     }
     //private void LoadSpriteWhenReady(AsyncOperationHandle<Sprite[]> handleToCheck)
     //{
@@ -114,7 +126,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    private void GameStartStart()
+    private void Start()
     {
         MissionPanalGoStart();
         UpdateMoneyPanal();
@@ -158,6 +170,7 @@ public class UIManager : MonoBehaviour
             newPanal = Instantiate(staffPanalTemp, staffPanalTemp.transform.parent);
             newUpgradePanal = newPanal.GetComponent<UpgradePanalBase>();
             upgradePanalList.Add(newUpgradePanal);
+            iBookPanal.SpawnillustratedBook(staff);
             newUpgradePanal.SetPanalNum(staff.staffNum);
             newPanal.SetActive(true);
             ActiveStaffObj(staff.isSold, staff.staffNum);
@@ -178,6 +191,7 @@ public class UIManager : MonoBehaviour
             newPanal = Instantiate(petPanalTemp, petPanalTemp.transform.parent);
             newUpgradePanal = newPanal.GetComponent<UpgradePanalBase>();
             upgradePanalList.Add(newUpgradePanal);
+            iBookPanal.SpawnillustratedBook(pet);
             newUpgradePanal.SetPanalNum(pet.petNum);
             newPanal.SetActive(true);
         }
@@ -219,6 +233,8 @@ public class UIManager : MonoBehaviour
         UpdateMoneyPanal();
         ShowClickEffect(GameManager.Inst.MousePos);
         ShowCoinText();
+        StartCoroutine(PopDOTObj(moneyImage));
+        StartCoroutine(PopDOTObj(coinImage, 0.07f));
     }
 
     public void ShowRewardPanal(BigInteger money)
@@ -279,12 +295,29 @@ public class UIManager : MonoBehaviour
 
     }
 
+    public void ShowSelectingPanal(bool isShow)
+    {
+        ShowPanal(selectingPanal, isShow);
+    }
+    public void ShowInfoPanal(bool isShow, Staff staff)
+    {
+        inFoPanal.SetInfo(staff);
+        ShowPanal(inFoPanal.gameObject, isShow);
+    }
+    public void ShowInfoPanal(bool isShow, Pet pet)
+    {
+        inFoPanal.SetInfo(pet);
+        ShowPanal(inFoPanal.gameObject, isShow);
+    }
+
     public void ShowPanal(GameObject panal, bool isShow)
     {
         if(isShow)
         {
+
             panal.SetActive(true);
             panal.transform.DOScale(Vector3.one, 0.3f);
+
         }
         else
         {
@@ -328,7 +361,7 @@ public class UIManager : MonoBehaviour
             case 1:
                 if (isOn)
                 {
-                    Debug.Log("응애");
+                    
                     GameManager.Inst.CurrentUser.UpdateMoney(GameManager.Inst.CurrentUser.mPc * 1000, true);
                     UpdateMoneyPanal();
                 }
@@ -357,15 +390,26 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public IEnumerator PopDOTObj(GameObject obj, float delay = 0f)
+    {
+        yield return new WaitForSeconds(delay);
+        obj.transform.DOScale(new Vector3(1.25f, 1.25f, 1.25f), 0.2f);
+        yield return new WaitForSeconds(0.2f);
+        obj.transform.DOScale(Vector3.one, 0.1f);
+
+    }
     public void OnClickRandomPets(int amount)
     {
         if (isPicking)
         {
+            SoundManager.Inst.SetEffectSound(1);
+
             ShowMessage("캐릭터를 이미 뽑고 있습니다.");
             return;
         }
         if (GameManager.Inst.CurrentUser.goldCoin < 100 * amount)
         {
+            SoundManager.Inst.SetEffectSound(1);
             ShowMessage("돈이 부족합니다.");
             return;
         }
@@ -373,6 +417,7 @@ public class UIManager : MonoBehaviour
         UpdateMoneyPanal();
         isPicking = true;
         StartCoroutine(RandomPickAnim(amount));
+        SoundManager.Inst.SetEffectSound(3);
         ShowMessage("구매 완료");
     }
 
@@ -409,7 +454,7 @@ public class UIManager : MonoBehaviour
         randomPickObj.Add(randomPickImage.gameObject);
         randomPickImage.gameObject.SetActive(true);
         randomPickImage.DOFade(0f, 0f);
-        randomPickImage.sprite = SoldierSpriteArray[num];
+        randomPickImage.sprite = PetSpriteArray[num];
         randomPickImage.DOFade(1f, 1f);
         randomPickImage.rectTransform.DOShakePosition(0.5f);
         randomPickImage.rectTransform.DOShakeScale(0.5f);
@@ -449,8 +494,54 @@ public class UIManager : MonoBehaviour
 
     }
 
+    public void CheckSelectingBtn(bool isPossive, int num)
+    {
+        SettingSeletingBtn(false, num);
+        if (isPossive)
+        {
+            GameManager.Inst.Tutorial.SettingPart(num);
+            Debug.Log(num);
+
+        }
+        else
+        {
+            GameManager.Inst.CurrentUser.isTuto[num] = true;
+        }
+        ShowSelectingPanal(false);
+
+    }
+
+    public void SettingSeletingBtn(bool isAdd, int num)
+    {
+        if(isAdd)
+        {
+            GameManager.Inst.UI.seletingBtns[0].onClick.AddListener(() => CheckSelectingBtn(true, num));
+            GameManager.Inst.UI.seletingBtns[1].onClick.AddListener(() => CheckSelectingBtn(false, num));
+        }
+
+        else
+        {
+            GameManager.Inst.UI.seletingBtns[0].onClick.RemoveListener(() => CheckSelectingBtn(true, num));
+            GameManager.Inst.UI.seletingBtns[1].onClick.RemoveListener(() => CheckSelectingBtn(false, num));
+        }
+    }
+
     public void OnClickShowBtn(int num)
     {
+        if(GameManager.Inst.isTutorial)
+        {
+            if (num != Mathf.Max(GameManager.Inst.Tutorial.progressPartNum - 2, 0))
+                return;
+        }
+        if(!GameManager.Inst.CurrentUser.isTuto[num + 1] && num != 0)
+        {
+            SettingSeletingBtn(true, num + 1);
+            ShowSelectingPanal(true);
+            controlPanal.DOAnchorPosY(-242f, 0.2f).SetEase(Ease.InCirc);
+            buffs.DOAnchorPosY(-149f, 0.2f).SetEase(Ease.InCirc);
+            return;
+        }
+        
         if (isShow && scrollNum != num)
         {
             scrollNum = num;
@@ -468,6 +559,7 @@ public class UIManager : MonoBehaviour
         if (!isShow)
         {
             controlPanal.DOAnchorPosY(-242f, 0.2f).SetEase(Ease.InCirc);
+            buffs.DOAnchorPosY(-149f, 0.2f).SetEase(Ease.InCirc);
             yield return new WaitForSeconds(0.2f);
             staffObjPanal.SetActive(true);
             ShowPanal(staffObjPanal, true);
@@ -482,6 +574,8 @@ public class UIManager : MonoBehaviour
 
             yield return new WaitForSeconds(0.2f);
             controlPanal.DOAnchorPosY(27f, 0.2f).SetEase(Ease.InCirc);
+            buffs.DOAnchorPosY(-115f, 0.2f).SetEase(Ease.InCirc);
+
         }
 
 
@@ -500,11 +594,11 @@ public class UIManager : MonoBehaviour
         {
             if (i == num)
             {
-                scrollObject[i].SetActive(true);
-                scrollRect.content = scrollObject[i].GetComponent<RectTransform>();
+                scrollObject[i].gameObject.SetActive(true);
+                scrollRect.content = scrollObject[i];
                 continue;
             }
-            scrollObject[i].SetActive(false);
+            scrollObject[i].gameObject.SetActive(false);
         }
     }
     public void UpdateMoneyPanal()
@@ -523,23 +617,27 @@ public class UIManager : MonoBehaviour
         petinfoPanal.SetInfo(soldierSprites[num], staff.staffName, staff.staffNum.ToString());
         petinfoPanal.gameObject.SetActive(true);
     }
-    public void ShowMessage(string message)
+
+    public void ShowMessage(string message, float showTime = 0.3f, float unShowTime = 0.1f, float waitingTime = 0.5f, int fontSize = 26)
     {
         if (messageCo != null)
         {
             StopCoroutine(messageCo);
         }
 
-        messageCo = StartCoroutine(Message(message));
+        messageCo = StartCoroutine(Message(message, showTime, unShowTime, waitingTime, fontSize));
     }
-    private IEnumerator Message(string message)
+
+    private IEnumerator Message(string message, float showTime, float unShowTime, float waitingTime, int fontSize)
     {
         messageText.text = message;
-
+        messageText.fontSize = fontSize;
         messageObject.transform.localScale = Vector3.zero;
-        messageObject.transform.DOScale(Vector3.one, 0.3f);
-        yield return new WaitForSeconds(0.5f);
-        messageObject.transform.DOScale(Vector3.zero, 0.1f);
+        messageObject.transform.DOScale(Vector3.one, showTime);
+        yield return new WaitForSeconds(waitingTime);
+        messageObject.transform.DOScale(Vector3.zero, unShowTime);
         messageCo = null;
     }
+
+
 }

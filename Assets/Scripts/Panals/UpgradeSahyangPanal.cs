@@ -39,11 +39,13 @@ public class UpgradeSahyangPanal : UpgradePanalBase
             UpdateValues();
             GameManager.Inst.UI.UpdateMoneyPanal();
             GameManager.Inst.UI.ShowMessage("구매 완료");
+            SoundManager.Inst.SetEffectSound(3);
             return;
         }
         else
         {
             GameManager.Inst.UI.ShowMessage("돈이 부족합니다");
+            SoundManager.Inst.SetEffectSound(1);
             return;
         }
     }

@@ -18,6 +18,7 @@ public class Pet
     public int percent;
     public string savePrice;
     public BigInteger price;
+    public string info;
     public int clickCnt
     {
         get
