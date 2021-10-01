@@ -20,7 +20,7 @@ public class InFoPanal : MonoBehaviour
 
     public void SetInfo(Staff staff)
     {
-        itemImage.sprite = GameManager.Inst.UI.SoldierSpriteArray[staff.staffNum];
+        itemImage.sprite = GameManager.Inst.UI.StaffSpriteArray[staff.staffNum];
         nameText.text = staff.staffName;
         effectInfoText.text = string.Format("1초 당 {0} 원 획득", staff.mPs);
         infoText.text = staff.info;

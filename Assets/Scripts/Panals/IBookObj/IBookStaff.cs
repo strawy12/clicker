@@ -15,7 +15,7 @@ public class IBookStaff : IBookObject
             exclamationImage = transform.GetChild(1).GetComponent<Image>();
         }
 
-        image.sprite = GameManager.Inst.UI.SoldierSpriteArray[staff.staffNum];
+        image.sprite = GameManager.Inst.UI.StaffSpriteArray[staff.staffNum];
         this.staff = staff;
         if (!staff.isShow)
         {

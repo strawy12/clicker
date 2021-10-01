@@ -29,6 +29,7 @@ public class TutorialManager : MonoBehaviour
     private int partNum = 1;
     private float textSpeed = 0.03f;
     private int storyCnt = 0;
+    private int nowPetCAmount = 0;
     public int progressPartNum { get; private set; } = 0;
     private bool isTyping = false;
     private bool isStop = false;
@@ -77,7 +78,7 @@ public class TutorialManager : MonoBehaviour
                 speechs[num].Add("안녕하세요 사향님, 처음 뵙겠습니다.");
                 speechs[num].Add("전 당신을 안내할 매니저 OIF찍찍이 라고 합니다.");
                 speechs[num].Add("편하게 윾매니저라고 불러주세요.");
-                speechs[num].Add("저는 사향님이 캐릭터 샵을 운영한다는 소식에 회사 운영을 도와주러 온 매니저입니다.");
+                speechs[num].Add("저는 사향님이 캐릭터 샵을 운영한다는 소식에 가게 운영을 도와주러 온 매니저입니다.");
                 speechs[num].Add("샵 운영은 처음이시죠?");
                 break;
 
@@ -110,13 +111,13 @@ public class TutorialManager : MonoBehaviour
                 speechs[num].Add("스킬에 대해 설명을 들으시겠습니까?");
                 break;
             case 6:
-                speechs[num].Add("알겠습니다. 멋있고 대단한 회사로 성장하시길 기원하겠습니다.");
+                speechs[num].Add("알겠습니다. 멋있고 유명한 캐릭터 샵이 되길 기원합니다!");
                 speechs[num].Add("지금까지 제 설명을 들어주셔서 감사합니다!");
                 break;
             case 7:
                 speechs[num].Add("알겠습니다.스킬에 대해서도 설명을 해드리겠습니다.");
                 speechs[num].Add("스킬은 총 세가지가 있습니다.");
-                speechs[num].Add("첫 번째 스킬은 트이유라는 스킬로, ");
+                speechs[num].Add("첫 번째 스킬은 착취의 현장라는 스킬로, ");
                 speechs[num].Add("5번 클릭 시 2번 추가 클릭이 되는 스킬입니다.");
                 speechs[num].Add("백문이 불여일견이라고, 직접 한번 사용해보시겠어요?");
                 speechs[num].Add("스킬 아이콘을 클릭할 시 스킬이 사용됩니다.");
@@ -143,7 +144,7 @@ public class TutorialManager : MonoBehaviour
                 speechs[num].Add("이 또한 지속시간동안만 적용 됩니다");
                 speechs[num].Add("스킬 관련 설명은 여기서 마치겠습니다.");
                 speechs[num].Add("지금까지 제 설명을 들어주셔서 감사합니다");
-                speechs[num].Add("멋있고 대단한 회사로 성장하시길 기원하겠습니다.");
+                speechs[num].Add("멋있고 유명한 캐릭터 샵이 되길 기원합니다!");
                 break;
             case 10:
                 speechs[num].Add("안녕하세요, 사향님! 또 만나네요!");
@@ -170,7 +171,7 @@ public class TutorialManager : MonoBehaviour
                 speechs[num].Add("또한 조건을 달성하면 특정 찍찍이들이 잠금이 해제됩니다.");
                 speechs[num].Add("직원에 대한 설명은 여기서 답니다.");
                 speechs[num].Add("지금까지 제 설명을 들어주셔서 감사합니다.");
-                speechs[num].Add("멋있고 대단한 회사로 성장하시길 기원하겠습니다.");
+                speechs[num].Add("멋있고 유명한 캐릭터 샵이 되길 기원합니다!");
                 break;
             case 14:
                 speechs[num].Add("안녕하세요, 사향님! 또 만나네요!");
@@ -187,6 +188,7 @@ public class TutorialManager : MonoBehaviour
                 speechs[num].Add("그럼 이젠 펫을 장착해볼까요?");
                 speechs[num].Add("펫을 장착하셔야 펫의 능력을 사용할 수 있습니다.");
                 speechs[num].Add("화살표로 가리키는 버튼을 클릭해 펫을 장착해보세요!");
+                speechs[num].Add("만약 버튼이 꺼져있다면 본인이 뽑은 펫의 장착 버튼을 클릭해주세요.");
                 break;
             case 16:
                 speechs[num].Add("잘하셨습니다! 펫의 정보는 오른쪽 상단에 도감 버튼을 클릭하신다면 보실 수 있습니다.");
@@ -197,7 +199,7 @@ public class TutorialManager : MonoBehaviour
                 speechs[num].Add("펫에 대한 설명은 여기서 마치면서, 꿀팁을 하나 드리겠습니다.");
                 speechs[num].Add("자동클릭의 기본 쿨타임은 100초입니다. 그러기에 저는 시간형을 먼저 강화를 하길 추천합니다.");
                 speechs[num].Add("지금까지 제 설명을 들어주셔서 감사합니다.");
-                speechs[num].Add("멋있고 대단한 회사로 성장하시길 기원하겠습니다.");
+                speechs[num].Add("멋있고 유명한 캐릭터 샵이 되길 기원합니다!");
                 break;
         }
     }
@@ -275,6 +277,7 @@ public class TutorialManager : MonoBehaviour
 
     private bool CheckEvent()
     {
+        Debug.Log(partNum);
         if (speechs[partNum].Count <= storyCnt || isStop)
         {
             CheckPartNum(partNum);
@@ -291,6 +294,12 @@ public class TutorialManager : MonoBehaviour
 
     public void OnClickSettingPartTuto(InputField input)
     {
+        if (GameManager.Inst.isTutorial)
+        {
+            GameManager.Inst.UI.ShowMessage("튜토리얼 중 입니다.");
+
+            return;
+        }
         if (input.text == "")
         {
             GameManager.Inst.UI.ShowMessage("다시 입력해주세요.");
@@ -300,7 +309,7 @@ public class TutorialManager : MonoBehaviour
     }
     public void SettingPart(int num)
     {
-        if (num >= maxPartNum || num < 0)
+        if (num >= 5 || num < 0)
         {
             GameManager.Inst.UI.ShowMessage("다시 입력해주세요.");
             return;
@@ -337,6 +346,8 @@ public class TutorialManager : MonoBehaviour
             blackPanal[1].gameObject.SetActive(true);
             GameManager.Inst.UI.seletingBtns[0].onClick.AddListener(() => OnClickSelectingBtn(true));
             GameManager.Inst.UI.seletingBtns[1].onClick.AddListener(() => OnClickSelectingBtn(false));
+            nowPetCAmount = GameManager.Inst.CurrentUser.petAmount;
+
             yield return new WaitForSeconds(2f);
             touchScreen.transform.DOMoveX(0.75f, 0.5f);
             textPanal.gameObject.SetActive(true);
@@ -367,6 +378,7 @@ public class TutorialManager : MonoBehaviour
             GameManager.Inst.isTutorial = false;
             SetTouchScreen(true);
             textPanal.gameObject.SetActive(false);
+            messageText.text = "";
             blackPanal[1].gameObject.SetActive(false);
             blackPanal[0].gameObject.SetActive(false);
             CancelInvoke();
@@ -385,8 +397,6 @@ public class TutorialManager : MonoBehaviour
     {
         blackPanal[1].DOAnchorPosY(100f, 0.5f);
         blackPanal[0].DOAnchorPosY(-100f, 0.5f);
-        progressBtn.rectTransform.sizeDelta = new Vector2(progressBtn.rectTransform.sizeDelta.x, 500f);
-        progressBtn.rectTransform.localPosition = new Vector2(progressBtn.rectTransform.localPosition.x, 123.5f);
         GameManager.Inst.UI.OnClickShowBtn(0);
         textPanal.DOAnchorPosY(518f, 0.5f);
         managerObj.transform.DOMoveY(-0.63f, 0.5f);
@@ -416,9 +426,6 @@ public class TutorialManager : MonoBehaviour
                 break;
 
             case 4:
-                blackPanal[0].DOAnchorPosY(-100f, 0.5f);
-                progressBtn.rectTransform.sizeDelta = new Vector2(progressBtn.rectTransform.sizeDelta.x, 500f);
-                progressBtn.rectTransform.localPosition = new Vector2(progressBtn.rectTransform.localPosition.x, 123.5f);
                 isStop = true;
 
                 companyBtn.onClick.AddListener(CheckClickCompanyBtn);
@@ -500,6 +507,8 @@ public class TutorialManager : MonoBehaviour
                 petBtn.onClick.AddListener(CheckClickPetBtn);
                 break;
             case 15:
+                Debug.Log(GameManager.Inst.CurrentUser.petCount);
+                if (isStop) return;
                 isStop = true;
                 ShowArrowPoint(new Vector2(-57.2f, -240f), false);
                 InvokeRepeating("CheckClickPetMountingBtn", 0f, 0.5f);
@@ -537,7 +546,7 @@ public class TutorialManager : MonoBehaviour
 
     private void CheckClickPetMountingBtn()
     {
-        if (GameManager.Inst.CurrentUser.petCount > 0)
+        if (GameManager.Inst.CurrentUser.petCount > nowPetCAmount)
         {
             NextPart();
             CancelInvoke("CheckClickPetMountingBtn");
@@ -586,33 +595,48 @@ public class TutorialManager : MonoBehaviour
     private void CheckClickRandomPickBtn()
     {
         randomPickPetBtn.onClick.RemoveListener(CheckClickRandomPickBtn);
+        StartCoroutine(CheckClickRandomPick());
+    }
+
+    private IEnumerator CheckClickRandomPick()
+    {
+        yield return new WaitForSeconds(2f);
         Pet pet = null;
+        int cnt = 0;
         foreach (Pet pet_ in GameManager.Inst.CurrentUser.pets)
         {
-            if (!pet_.isLocked)
+            if (!pet_.isLocked && cnt == 0)
             {
+                cnt++;
                 pet = pet_;
-                return;
+            }
+            else if(!pet_.isLocked && cnt != 0)
+            {
+                NextPart();
+                yield break;
             }
         }
+
+
         if (pet.petNum < 6)
         {
-            StartCoroutine(Message(string.Format("오! {0}을 뽑으셨군요! 역시 튜토리얼때 뽑는 뽑기는 망하는게 국룰인가봐요ㅎㅎ")));
+            StartCoroutine(Message(string.Format("오! {0}을 뽑으셨군요! 역시 튜토리얼때 뽑는 뽑기는 망하는게 국룰인가봐요ㅎㅎ", pet.petName)));
 
         }
         else if (pet.petNum == 9)
         {
-            StartCoroutine(Message(string.Format("헐! {0}을 뽑으셨어요???!!! 운이 대박좋으시네요!!!! {0}은 펫중에 가장 좋은 펫이에요!!")));
+            StartCoroutine(Message(string.Format("헐! {0}을 뽑으셨어요???!!! 운이 대박좋으시네요!!!! {0}은 펫중에 가장 좋은 펫이에요!!", pet.petName)));
         }
         else
         {
-            StartCoroutine(Message(string.Format("오! {0}을 뽑으셨군요! 운이 좋으시네요!! {0}을 뽑으시다니...")));
+            StartCoroutine(Message(string.Format("오! {0}을 뽑으셨군요! 운이 좋으시네요!! {0}을 뽑으시다니...", pet.petName)));
         }
         NextPart();
+
     }
     private IEnumerator UseSkillEvent()
     {
-        string[] message = { "스킬이 사용됐어요!!!", "지속시간이 있으니 지속시간동안 최대한의 효율을 뽑아봅시다!", "화면을 막 터치해주세요! 이번엔 저도 도와드릴께요!! 지속시간은 30초입니다!" };
+        string[] message = { "스킬이 사용됐어요!!!", "지속시간이 있으니 지속시간동안 최대한의 효율을 뽑아봅시다!", "화면을 막 터치해주세요! 이번엔 저도 도와드릴께요!! 지속시간은 30초입니다!"};
         isStop = true;
         for (int i = 0; i < message.Length; i++)
         {
@@ -693,7 +717,7 @@ public class TutorialManager : MonoBehaviour
 
         if (GameManager.Inst.CurrentUser.goldCoin < 100)
         {
-            StartCoroutine(Message("어? 돈이 부족하시네요? 특별히 제가 부족한 돈을 드리겠습니다. 지금 가리키는 버튼을 클릭해 펫을 뽑아보세요."));
+            StartCoroutine(Message("어? 돈이 부족하시네요? 제가 부족한 돈을 드리겠습니다. 뽑기 버튼을 클릭해 펫을 뽑아보세요."));
             GameManager.Inst.CurrentUser.goldCoin = 100;
             GameManager.Inst.UI.UpdateMoneyPanal();
         }

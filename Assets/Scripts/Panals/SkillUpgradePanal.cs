@@ -9,6 +9,7 @@ public class SkillUpgradePanal : UpgradePanalBase
 {
     [SerializeField] private Text skillNameText = null;
     [SerializeField] private Text skillInfoText = null;
+    [SerializeField] private Image skillImage = null;
     [SerializeField] private Image coolTime = null;
     private Skill skill = null;
     private int skillNum;
@@ -19,7 +20,7 @@ public class SkillUpgradePanal : UpgradePanalBase
     {
         if (skill.isUsed)
         {
-            coolTime.fillAmount = (float)CheckCoolTime(endTime, DateTime.Now) / skill.coolTime;
+            coolTime.fillAmount = (float)CheckCoolTime(endDurationTime, DateTime.Now) / skill.duration;
             if (DateTime.Now > endDurationTime)
             {
                 GameManager.Inst.UI.OnOffSkill(skillNum, false);
@@ -59,6 +60,8 @@ public class SkillUpgradePanal : UpgradePanalBase
         skill = GameManager.Inst.CurrentUser.skills[num];
         //staffSprite = GameManager.Inst.UI.SoldierSpriteArray[num];
         skillNum = num;
+        skillImage.sprite = GameManager.Inst.UI.SkillSpriteArray[num];
+        coolTime.sprite = GameManager.Inst.UI.SkillSpriteArray[num];
         if (skill.isUsed )
         {
             endTime = DateTime.Parse(skill.endTime);

@@ -225,6 +225,7 @@ public class GameManager : MonoSingleton<GameManager>
             user.isTuto = new bool[5];
             user.missionsClear = new bool[6];
             user.sahayang.price = 1000;
+            user.sahayang.level = 1;
             user.bgmVolume = 0.5f;
             user.effectVolume = 0.5f;
 

@@ -13,6 +13,7 @@ public class StartSceneManager : MonoBehaviour
     void Start()
     {
         StartCoroutine(FadeText());
+        SoundManager.Inst.SetBGM(1);
     }
 
     public void OnClickTouchStart()

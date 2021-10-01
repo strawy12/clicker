@@ -125,7 +125,7 @@ public class User
             int cnt = 0;
             foreach (Pet pet in pets)
             {
-                if (pet.level != 0)
+                if (!pet.isLocked)
                 {
                     cnt += pet.level;
                 }

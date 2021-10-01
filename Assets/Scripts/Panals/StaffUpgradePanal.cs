@@ -26,7 +26,7 @@ public class StaffUpgradePanal : UpgradePanalBase
     public override void SetPanalNum(int num)
     {
         staff = GameManager.Inst.CurrentUser.staffs[num];
-        staffSprite = GameManager.Inst.UI.SoldierSpriteArray[num];
+        staffSprite = GameManager.Inst.UI.StaffSpriteArray[num];
         staffNum = num;
     }
 
@@ -81,7 +81,6 @@ public class StaffUpgradePanal : UpgradePanalBase
         if (staff.isLocked) return false;
         if (GameManager.Inst.CurrentUser.money >= staff.price * amount)
         {
-            BigInteger mPsSum;
             GameManager.Inst.CurrentUser.UpdateMoney(staff.price * amount, false);
             if(!staff.isSold)
             {
@@ -92,7 +91,6 @@ public class StaffUpgradePanal : UpgradePanalBase
             for (int i = 0; i < amount; i++)
             {
                 staff.price = GameManager.Inst.MultiflyBigInteger(staff.price, 1.25f, 2);
-                staff.basemPs = mPsSum < 10 ? 10 : mPsSum;
             }
            
             UpdateValues();

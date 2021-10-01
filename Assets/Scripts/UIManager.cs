@@ -62,8 +62,9 @@ public class UIManager : MonoBehaviour
 
     private Text rewardText = null;
     private MissionPanal[] missionPanalArray = null;
-    private Sprite[] soldierSprites = null;
+    private Sprite[] staffSprites = null;
     private Sprite[] buyBtnSprites = null;
+    private Sprite[] skillSprites = null;
     private Sprite[] petSprites = null;
     private Sprite[] missionSprites = null;
     private List<GameObject> randomPickObj = new List<GameObject>();
@@ -74,9 +75,10 @@ public class UIManager : MonoBehaviour
 
     private Text messageText = null;
     private bool isPicking = false;
-    public Sprite[] SoldierSpriteArray { get { return soldierSprites; } }
+    public Sprite[] StaffSpriteArray { get { return staffSprites; } }
     public Sprite[] PetSpriteArray { get { return petSprites; } }
     public Sprite[] BuyBtnSpriteArray { get { return buyBtnSprites; } }
+    public Sprite[] SkillSpriteArray { get { return skillSprites; } }
     public Sprite[] MissionSpriteArray { get { return missionSprites; } }
 
     public bool isShow { get; private set; } = false;
@@ -91,6 +93,7 @@ public class UIManager : MonoBehaviour
 
     private string spritePath = "StaffSprites";
     private string spriteUIPath = "Clicker Button UI";
+    private string skillSpritePath = "SkillImage";
     private string petSpritePath = "Pet Animal";
 
     private Canvas canvas;
@@ -102,8 +105,9 @@ public class UIManager : MonoBehaviour
         //AsyncOperationHandle<Sprite[]> spriteHandle = Addressables.LoadAssetAsync<Sprite[]>(spritePath);
         //spriteHandle.Completed += LoadSpriteWhenReady;
         buyBtnSprites = Resources.LoadAll<Sprite>(spriteUIPath);
-        soldierSprites = Resources.LoadAll<Sprite>(spritePath);
+        staffSprites = Resources.LoadAll<Sprite>(spritePath);
         petSprites = Resources.LoadAll<Sprite>(petSpritePath);
+        skillSprites = Resources.LoadAll<Sprite>(skillSpritePath);
         messageText = messageObject.transform.GetChild(0).GetComponent<Text>();
         missionPanalArray = missionPanal.GetComponentsInChildren<MissionPanal>();
         canvas = FindObjectOfType<Canvas>();
@@ -118,12 +122,6 @@ public class UIManager : MonoBehaviour
         if (GameManager.Inst.CurrentUser.playTime < 1800f)
         {
             GameManager.Inst.CurrentUser.playTime += Time.deltaTime;
-        }
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Debug.Log(GameManager.Inst.CurrentUser.money * 2);
-            GameManager.Inst.CurrentUser.UpdateMoney(GameManager.Inst.CurrentUser.money * 2, true);
         }
     }
 
@@ -479,6 +477,7 @@ public class UIManager : MonoBehaviour
         randomPickImage.rectTransform.DOShakePosition(0.5f);
         randomPickImage.rectTransform.DOShakeScale(0.5f);
         randomPickImage.rectTransform.DOShakeRotation(0.5f);
+        SoundManager.Inst.SetEffectSound(4);
         yield return new WaitForSeconds(0.5f);
         randomPickImage.rectTransform.DOScale(new Vector3(1.5f, 1f, 1.5f), 0.2f).OnComplete(() => randomPickImage.rectTransform.DOScale(Vector3.one, 0.1f));
 
@@ -531,7 +530,6 @@ public class UIManager : MonoBehaviour
         if (isPossive)
         {
             GameManager.Inst.Tutorial.SettingPart(num);
-            Debug.Log(num);
 
         }
         else
@@ -570,6 +568,7 @@ public class UIManager : MonoBehaviour
             ShowSelectingPanal(true);
             controlPanal.DOAnchorPosY(-242f, 0.2f).SetEase(Ease.InCirc);
             buffs.DOAnchorPosY(-140f, 0.2f).SetEase(Ease.InCirc);
+            isShow = false;
             return;
         }
         
@@ -666,7 +665,7 @@ public class UIManager : MonoBehaviour
     public void ShowPetInfoPanal(int num)
     {
         Staff staff = GameManager.Inst.CurrentUser.staffs[num];
-        petinfoPanal.SetInfo(soldierSprites[num], staff.staffName, staff.staffNum.ToString());
+        petinfoPanal.SetInfo(staffSprites[num], staff.staffName, staff.staffNum.ToString());
         petinfoPanal.gameObject.SetActive(true);
     }
 
