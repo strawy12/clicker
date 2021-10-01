@@ -309,9 +309,14 @@ public class TutorialManager : MonoBehaviour
     }
     public void SettingPart(int num)
     {
-        if (num >= 5 || num < 0)
+        if (num >= 4 || num < 0)
         {
             GameManager.Inst.UI.ShowMessage("다시 입력해주세요.");
+            return;
+        }
+        else if(num == 3)
+        {
+            GameManager.Inst.UI.ShowMessage("이 튜토리얼은 아직 개발 중 입니다.");
             return;
         }
         progressPartNum = num + 1;

@@ -562,7 +562,7 @@ public class UIManager : MonoBehaviour
             if (num != Mathf.Max(GameManager.Inst.Tutorial.progressPartNum - 2, 0))
                 return;
         }
-        if(!GameManager.Inst.CurrentUser.isTuto[num + 1] && num != 0 && !GameManager.Inst.isTutorial)
+        if(!GameManager.Inst.CurrentUser.isTuto[num + 1] && num == 1 && !GameManager.Inst.isTutorial)
         {
             SettingSeletingBtn(true, num + 1);
             ShowSelectingPanal(true);
