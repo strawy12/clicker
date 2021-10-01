@@ -8,7 +8,7 @@ using BigInteger = System.Numerics.BigInteger;
 public class SkillUpgradePanal : UpgradePanalBase
 {
     [SerializeField] private Text skillNameText = null;
-    [SerializeField] private Image skillImage = null;
+    [SerializeField] private Text skillInfoText = null;
     [SerializeField] private Image coolTime = null;
     private Skill skill = null;
     private int skillNum;
@@ -74,8 +74,25 @@ public class SkillUpgradePanal : UpgradePanalBase
     {
         skillNameText.text = string.Format("Lv.{0} {1}", skill.level, skill.skillName);
         ChangeBuyBtnPriceText("골드", skill.price, skill.PriceSum(10), skill.PriceSum(100));
-        ChangeBuyBtnInfo("구매"); 
+        ChangeBuyBtnInfo("구매");
+        SetSkillInfoText();
         buyBtnImages[2].sprite = GameManager.Inst.CurrentUser.goldCoin >= skill.price ? GameManager.Inst.UI.BuyBtnSpriteArray[1] : GameManager.Inst.UI.BuyBtnSpriteArray[0];
+    }
+
+    private void SetSkillInfoText()
+    {
+        if(skillNum == 0)
+        {
+            skillInfoText.text = string.Format("{0}초 동안 5회 클릭당 2회 추가 클릭", skill.duration);
+        }
+        else if(skillNum == 1)
+        {
+            skillInfoText.text = string.Format("{0}의 돈을 즉시 획득", GameManager.Inst.CurrentUser.mPc * skill.level * 1000);
+        }
+        else
+        {
+            skillInfoText.text = string.Format("{0}초 동안 획득하는 모든 돈 4배", skill.duration);
+        }
     }
 
     public void OnClickUpgradeSkill(int amount)

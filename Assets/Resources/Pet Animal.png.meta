@@ -143,9 +143,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 2449
-        width: 1379
-        height: 1124
+        y: 1500
+        width: 1500
+        height: 1500
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -163,10 +163,10 @@ TextureImporter:
       name: Pet Animal_9
       rect:
         serializedVersion: 2
-        x: 1456
-        y: 2466
-        width: 858
-        height: 1334
+        x: 1500
+        y: 1500
+        width: 1500
+        height: 1500
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -184,10 +184,10 @@ TextureImporter:
       name: Pet Animal_8
       rect:
         serializedVersion: 2
-        x: 2487
-        y: 2391
-        width: 1214
-        height: 1486
+        x: 3000
+        y: 1500
+        width: 1500
+        height: 1500
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -205,10 +205,10 @@ TextureImporter:
       name: Pet Animal_4
       rect:
         serializedVersion: 2
-        x: 3864
-        y: 2449
-        width: 967
-        height: 1371
+        x: 4500
+        y: 1500
+        width: 1500
+        height: 1500
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -226,10 +226,10 @@ TextureImporter:
       name: Pet Animal_6
       rect:
         serializedVersion: 2
-        x: 4969
-        y: 2606
-        width: 1371
-        height: 1051
+        x: 6000
+        y: 1500
+        width: 1500
+        height: 1500
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -247,10 +247,10 @@ TextureImporter:
       name: Pet Animal_3
       rect:
         serializedVersion: 2
-        x: 165
-        y: 274
-        width: 676
-        height: 1659
+        x: 0
+        y: 0
+        width: 1500
+        height: 1500
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -268,10 +268,10 @@ TextureImporter:
       name: Pet Animal_2
       rect:
         serializedVersion: 2
-        x: 978
-        y: 399
-        width: 1368
-        height: 1246
+        x: 1500
+        y: 0
+        width: 1500
+        height: 1500
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -289,10 +289,10 @@ TextureImporter:
       name: Pet Animal_5
       rect:
         serializedVersion: 2
-        x: 2387
-        y: 399
-        width: 1278
-        height: 1412
+        x: 3000
+        y: 0
+        width: 1500
+        height: 1500
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -310,10 +310,10 @@ TextureImporter:
       name: Pet Animal_1
       rect:
         serializedVersion: 2
-        x: 3806
-        y: 431
-        width: 1031
-        height: 1345
+        x: 4500
+        y: 0
+        width: 1500
+        height: 1500
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -331,10 +331,10 @@ TextureImporter:
       name: Pet Animal_0
       rect:
         serializedVersion: 2
-        x: 4969
-        y: 447
-        width: 1262
-        height: 1147
+        x: 6000
+        y: 0
+        width: 1500
+        height: 1500
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}

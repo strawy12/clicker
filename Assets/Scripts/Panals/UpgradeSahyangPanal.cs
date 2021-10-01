@@ -7,6 +7,7 @@ public class UpgradeSahyangPanal : UpgradePanalBase
 {
     Sahayang sahayang;
     [SerializeField]Text nameText = null;
+    [SerializeField] Text infoText = null;
     public override void Awake()
     {
         base.Awake();
@@ -20,6 +21,7 @@ public class UpgradeSahyangPanal : UpgradePanalBase
     public override void UpdateValues()
     {
         nameText.text = string.Format("Lv.{0} {1}", sahayang.level, "금사향");
+        infoText.text = string.Format("클릭 당 {0}원 획득", GameManager.Inst.MoneyUnitConversion(GameManager.Inst.CurrentUser.mPc));
         ChangeBuyBtnPriceText("원", sahayang.price, sahayang.PriceSum(10), sahayang.PriceSum(100));
         ChangeBuyBtnInfo("구매");
         buyBtnImages[2].sprite = GameManager.Inst.CurrentUser.money >= sahayang.price ? GameManager.Inst.UI.BuyBtnSpriteArray[1] : GameManager.Inst.UI.BuyBtnSpriteArray[0];
@@ -34,7 +36,6 @@ public class UpgradeSahyangPanal : UpgradePanalBase
             for (int i = 0; i < amount; i++)
             {
                 sahayang.price = GameManager.Inst.MultiflyBigInteger(sahayang.price, 1.25f, 2);
-                GameManager.Inst.CurrentUser.basemPc += GameManager.Inst.MultiflyBigInteger(GameManager.Inst.CurrentUser.basemPc, 1.25f, 2);
             }
             UpdateValues();
             GameManager.Inst.UI.UpdateMoneyPanal();

@@ -9,6 +9,7 @@ public class SoundManager : MonoSingleton<SoundManager>
     [SerializeField] AudioClip[] effectSounds = null;
     private AudioSource bgmAudio;
     private AudioSource effectAudio;
+    private AudioSource tutoEffectAudio;
     private void Awake()
     {
         SoundManager[] smanagers = FindObjectsOfType<SoundManager>();
@@ -19,11 +20,17 @@ public class SoundManager : MonoSingleton<SoundManager>
         }
         bgmAudio = GetComponent<AudioSource>();
         effectAudio = transform.GetChild(0).GetComponent<AudioSource>();
+        tutoEffectAudio = transform.GetChild(1).GetComponent<AudioSource>();
     }
     public void VolumeSetting()
     {
         bgmAudio.volume = GameManager.Inst.CurrentUser.bgmVolume;
         effectAudio.volume = GameManager.Inst.CurrentUser.effectVolume;
+    }
+
+    public void SetSpeedBGM(float speed)
+    {
+        bgmAudio.pitch = speed;
     }
     public void BGMVolume(float value)
     {
@@ -54,9 +61,21 @@ public class SoundManager : MonoSingleton<SoundManager>
     public void SetEffectSound(int effectNum)
     {
         effectAudio.Stop();
+
         effectAudio.clip = effectSounds[effectNum];
         effectAudio.Play();
     }
+
+    public void SetTutoEffectAudio(int effectNum)
+    {
+        tutoEffectAudio.clip = effectSounds[effectNum];
+        tutoEffectAudio.Play();
+    }
+    public void StopTutoEffect()
+    {
+        tutoEffectAudio.Stop();
+    }
+
     public void StopBGM()
     {
         bgmAudio.Stop();

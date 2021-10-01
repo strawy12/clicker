@@ -14,7 +14,7 @@ public class Staff
     {
         get
         {
-            return (basemPs * staffNum / 2) * level;
+            return basemPs * level;
         }
     }
     public BigInteger price;
@@ -42,6 +42,7 @@ public class Staff
             return GameManager.Inst.CurrentUser.staffs[num].level < 10;
         }
     }
+    public bool isShow;
 
     public BigInteger PriceSum(int multiple)
     {

@@ -12,29 +12,46 @@ public class IBookStaff : IBookObject
         {
             button = GetComponent<Button>();
             image = transform.GetChild(0).GetComponent<Image>();
+            exclamationImage = transform.GetChild(1).GetComponent<Image>();
         }
 
         image.sprite = GameManager.Inst.UI.SoldierSpriteArray[staff.staffNum];
         this.staff = staff;
+        if (!staff.isShow)
+        {
+            exclamationImage.gameObject.SetActive(false);
+            isLocked = false;
+            GameManager.Inst.UI.ShowNewIBook(false);
+        }
         UpdatePanal();
     }
 
     public override void UpdatePanal()
     {
-        if (staff.isLocked)
+        if (!staff.isSold)
         {
             image.color = Color.black;
             button.interactable = false;
+            exclamationImage.gameObject.SetActive(false);
+            GameManager.Inst.UI.ShowNewIBook(false);
 
         }
         else
         {
+            if (isLocked)
+            {
+                isLocked = false;
+                GameManager.Inst.UI.ShowNewIBook(true);
+                exclamationImage.gameObject.SetActive(true);
+            }
             image.color = Color.white;
             button.interactable = true;
         }
     }
     public override void ShowInfoPanal()
     {
+        exclamationImage.gameObject.SetActive(false);
+
         GameManager.Inst.UI.ShowInfoPanal(true, staff);
     }
 }

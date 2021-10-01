@@ -54,6 +54,7 @@ public class Pet
     }
 
     public bool isEquip;
+    public bool isShow;
 
     public Pet(int petNum, string petName, int amount, int level, int percent, BigInteger price)
     {

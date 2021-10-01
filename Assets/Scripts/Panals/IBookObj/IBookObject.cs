@@ -7,6 +7,8 @@ public class IBookObject : MonoBehaviour
 {
     protected Button button = null;
     protected Image image = null;
+    protected Image exclamationImage = null;
+    protected bool isLocked = true;
 
     private void Awake()
     {

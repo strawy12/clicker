@@ -11,7 +11,6 @@ public class Skill
     public int level;
     public int price;
     public bool isSold;
-    public int baseCoolTime;
     public int baseDuration;
     public string info;
 
@@ -19,29 +18,23 @@ public class Skill
     {
         get
         {
-            return (int)(baseDuration + (level * 1.25f)) * Mathf.Min(1, baseDuration);
+            return (int)(baseDuration + (level * 1.2f)) * Mathf.Min(1, baseDuration);
         }
     }
-    public int coolTime
-    {
-        get
-        {
-            return (int)Mathf.Max((baseCoolTime - (level * 1.25f)), 10);
-        }
-    }
+    public int coolTime;
     public bool isUsed;
 
     public string endTime;
     public string endDurationTime;
 
-    public Skill(string skillName, int skillNum, int level, int price, int baseDuration, int baseCoolTime)
+    public Skill(string skillName, int skillNum, int level, int price, int baseDuration, int coolTime)
     {
         this.skillName = skillName;
         this.skillNum = skillNum;
         this.level = level;
         this.price = price;
         this.baseDuration = baseDuration;
-        this.baseCoolTime = baseCoolTime;
+        this.coolTime = coolTime;
     }
 
     public long PriceSum(int multiple)

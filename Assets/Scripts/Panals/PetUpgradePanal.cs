@@ -9,7 +9,7 @@ using BigInteger = System.Numerics.BigInteger;
 public class PetUpgradePanal : UpgradePanalBase
 {
     [SerializeField] private Text petNameText = null;
-    [SerializeField] private Text amountText = null;
+    [SerializeField] private Text petInfoText = null;
     [SerializeField] private Image petImage = null;
     [SerializeField] GameObject petObjectTemp = null;
     [SerializeField] private Toggle petMountingBtn = null;
@@ -46,10 +46,12 @@ public class PetUpgradePanal : UpgradePanalBase
             petMountingBtn.isOn = pet.isEquip;
             petMountingBtn.interactable = true;
             petBuyBtnInfoText.text = "강화";
+            SetPetInfoText();
             petNameText.text = string.Format("Lv.{0} {1}", pet.level, pet.petName);
             petPriceText.text = string.Format("{0} / {1}\n{2} 원", pet.amount, pet.maxAmount, GameManager.Inst.MoneyUnitConversion(pet.price));
             backgroundImage.color = Color.white;
-            amountText.text = string.Format("{0}", pet.amount);
+            petImage.color = Color.white;
+
             buyBtnImage.sprite = GameManager.Inst.CurrentUser.money >= pet.price && pet.amount >= pet.maxAmount ? GameManager.Inst.UI.BuyBtnSpriteArray[isShow ? 3 : 1] : GameManager.Inst.UI.BuyBtnSpriteArray[0];
 
         }
@@ -57,12 +59,26 @@ public class PetUpgradePanal : UpgradePanalBase
         {
             petMountingBtn.interactable = false;
             petNameText.text = "????";
+            petInfoText.text = "";
             petPriceText.text = "";
             petBuyBtnInfoText.text = "";
             backgroundImage.color = Color.gray;
+            petImage.color = Color.black;
             buyBtnImage.sprite = GameManager.Inst.UI.BuyBtnSpriteArray[4];
         }
         //petImage.sprite = mainSprite;
+    }
+
+    private void SetPetInfoText()
+    {
+        if (pet.petNum % 2 == 0)
+        {
+            petInfoText.text = string.Format("클릭 쿨타임: - {0}초", pet.petNum + pet.level * 1.25f);
+        }
+        else
+        {
+            petInfoText.text = string.Format("클릭횟수: {0}", pet.petNum * pet.level);
+        }
     }
 
     public void OnClickLevelUpBtn()
@@ -93,6 +109,7 @@ public class PetUpgradePanal : UpgradePanalBase
     public void OnClickMounting(bool isOn)
     {
         pet.isEquip = isOn;
+        SoundManager.Inst.SetEffectSound(isOn ? 4 : 2);
         if (petBuffObj == null)
         {
             petBuffObj = Instantiate(petObjectTemp, petObjectTemp.transform.parent);

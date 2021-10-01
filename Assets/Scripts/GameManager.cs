@@ -100,6 +100,8 @@ public class GameManager : MonoSingleton<GameManager>
 
     }
 
+    private float timer = 0f;
+
 
     public Vector2 MaxPos { get; private set; }
     public Vector2 MinPos { get; private set; }
@@ -125,7 +127,8 @@ public class GameManager : MonoSingleton<GameManager>
         }
         MaxPos = new Vector2(2.05f, 4.2f);
         MinPos = new Vector2(-2.05f, -4.2f);
-
+        uiManager = GetComponent<UIManager>();
+        tutorialManager = GetComponent<TutorialManager>();
         LoadFromJson();
         Application.targetFrameRate = user.frame;
         SetDict();
@@ -135,14 +138,15 @@ public class GameManager : MonoSingleton<GameManager>
     private void Start()
     {
         SoundManager.Inst.VolumeSetting();
-
         SoundManager.Inst.SetBGM(0);
         SoundManager.Inst.SetEffectSound(0);
 
         SettingUser();
+        uiManager.SettingFPS(user.frame);
         CheckReJoinTime();
+        CheckAutoClick();
+
         InvokeRepeating("SaveToJson", 5f, 60f);
-        InvokeRepeating("AutoClick", 5f, user.autoClickTime);
         InvokeRepeating("MoneyPerSecond", 5f, 1f);
     }
 
@@ -151,6 +155,31 @@ public class GameManager : MonoSingleton<GameManager>
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Application.Quit();
+        }
+            timer += Time.deltaTime;
+            if(timer >= user.autoClickTime)
+            {
+                AutoClick();
+                timer = 0f;
+            }
+        
+    }
+
+    private void CheckAutoClick()
+    {
+        if(user.autoClickUsingTime == "" || user.autoClickUsingTime == null)
+        {
+            timer = user.autoClickTime;
+            return;
+        }
+        TimeSpan diff = DateTime.Parse(user.autoClickUsingTime) - DateTime.Now;
+        if (diff.TotalSeconds > 0)
+        {
+            timer = user.autoClickTime - (float)diff.TotalSeconds;
+        }
+        else
+        {
+            timer = user.autoClickTime;
         }
     }
 
@@ -199,21 +228,21 @@ public class GameManager : MonoSingleton<GameManager>
             user.bgmVolume = 0.5f;
             user.effectVolume = 0.5f;
 
-            user.staffs.Add(new Staff("ÀÀ¾ÖÂïÂïÀÌ", 0, 0, 0, 1000));
-            user.staffs.Add(new Staff("¼Ò³âÂïÂïÀÌ", 1, 0, 0, 3000));
-            user.staffs.Add(new Staff("¼Ò³àÂïÂïÀÌ", 2, 0, 0, 5000));
-            user.staffs.Add(new Staff("¾Ë¹ÙÂïÂïÀÌ", 3, 0, 0, 10000));
-            user.staffs.Add(new Staff("³óºÎÂïÂïÀÌ", 4, 0, 0, 15000));
-            user.staffs.Add(new Staff("º¹¼­ÂïÂïÀÌ", 5, 0, 0, 30000));
-            user.staffs.Add(new Staff("ÀÇ»çÂïÂïÀÌ", 6, 0, 0, 50000));
-            user.staffs.Add(new Staff("¼Ò¹æ°üÂïÂïÀÌ", 7, 0, 0, 100000));
-            user.staffs.Add(new Staff("ÇïÃ¢ÂïÂïÀÌ", 8, 0, 0, 300000));
-            user.staffs.Add(new Staff("±ºÀÎÂïÂïÀÌ", 9, 0, 0, 500000));
-            user.staffs.Add(new Staff("OIFÂïÂïÀÌ", 10, 0, 0, 1000000));
+            user.staffs.Add(new Staff("ÀÀ¾ÖÂïÂïÀÌ", 0, 0, 10, 1000));
+            user.staffs.Add(new Staff("¼Ò³âÂïÂïÀÌ", 1, 0, 200, 2000));
+            user.staffs.Add(new Staff("¼Ò³àÂïÂïÀÌ", 2, 0, 3000, 30000));
+            user.staffs.Add(new Staff("¾Ë¹ÙÂïÂïÀÌ", 3, 0, 20000, 200000));
+            user.staffs.Add(new Staff("³óºÎÂïÂïÀÌ", 4, 0, 150000, 1500000));
+            user.staffs.Add(new Staff("º¹¼­ÂïÂïÀÌ", 5, 0, 1000000, 10000000));
+            user.staffs.Add(new Staff("ÀÇ»çÂïÂïÀÌ", 6, 0, 7000000, 70000000));
+            user.staffs.Add(new Staff("¼Ò¹æ°üÂïÂïÀÌ", 7, 0, 15000000, 150000000));
+            user.staffs.Add(new Staff("ÇïÃ¢ÂïÂïÀÌ", 8, 0, 30000000, 300000000));
+            user.staffs.Add(new Staff("±ºÀÎÂïÂïÀÌ", 9, 0, 50000000, 500000000));
+            user.staffs.Add(new Staff("OIFÂïÂïÀÌ", 10, 0, 100000000, 1000000000));
 
-            user.skills.Add(new Skill("Æ®ÀÌÀ¯", 0, 1, 100, 30, 100));
-            user.skills.Add(new Skill("ÀÀ¾Ö", 1, 1, 100, 0, 200));
-            user.skills.Add(new Skill("À¯À¸³»¸ğµå", 2, 1, 100, 30, 300));
+            user.skills.Add(new Skill("ÂøÃëÀÇ ÇöÀå", 0, 1, 100, 30, 100));
+            user.skills.Add(new Skill("³ëµ¿ÀÇ ´ë°¡", 1, 1, 100, 0, 200));
+            user.skills.Add(new Skill("À¯À¸³» ¸ğµå", 2, 1, 100, 30, 300));
 
             user.pets.Add(new Pet(0, "°­¾ÆÁö", 0, 0, 20, 1000));
             user.pets.Add(new Pet(1, "Åä³¢", 0, 0, 20, 1000));
@@ -311,9 +340,9 @@ public class GameManager : MonoSingleton<GameManager>
         BigInteger mPsSum = 0;
         foreach (Staff staff in user.staffs)
         {
-            mPsSum = staff.mPs;
+            mPsSum += staff.mPs;
         }
-        user.money += mPsSum;
+        user.money += mPsSum * user.additionMoney;
         uiManager.UpdateMoneyPanal();
     }
     public string MoneyUnitConversion(BigInteger value)
@@ -338,7 +367,8 @@ public class GameManager : MonoSingleton<GameManager>
     public void AutoClick()
     {
         StartCoroutine(AutoClickAnim());
-        for (int i = 0; i < user.petAmount; i++)
+        user.autoClickUsingTime = DateTime.Now.AddSeconds(user.autoClickTime).ToString("G");
+        for (int i = 0; i < user.petCount; i++)
         {
             user.UpdateMoney(user.mPc, true);
         }
@@ -347,7 +377,7 @@ public class GameManager : MonoSingleton<GameManager>
 
     private IEnumerator AutoClickAnim()
     {
-        for (int i = 0; i < user.petAmount; i++)
+        for (int i = 0; i < user.petCount; i++)
         {
             //uiManager.ShowCoinText();
             uiManager.ShowClickEffect(new Vector3(Random.Range(-1.7f, 1.7f), Random.Range(-4f, 4f), -5f));
@@ -356,21 +386,20 @@ public class GameManager : MonoSingleton<GameManager>
     }
 
     public void SettingFrame(int frame)
-    {
+    {   
         user.frame = frame;
         Application.targetFrameRate = user.frame;
+        uiManager.SettingFPS(user.frame);
     }
     private void OnApplicationQuit()
     {
         user.exitTime = DateTime.Now.ToString("G");
         SaveToJson();
-        Debug.Log(DateTime.Now.ToString("G"));
     }
     private void OnApplicationPause()
     {
         user.exitTime = DateTime.Now.ToString("G");
         SaveToJson();
-        Debug.Log(DateTime.Now.ToString("G"));
 
 
     }

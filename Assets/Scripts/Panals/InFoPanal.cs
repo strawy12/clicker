@@ -22,7 +22,7 @@ public class InFoPanal : MonoBehaviour
     {
         itemImage.sprite = GameManager.Inst.UI.SoldierSpriteArray[staff.staffNum];
         nameText.text = staff.staffName;
-        effectInfoText.text = string.Format("1초 당 {0} 원 획득 ▶ ​<color=#ABF200>1초 당 {0} 원 획득</color>", staff.mPs, (staff.basemPs * staff.staffNum / 2) * (staff.level + 1));
+        effectInfoText.text = string.Format("1초 당 {0} 원 획득", staff.mPs);
         infoText.text = staff.info;
     }
 
@@ -34,12 +34,12 @@ public class InFoPanal : MonoBehaviour
         if(pet.petNum % 2 == 0)
         {
             type = "시간형";
-            effectInfoText.text = string.Format("클릭 쿨타임: - {0}초 ▶ <color=#ABF200>- {1}초</color>", pet.petNum + pet.level * 1.25f, pet.petNum +( pet.level + 1) * 1.25f);
+            effectInfoText.text = string.Format("클릭 쿨타임: - {0}초", pet.petNum + pet.level * 1.25f);
         }
         else
         {
             type = "클릭형";
-            effectInfoText.text = string.Format("클릭횟수: {0} ▶ <color=#ABF200>- {1}초</color>", pet.petNum * pet.level, pet.petNum * (pet.level + 1));
+            effectInfoText.text = string.Format("클릭횟수: {0}", pet.petNum * pet.level);
         }
         nameText.text = string.Format("{0}\n[{1}]", pet.petName, type);
         infoText.text = pet.info;

@@ -22,6 +22,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject moneyImage = null;
     [SerializeField] private GameObject coinImage = null;
     [SerializeField] private RectTransform buffs = null;
+    [SerializeField] private GameObject systemBtns = null;
+    [SerializeField] GameObject fpsBtns = null;
 
 
     [Header("프리팹")]
@@ -67,6 +69,8 @@ public class UIManager : MonoBehaviour
     private List<GameObject> randomPickObj = new List<GameObject>();
     private Coroutine messageCo = null;
     public Button[] seletingBtns { get; private set; } = null;
+    private Button[] fpsSettingBtns = null;
+    private Image[] systemBtnImages  = null;
 
     private Text messageText = null;
     private bool isPicking = false;
@@ -82,6 +86,8 @@ public class UIManager : MonoBehaviour
     private int additionClickCnt = 0;
     private int clickCnt = 0;
     private int randNum;
+    private int mowMissionClearCnt = 0;
+    private int iBookCnt = 0;
 
     private string spritePath = "StaffSprites";
     private string spriteUIPath = "Clicker Button UI";
@@ -101,17 +107,11 @@ public class UIManager : MonoBehaviour
         messageText = messageObject.transform.GetChild(0).GetComponent<Text>();
         missionPanalArray = missionPanal.GetComponentsInChildren<MissionPanal>();
         canvas = FindObjectOfType<Canvas>();
+        AddSystemBtn();
+        fpsSettingBtns = fpsBtns.GetComponentsInChildren<Button>();
         rewardText = rewardPanal.transform.GetChild(1).GetComponent<Text>();
         seletingBtns = selectingPanal.transform.GetComponentsInChildren<Button>();
     }
-    //private void LoadSpriteWhenReady(AsyncOperationHandle<Sprite[]> handleToCheck)
-    //{
-    //    if (handleToCheck.Status == AsyncOperationStatus.Succeeded)
-    //    {
-    //        soldierSprites = handleToCheck.Result;
-    //    }
-
-    //}
 
     private void Update()
     {
@@ -122,19 +122,34 @@ public class UIManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            Debug.Log(GameManager.Inst.CurrentUser.money * 2);
             GameManager.Inst.CurrentUser.UpdateMoney(GameManager.Inst.CurrentUser.money * 2, true);
         }
     }
 
     private void Start()
     {
-        MissionPanalGoStart();
-        UpdateMoneyPanal();
-        CreatePanals();
-        SetScrollActive(1);
+        mowMissionClearCnt = GameManager.Inst.CurrentUser.missionClear;
         isShow = false;
         randNum = Random.Range(230, 500);
+        MissionPanalGoStart();
+        CreatePanals();
+        UpdateMoneyPanal();
+        SetScrollActive(1);
 
+
+
+    }
+
+    private void AddSystemBtn()
+    {
+        List<Image> images = new List<Image>();
+
+        for(int i =0; i< systemBtns.transform.childCount; i++)
+        {
+            images.Add(systemBtns.transform.GetChild(i).GetChild(1).GetComponent<Image>());
+        }
+        systemBtnImages = images.ToArray();
     }
 
     private void MissionPanalGoStart()
@@ -310,6 +325,11 @@ public class UIManager : MonoBehaviour
         ShowPanal(inFoPanal.gameObject, isShow);
     }
 
+    public void ShowSettingPanal(bool isShow)
+    {
+        ShowPanal(settingPanal, isShow);
+    }
+
     public void ShowPanal(GameObject panal, bool isShow)
     {
         if(isShow)
@@ -362,18 +382,18 @@ public class UIManager : MonoBehaviour
                 if (isOn)
                 {
                     
-                    GameManager.Inst.CurrentUser.UpdateMoney(GameManager.Inst.CurrentUser.mPc * 1000, true);
+                    GameManager.Inst.CurrentUser.UpdateMoney(GameManager.Inst.CurrentUser.mPc * GameManager.Inst.CurrentUser.skills[num].level * 1000 , true);
                     UpdateMoneyPanal();
                 }
                 break;
             case 2:
                 if (isOn)
                 {
-                    GameManager.Inst.CurrentUser.additionMoney = 4;
+                    GameManager.Inst.CurrentUser.additionMoney += 4;
                 }
                 else
                 {
-                    GameManager.Inst.CurrentUser.additionMoney = 1;
+                    GameManager.Inst.CurrentUser.additionMoney -= 1;
                 }
                 break;
         }
@@ -494,6 +514,17 @@ public class UIManager : MonoBehaviour
 
     }
 
+    public void SettingFPS(int fps)
+    {
+        int num = fps / 15 - 2;
+
+        for(int i = 0; i < fpsSettingBtns.Length; i++)
+        {
+            fpsSettingBtns[i].interactable = true;
+        }
+        fpsSettingBtns[num].interactable = false;
+    }
+
     public void CheckSelectingBtn(bool isPossive, int num)
     {
         SettingSeletingBtn(false, num);
@@ -533,12 +564,12 @@ public class UIManager : MonoBehaviour
             if (num != Mathf.Max(GameManager.Inst.Tutorial.progressPartNum - 2, 0))
                 return;
         }
-        if(!GameManager.Inst.CurrentUser.isTuto[num + 1] && num != 0)
+        if(!GameManager.Inst.CurrentUser.isTuto[num + 1] && num != 0 && !GameManager.Inst.isTutorial)
         {
             SettingSeletingBtn(true, num + 1);
             ShowSelectingPanal(true);
             controlPanal.DOAnchorPosY(-242f, 0.2f).SetEase(Ease.InCirc);
-            buffs.DOAnchorPosY(-149f, 0.2f).SetEase(Ease.InCirc);
+            buffs.DOAnchorPosY(-140f, 0.2f).SetEase(Ease.InCirc);
             return;
         }
         
@@ -609,8 +640,29 @@ public class UIManager : MonoBehaviour
         {
             upgradePanal.UpdateValues();
         }
+        CheckMissionClear();
+        iBookPanal.UpdateIBook();
     }
 
+    private void CheckMissionClear()
+    {
+        if(mowMissionClearCnt < GameManager.Inst.CurrentUser.missionClear)
+        {
+            ShowNewMisstionClear(true);
+        }
+        else
+        {
+            ShowNewMisstionClear(false);
+        }
+    }
+    public void ShowNewMisstionClear(bool isShow)
+    {
+        systemBtnImages[0].gameObject.SetActive(isShow);
+    }
+    public void ShowNewIBook(bool isShow)
+    {
+        systemBtnImages[1].gameObject.SetActive(isShow);
+    }
     public void ShowPetInfoPanal(int num)
     {
         Staff staff = GameManager.Inst.CurrentUser.staffs[num];
@@ -624,7 +676,7 @@ public class UIManager : MonoBehaviour
         {
             StopCoroutine(messageCo);
         }
-
+        messageCo = null;
         messageCo = StartCoroutine(Message(message, showTime, unShowTime, waitingTime, fontSize));
     }
 

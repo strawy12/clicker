@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 using EPoolingType = GameManager.EPoolingType;
 
 public class SomSaTang : MonoBehaviour
@@ -16,6 +17,7 @@ public class SomSaTang : MonoBehaviour
     }
     private void Despawn()
     {
+        transform.DOKill();
         transform.SetParent(GameManager.Inst.Pool);
         gameObject.SetActive(false);
     }
@@ -23,6 +25,14 @@ public class SomSaTang : MonoBehaviour
     public void ClickSomSatang()
     {
         GameManager.Inst.CurrentUser.UpdateMoney(GameManager.Inst.CurrentUser.mPc * 30, true);
-        Despawn();
+        transform.DOScale(new Vector3(0.1f, 0.1f, 0.1f), 0.2f).SetEase(Ease.OutCirc).OnComplete(() =>
+        {
+            transform.DOScale(new Vector3(0.7f, 0.7f, 0.7f), 0.3f).SetEase(Ease.InCirc).OnComplete(() =>
+            {
+                Despawn();
+
+            });
+
+        });
     }
 }

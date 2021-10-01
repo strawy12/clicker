@@ -31,10 +31,28 @@ public class User
     public float playTime;
     public int frame;
     public string exitTime; 
+    public string autoClickUsingTime; 
     public string saveMoney;
     public long goldCoin;
 
     public bool[] isTuto;
+
+    public bool tutoAllClear
+    {
+        get
+        {
+            if (isTuto[4]) return false;
+            for(int i = 0; i < 4; i++)
+            {
+                if(!isTuto[i])
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+
     public bool[] missions
     {
         get
@@ -80,7 +98,23 @@ public class User
     {
         get
         {
-            return basemPc * Mathf.Max(1, petAmount) * additionMoney;
+            return basemPc + (15 * sahayang.level) * Mathf.Max(petAmount, 1) * additionMoney;
+        }
+    }
+
+    public int petCount
+    {
+        get
+        {
+            int cnt = 0;
+            foreach (Pet pet in pets)
+            {
+                if (pet.isEquip && pet.level != 0)
+                {
+                    cnt += pet.clickCnt;
+                }
+            }
+            return cnt;
         }
     }
 
@@ -91,9 +125,9 @@ public class User
             int cnt = 0;
             foreach (Pet pet in pets)
             {
-                if (pet.isEquip && pet.amount != 0)
+                if (pet.level != 0)
                 {
-                    cnt += pet.clickCnt;
+                    cnt += pet.level;
                 }
             }
             return cnt;

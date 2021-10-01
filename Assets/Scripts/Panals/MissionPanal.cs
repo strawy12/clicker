@@ -32,7 +32,7 @@ public class MissionPanal : MonoBehaviour
         }
     }
     
-
+    
     public void GoStart()
     {
         UpdatePanal();
@@ -48,6 +48,7 @@ public class MissionPanal : MonoBehaviour
 
     private void OnEnable()
     {
+        GameManager.Inst.UI.ShowNewMisstionClear(false);    
         UpdatePanal();
     }
 

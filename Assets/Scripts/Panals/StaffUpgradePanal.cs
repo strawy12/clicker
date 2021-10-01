@@ -48,7 +48,7 @@ public class StaffUpgradePanal : UpgradePanalBase
             }
             staffNameText.text = string.Format("Lv.{0} {1}", staff.level, staff.staffName);
             ChangeBuyBtnPriceText("원",staff.price, staff.PriceSum(10), staff.PriceSum(100));
-            staffInfoText.text = string.Format("+ {0} / s", GameManager.Inst.MoneyUnitConversion(staff.basemPs));
+            staffInfoText.text = string.Format("+ {0} / s", GameManager.Inst.MoneyUnitConversion(staff.mPs));
             staffImage.color = Color.white;
             backgroundImage.color = Color.white;
             buyBtnImages[2].sprite = GameManager.Inst.CurrentUser.money >= staff.price ? GameManager.Inst.UI.BuyBtnSpriteArray[isShow ? 3 : 1] : GameManager.Inst.UI.BuyBtnSpriteArray[isShow ? 2 : 0];
@@ -92,7 +92,6 @@ public class StaffUpgradePanal : UpgradePanalBase
             for (int i = 0; i < amount; i++)
             {
                 staff.price = GameManager.Inst.MultiflyBigInteger(staff.price, 1.25f, 2);
-                mPsSum = GameManager.Inst.MultiflyBigInteger(staff.basemPs, 1.25f, 2);
                 staff.basemPs = mPsSum < 10 ? 10 : mPsSum;
             }
            
@@ -106,7 +105,6 @@ public class StaffUpgradePanal : UpgradePanalBase
         {
             GameManager.Inst.UI.ShowMessage("돈이 부족합니다");
             SoundManager.Inst.SetEffectSound(1);
-            UpgradeStaff(amount);
             return false;
         }
     }
