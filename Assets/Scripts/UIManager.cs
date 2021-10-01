@@ -23,6 +23,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject coinImage = null;
     [SerializeField] private RectTransform buffs = null;
     [SerializeField] private GameObject systemBtns = null;
+    [SerializeField] private Slider bgmController = null;
+    [SerializeField] private Slider effectController = null;
     [SerializeField] GameObject fpsBtns = null;
 
 
@@ -129,7 +131,9 @@ public class UIManager : MonoBehaviour
     {
         mowMissionClearCnt = GameManager.Inst.CurrentUser.missionClear;
         isShow = false;
-        randNum = Random.Range(230, 500);
+        bgmController.value = GameManager.Inst.CurrentUser.bgmVolume;
+        effectController.value = GameManager.Inst.CurrentUser.effectVolume;
+        randNum = Random.Range(230, 300);
         MissionPanalGoStart();
         CreatePanals();
         UpdateMoneyPanal();
@@ -221,7 +225,7 @@ public class UIManager : MonoBehaviour
         if (clickCnt == randNum)
         {
             clickCnt = 0;
-            randNum = Random.Range(230, 500);
+            randNum = Random.Range(230, 300);
             ShowSomSaTang();
         }
 
@@ -387,11 +391,11 @@ public class UIManager : MonoBehaviour
             case 2:
                 if (isOn)
                 {
-                    GameManager.Inst.CurrentUser.additionMoney += 4;
+                    GameManager.Inst.CurrentUser.additionMoney = 4;
                 }
                 else
                 {
-                    GameManager.Inst.CurrentUser.additionMoney -= 1;
+                    GameManager.Inst.CurrentUser.additionMoney = 1;
                 }
                 break;
         }
@@ -647,6 +651,7 @@ public class UIManager : MonoBehaviour
     {
         if(mowMissionClearCnt < GameManager.Inst.CurrentUser.missionClear)
         {
+            mowMissionClearCnt = GameManager.Inst.CurrentUser.missionClear;
             ShowNewMisstionClear(true);
         }
         else
