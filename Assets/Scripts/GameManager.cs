@@ -344,6 +344,7 @@ public class GameManager : MonoSingleton<GameManager>
             mPsSum += staff.mPs;
         }
         user.money += mPsSum * user.additionMoney;
+        uiManager.ShowCoinText(mPsSum * user.additionMoney);
         uiManager.UpdateMoneyPanal();
     }
     public string MoneyUnitConversion(BigInteger value)
@@ -371,8 +372,9 @@ public class GameManager : MonoSingleton<GameManager>
         user.autoClickUsingTime = DateTime.Now.AddSeconds(user.autoClickTime).ToString("G");
         for (int i = 0; i < user.petCount; i++)
         {
-            user.UpdateMoney(user.mPc, true);
+            uiManager.OnClickDisPlay();
         }
+
         uiManager.UpdateMoneyPanal();
     }
 
@@ -380,7 +382,6 @@ public class GameManager : MonoSingleton<GameManager>
     {
         for (int i = 0; i < user.petCount; i++)
         {
-            //uiManager.ShowCoinText();
             uiManager.ShowClickEffect(new Vector3(Random.Range(-1.7f, 1.7f), Random.Range(-4f, 4f), -5f));
             yield return new WaitForSeconds(0.05f);
         }

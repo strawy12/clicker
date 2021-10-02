@@ -249,7 +249,7 @@ public class UIManager : MonoBehaviour
         GameManager.Inst.CurrentUser.UpdateMoney(GameManager.Inst.CurrentUser.mPc, true);
         UpdateMoneyPanal();
         ShowClickEffect(GameManager.Inst.MousePos);
-        ShowCoinText();
+        ShowCoinText(GameManager.Inst.CurrentUser.mPc);
         StartCoroutine(PopDOTObj(moneyImage));
         StartCoroutine(PopDOTObj(coinImage, 0.07f));
     }
@@ -356,7 +356,7 @@ public class UIManager : MonoBehaviour
         panal.transform.DOScaleX(0f, 0.2f).OnComplete(() => { panal.SetActive(false); panal.transform.localScale = Vector3.zero; });
     }
 
-    public void ShowCoinText()
+    public void ShowCoinText(BigInteger money)
     {
         CoinText coinText = null;
         Queue<GameObject> queue = GameManager.Inst.PoolingList[EPoolingType.coinText];
@@ -370,7 +370,7 @@ public class UIManager : MonoBehaviour
             coinText = Instantiate(coinTextTemp, coinTextTemp.transform.parent);
         }
 
-        coinText.Show();
+        coinText.Show(money);
     }
 
     public void OnOffSkill(int num, bool isOn)

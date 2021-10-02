@@ -1,13 +1,14 @@
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using BigInteger = System.Numerics.BigInteger;
 
 public class CoinText : MonoBehaviour
 {
     private Text coinText = null;
     private Image coinImage = null;
 
-    public void Show()
+    public void Show(BigInteger money)
     {
         if (coinImage == null)
         {
@@ -19,7 +20,7 @@ public class CoinText : MonoBehaviour
         }
 
         RectTransform rectTransform = GetComponent<RectTransform>();
-        coinText.text = string.Format("+{0} ¿ø", GameManager.Inst.MoneyUnitConversion(GameManager.Inst.CurrentUser.mPc));
+        coinText.text = string.Format("+{0} ¿ø", GameManager.Inst.MoneyUnitConversion(money));
         transform.localPosition = new Vector3(-5.8f, 220f, 0f);
         float targetPositionY = rectTransform.anchoredPosition.y + 100f;
         gameObject.SetActive(true);

@@ -8,6 +8,7 @@ public class Character : MonoBehaviour
     private SpriteRenderer spriteRenderer = null;
     [SerializeField] private SpriteRenderer background = null;
     [SerializeField] private Sprite normalCharaCterSprite = null;
+    private bool isTouch = false;
 
     private void Start()
     {
@@ -17,23 +18,32 @@ public class Character : MonoBehaviour
         background.transform.localScale = Vector3.one * width;
         spriteRenderer.transform.localScale = Vector3.one * width;
     }
+
     private void OnMouseDown()
     {
-        if (!EventSystem.current.currentSelectedGameObject)
+        if (EventSystem.current.currentSelectedGameObject == null && !EventSystem.current.IsPointerOverGameObject())
         {
+            isTouch = true;
             transform.Rotate(0f, 0f, -10f);
+        }
+        else
+        {
+            isTouch = false;
+            transform.rotation = Quaternion.Euler(0f, 0f, 0f);
         }
     }
 
     private void OnMouseUp()
     {
-        if (!EventSystem.current.IsPointerOverGameObject())
+        if (isTouch)
         {
             GameManager.Inst.UI.OnClickDisPlay();
             SoundManager.Inst.SetEffectSound(4);
+
         }
         transform.rotation = Quaternion.Euler(0f, 0f, 0f);
 
     }
 
 }
+

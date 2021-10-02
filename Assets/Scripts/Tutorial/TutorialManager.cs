@@ -277,7 +277,6 @@ public class TutorialManager : MonoBehaviour
 
     private bool CheckEvent()
     {
-        Debug.Log(partNum);
         if (speechs[partNum].Count <= storyCnt || isStop)
         {
             CheckPartNum(partNum);
@@ -358,8 +357,8 @@ public class TutorialManager : MonoBehaviour
             textPanal.gameObject.SetActive(true);
             textPanal.transform.localScale = new Vector3(0f, 1f, 1f);
             managerObj.transform.DOScale(1f, 0.3f).OnComplete(() => textPanal.transform.DOScaleX(1f, 0.3f));
-            blackPanal[0].DOAnchorPosY(0f, 0.5f);
-            blackPanal[1].DOAnchorPosY(0f, 0.5f);
+            blackPanal[0].DOAnchorPosY(100f, 0.5f);
+            blackPanal[1].DOAnchorPosY(-100f, 0.5f);
             yield return new WaitForSeconds(0.7f);
             if (GameManager.Inst.CurrentUser.isTuto[0])
             {
@@ -372,8 +371,8 @@ public class TutorialManager : MonoBehaviour
         {
             progressBtn.gameObject.SetActive(false);
             SoundManager.Inst.SetBGM(0);
-            blackPanal[0].DOAnchorPosY(-100f, 0.5f);
-            blackPanal[1].DOAnchorPosY(100f, 0.5f);
+            blackPanal[0].DOAnchorPosY(0f, 0.5f);
+            blackPanal[1].DOAnchorPosY(0f, 0.5f);
             touchScreen.transform.DOMoveX(0f, 0.5f);
             textPanal.transform.DOScaleX(0f, 0.5f);
             managerObj.transform.DOScale(0f, 0.5f);
@@ -426,13 +425,13 @@ public class TutorialManager : MonoBehaviour
 
             case 3:
                 if (isStop) return;
-                blackPanal[1].DOAnchorPosY(100f, 0.5f);
+                blackPanal[1].DOAnchorPosY(0f, 0.5f);
                 InvokeRepeating("CheckTouchScreen", 0f, 0.5f);
                 break;
 
             case 4:
                 isStop = true;
-
+                blackPanal[0].DOAnchorPosY(0f, 0.5f);
                 companyBtn.onClick.AddListener(CheckClickCompanyBtn);
                 break;
 
@@ -484,7 +483,7 @@ public class TutorialManager : MonoBehaviour
 
             case 10:
                 isStop = true;
-                Debug.Log("응에");
+
                 staffBtn.onClick.AddListener(CheckClickStaffBtn);
                 break;
 
@@ -495,7 +494,12 @@ public class TutorialManager : MonoBehaviour
                 break;
 
             case 12:
-                isStop = true;
+                if (GameManager.Inst.CurrentUser.money < 1250)
+                {
+                    GameManager.Inst.CurrentUser.money = 1250;
+                }
+
+                    isStop = true;
                 InvokeRepeating("CheckClickUpgradeStaff", 0f, 0.5f);
                 break;
 
@@ -582,7 +586,6 @@ public class TutorialManager : MonoBehaviour
     {
         if (GameManager.Inst.CurrentUser.staffs[0].level > 1)
         {
-
             NextPart();
             CancelInvoke("CheckClickUpgradeStaff");
         }
@@ -712,6 +715,10 @@ public class TutorialManager : MonoBehaviour
             return;
         }
         StartCoroutine(Message("지금 가리키는 버튼을 클릭해 응애 찍찍이를 고용 하세요."));
+        if (GameManager.Inst.CurrentUser.money < 1000)
+        {
+            GameManager.Inst.CurrentUser.money = 1000;
+        }
         InvokeRepeating("CheckClickBuyStaff", 0f, 0.5f);
         isStop = true;
         ShowArrowPoint(new Vector2(52.6f, -156.5f), true);
