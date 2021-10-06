@@ -91,7 +91,7 @@ public class UIManager : MonoBehaviour
     private int additionClickCnt = 0;
     private int clickCnt = 0;
     private int randNum;
-    private int mowMissionClearCnt = 0;
+    private int nowMissionClearCnt = 0;
     private int iBookCnt = 0;
 
     private string spritePath = "StaffSprites";
@@ -130,7 +130,6 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-        mowMissionClearCnt = GameManager.Inst.CurrentUser.missionClear;
         isShow = false;
         bgmController.value = GameManager.Inst.CurrentUser.bgmVolume;
         effectController.value = GameManager.Inst.CurrentUser.effectVolume;
@@ -139,9 +138,6 @@ public class UIManager : MonoBehaviour
         CreatePanals();
         UpdateMoneyPanal();
         SetScrollActive(1);
-
-
-
     }
 
     private void AddSystemBtn()
@@ -653,11 +649,18 @@ public class UIManager : MonoBehaviour
         iBookPanal.UpdateIBook();
     }
 
-    private void CheckMissionClear()
+    public void CheckMissionClear()
     {
-        if(mowMissionClearCnt < GameManager.Inst.CurrentUser.missionClear)
+        int cnt = 0;
+        for(int i = 0; i < GameManager.Inst.CurrentUser.missions.Length; i++)
         {
-            mowMissionClearCnt = GameManager.Inst.CurrentUser.missionClear;
+            if(GameManager.Inst.CurrentUser.missions[i] && !GameManager.Inst.CurrentUser.missionsClear[i])
+            {
+                cnt++;
+            }
+        }
+        if(cnt != 0)
+        {
             ShowNewMisstionClear(true);
         }
         else
