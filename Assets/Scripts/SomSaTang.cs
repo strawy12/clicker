@@ -24,7 +24,8 @@ public class SomSaTang : MonoBehaviour
 
     public void ClickSomSatang()
     {
-        GameManager.Inst.CurrentUser.UpdateMoney(GameManager.Inst.CurrentUser.mPc * 30, true);
+        GameManager.Inst.CurrentUser.UpdateMoney(GameManager.Inst.CurrentUser.mPc * 100, true);
+        GameManager.Inst.CurrentUser.bigHeartClickCnt++;
         transform.DOScale(new Vector3(0.1f, 0.1f, 0.1f), 0.2f).SetEase(Ease.OutCirc).OnComplete(() =>
         {
             transform.DOScale(new Vector3(0.7f, 0.7f, 0.7f), 0.3f).SetEase(Ease.InCirc).OnComplete(() =>

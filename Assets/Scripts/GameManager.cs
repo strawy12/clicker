@@ -154,7 +154,7 @@ public class GameManager : MonoSingleton<GameManager>
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Application.Quit();
+            uiManager.ShowQuitPanal();
         }
             timer += Time.deltaTime;
             if(timer >= user.autoClickTime)
@@ -190,6 +190,12 @@ public class GameManager : MonoSingleton<GameManager>
         poolingList.Add(EPoolingType.somSaTang, new Queue<GameObject>());
     }
 
+    public void Quit()
+    {
+        SaveToJson();
+        Application.Quit();
+    }
+
     public void OnClickDeleteJson()
     {
         uiManager.ShowMessage("데이터를 삭제합니다. 초기화를 위해 게임을 종료합니다.", 0.3f, 0.1f, 1.5f, 22);
@@ -200,7 +206,7 @@ public class GameManager : MonoSingleton<GameManager>
     {
         File.Delete(SAVE_PATH + SAVE_FILENAME);
         user = null;
-        Application.Quit();
+        Quit();
     }
     private void LoadFromJson()
     {
@@ -342,6 +348,10 @@ public class GameManager : MonoSingleton<GameManager>
         foreach (Staff staff in user.staffs)
         {
             mPsSum += staff.mPs;
+        }
+        if(mPsSum <= 0)
+        {
+            return; 
         }
         user.money += mPsSum * user.additionMoney;
         uiManager.ShowCoinText(mPsSum * user.additionMoney);

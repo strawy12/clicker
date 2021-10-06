@@ -53,6 +53,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject selectingPanal = null;
     [SerializeField] InFoPanal inFoPanal = null;
     [SerializeField] IllustratedBookPanal iBookPanal = null;
+    [SerializeField] GameObject quitPanal = null;
 
     [Header("돈")]
     [SerializeField] private Text moneyText = null;
@@ -354,6 +355,11 @@ public class UIManager : MonoBehaviour
     public void UnShowPanal(GameObject panal)
     {
         panal.transform.DOScaleX(0f, 0.2f).OnComplete(() => { panal.SetActive(false); panal.transform.localScale = Vector3.zero; });
+    }
+
+    public void ShowQuitPanal()
+    {
+        ShowPanal(quitPanal, true);
     }
 
     public void ShowCoinText(BigInteger money)
