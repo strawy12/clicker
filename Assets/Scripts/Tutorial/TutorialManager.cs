@@ -13,6 +13,7 @@ public class TutorialManager : MonoBehaviour
 
     [SerializeField] Collider2D touchScreen = null;
     [SerializeField] RectTransform textPanal = null;
+    [SerializeField] CanvasGroup nickNameInputPanal = null;
     [SerializeField] Image progressBtn = null;
     [SerializeField] GameObject managerObj = null;
     [SerializeField] RectTransform arrowPoint = null;
@@ -25,8 +26,9 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private int maxPartNum = 0;
 
     private Text messageText = null;
+    private InputField nickNameInputField = null;
     private Dictionary<int, List<string>> speechs;
-    private int partNum = 1;
+    private int partNum = 0;
     private float textSpeed = 0.03f;
     private int storyCnt = 0;
     private int nowPetCAmount = 0;
@@ -35,6 +37,7 @@ public class TutorialManager : MonoBehaviour
     private bool isStop = false;
     private void Start()
     {
+        nickNameInputField = nickNameInputPanal.transform.GetComponentInChildren<InputField>();
         messageText = textPanal.transform.GetChild(3).GetComponent<Text>();
         speechs = new Dictionary<int, List<string>>();
         SpeechSetting(maxPartNum);
@@ -62,7 +65,7 @@ public class TutorialManager : MonoBehaviour
 
     private void SpeechSetting(int cnt)
     {
-        for (int i = 1; i <= cnt; i++)
+        for (int i = 0; i <= cnt; i++)
         {
             speechs.Add(i, new List<string>());
             AddSpeech(i);
@@ -74,11 +77,16 @@ public class TutorialManager : MonoBehaviour
 
         switch (num)
         {
+            case 0:
+                speechs[num].Add("안녕하세요, 처음 뵙겠습니다.");
+                speechs[num].Add("어... 분명히 계약서에서 본 거 같은데 기억이 안나네요...ㅎㅎ");
+                speechs[num].Add("혹시 당신의 이름이 무엇입니까?");
+                break;
             case 1:
-                speechs[num].Add("안녕하세요 사향님, 처음 뵙겠습니다.");
+                speechs[num].Add("오 &님 이시군요. 반갑습니다!");
                 speechs[num].Add("전 당신을 안내할 매니저 OIF찍찍이 라고 합니다.");
                 speechs[num].Add("편하게 윾매니저라고 불러주세요.");
-                speechs[num].Add("저는 사향님이 캐릭터 샵을 운영한다는 소식에 가게 운영을 도와주러 온 매니저입니다.");
+                speechs[num].Add("저는 &님이 캐릭터 샵을 운영한다는 소식에 가게 운영을 도와주러 온 매니저입니다.");
                 speechs[num].Add("샵 운영은 처음이시죠?");
                 break;
 
@@ -105,7 +113,7 @@ public class TutorialManager : MonoBehaviour
                 break;
             case 5:
                 speechs[num].Add("잘 하셨습니다.");
-                speechs[num].Add("이렇게 금사향을 강화할 시 레벨이 올라가고, ");
+                speechs[num].Add("이렇게 &을 강화할 시 레벨이 올라가고, ");
                 speechs[num].Add("레벨에 따라 클릭당 버는 돈이 증가합니다.");
                 speechs[num].Add("다음 설명할 내용은 스킬에 관련된 내용입니다.");
                 speechs[num].Add("스킬에 대해 설명을 들으시겠습니까?");
@@ -140,18 +148,18 @@ public class TutorialManager : MonoBehaviour
                 speechs[num].Add("지속 시간은 존재하지 않고 클릭당 돈의 n배의 돈을 즉시 지급받는 스킬입니다.");
                 speechs[num].Add("이 스킬은 강화 할 시 n의 크기가 점점 증가합니다.");
                 speechs[num].Add("쿨타임은 강화한다고 해서 줄어들지 않습니다.");
-                speechs[num].Add("마지막 세번째 스킬은 사향님이 버는 모든 돈을 4배로 증가 시켜 돈을 받습니다.");
+                speechs[num].Add("마지막 세번째 스킬은 &님이 버는 모든 돈을 4배로 증가 시켜 돈을 받습니다.");
                 speechs[num].Add("이 또한 지속시간동안만 적용 됩니다");
                 speechs[num].Add("스킬 관련 설명은 여기서 마치겠습니다.");
                 speechs[num].Add("지금까지 제 설명을 들어주셔서 감사합니다");
                 speechs[num].Add("멋있고 유명한 캐릭터 샵이 되길 기원합니다!");
                 break;
             case 10:
-                speechs[num].Add("안녕하세요, 사향님! 또 만나네요!");
+                speechs[num].Add("안녕하세요, &님! 또 만나네요!");
                 speechs[num].Add("이번엔 찍찍이에 대해 궁금하셔서 절 부르셨군요?");
                 speechs[num].Add("특별히 제가 찍찍이에 대해 설명을 드리겠습니다.");
                 speechs[num].Add("찍찍이는 단순히 그냥 직원들이라고 생각하시면 됩니다.");
-                speechs[num].Add("찍찍이들은 사향님이 고용 하신다면 모두 사향님을 위해 열심히 일 해줄겁니다.");
+                speechs[num].Add("찍찍이들은 &님이 고용 하신다면 모두 &님을 위해 열심히 일 해줄겁니다.");
                 speechs[num].Add("일을 해 버는 돈은 초당으로 들어옵니다.");
                 speechs[num].Add("한번 확인 하기 위해 직원을 고용해봅시다.");
                 speechs[num].Add("밑에 있는 “찍찍이” 라는 버튼을 클릭해보시겠어요?");
@@ -174,7 +182,7 @@ public class TutorialManager : MonoBehaviour
                 speechs[num].Add("멋있고 유명한 캐릭터 샵이 되길 기원합니다!");
                 break;
             case 14:
-                speechs[num].Add("안녕하세요, 사향님! 또 만나네요!");
+                speechs[num].Add("안녕하세요, &님! 또 만나네요!");
                 speechs[num].Add("이번엔 펫에 대해 궁금하셔서 절 부르셨군요?");
                 speechs[num].Add("특별히 제가 펫에 대해 설명을 드리겠습니다.");
                 speechs[num].Add("펫은 캐릭터 샵에서 판매하는 인형들입니다.");
@@ -240,6 +248,9 @@ public class TutorialManager : MonoBehaviour
         float posY = managerObj.transform.position.y;
         Coroutine coroutine = StartCoroutine(TalkEffectManager(0.1f));
         SoundManager.Inst.SetTutoEffectAudio(5);
+
+        message.Replace("&", GameManager.Inst.CurrentUser.userName);
+
         for (int i = 0; i < message.Length; i++)
         {
             
@@ -306,6 +317,49 @@ public class TutorialManager : MonoBehaviour
         }
         SettingPart(int.Parse(input.text) - 1);
     }
+
+    public void ActiveNickNameInputPanal(bool isActive)
+    {
+        if(isActive)
+        {
+            textPanal.gameObject.SetActive(false);
+            nickNameInputPanal.gameObject.SetActive(true);
+            nickNameInputPanal.DOFade(1f, 1f);
+        }
+
+        else
+        {
+            nickNameInputPanal.DOFade(0f, 1f);
+            nickNameInputPanal.gameObject.SetActive(false);
+            textPanal.gameObject.SetActive(true);
+        }
+    }
+
+    public void OnClickNickNameInputBtn()
+    {
+        if (nickNameInputField.text == "")
+            return;
+
+        if (nickNameInputField.text.Length > 8)
+        {
+            GameManager.Inst.UI.ShowMessage("닉네임은 8글자 이내로 입력해주세요.");
+            nickNameInputField.text = "";
+            return;
+        }
+        
+        if(nickNameInputField.text.Contains(" "))
+        {
+            GameManager.Inst.UI.ShowMessage("공백 없이 입력해주세요.");
+            nickNameInputField.text = "";
+            return;
+        }
+
+        GameManager.Inst.CurrentUser.userName = nickNameInputField.text;
+        NextPart();
+        ActiveNickNameInputPanal(false);
+        OnClickProgressBtn();
+    }
+
     public void SettingPart(int num)
     {
         if (num >= 4 || num < 0)
@@ -373,6 +427,8 @@ public class TutorialManager : MonoBehaviour
             SoundManager.Inst.SetBGM(0);
             blackPanal[0].DOAnchorPosY(0f, 0.5f);
             blackPanal[1].DOAnchorPosY(0f, 0.5f);
+            blackPanal[0].gameObject.SetActive(false);
+            blackPanal[1].gameObject.SetActive(false);
             touchScreen.transform.DOMoveX(0f, 0.5f);
             textPanal.transform.DOScaleX(0f, 0.5f);
             managerObj.transform.DOScale(0f, 0.5f);
@@ -411,6 +467,10 @@ public class TutorialManager : MonoBehaviour
     {
         switch (num)
         {
+            case 0:
+                ActiveNickNameInputPanal(true);
+                isStop = true;
+                break;
             case 1:
                 GameManager.Inst.UI.ShowSelectingPanal(true);
                 isStop = true;
@@ -696,7 +756,7 @@ public class TutorialManager : MonoBehaviour
                 StartCoroutine(Message("어? 이미 강화 하셨군요! 죄송합니다. 제가 요즘 건망증이 심해졌네요..ㅎㅎ"));
                 return;
             }
-            StartCoroutine(Message("지금 가리키는 버튼을 클릭해 본인(금사향)을 강화 하세요."));
+            StartCoroutine(Message("지금 가리키는 버튼을 클릭해 본인(&)을 강화 하세요."));
             upgradeBtn.onClick.AddListener(CheckCKickUpgradeBtn);
             isStop = true;
             ShowArrowPoint(new Vector2(52.6f, -156.5f), true);

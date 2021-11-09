@@ -24,12 +24,10 @@ public class Character : MonoBehaviour
         if (EventSystem.current.currentSelectedGameObject == null && !EventSystem.current.IsPointerOverGameObject())
         {
             isTouch = true;
-            transform.Rotate(0f, 0f, -10f);
         }
         else
         {
             isTouch = false;
-            transform.rotation = Quaternion.Euler(0f, 0f, 0f);
         }
     }
 
@@ -39,9 +37,7 @@ public class Character : MonoBehaviour
         {
             GameManager.Inst.UI.OnClickDisPlay();
             SoundManager.Inst.SetEffectSound(4);
-
         }
-        transform.rotation = Quaternion.Euler(0f, 0f, 0f);
 
     }
 

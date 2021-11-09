@@ -26,6 +26,10 @@ public class SoundManager : MonoSingleton<SoundManager>
     {
         bgmAudio.volume = GameManager.Inst.CurrentUser.bgmVolume;
         effectAudio.volume = GameManager.Inst.CurrentUser.effectVolume;
+        tutoEffectAudio.volume = GameManager.Inst.CurrentUser.effectVolume;
+        bgmAudio.mute = GameManager.Inst.CurrentUser.bgmMute;
+        effectAudio.mute = GameManager.Inst.CurrentUser.effectMute;
+        tutoEffectAudio.mute = GameManager.Inst.CurrentUser.effectMute;
     }
 
     public void SetSpeedBGM(float speed)
@@ -36,6 +40,7 @@ public class SoundManager : MonoSingleton<SoundManager>
     {
         if (bgmAudio == null) return;
         bgmAudio.volume = value;
+        GameManager.Inst.CurrentUser.bgmVolume = value;
     }
 
     public void BGMMute(bool isMute)
@@ -45,12 +50,15 @@ public class SoundManager : MonoSingleton<SoundManager>
     public void EffectMute(bool isMute)
     {
         effectAudio.mute = isMute;
+        tutoEffectAudio.mute = isMute;
     }
 
     public void EffectVolume(float value)
     {
         if (effectAudio == null) return;
         effectAudio.volume = value;
+        tutoEffectAudio.volume = value;
+        GameManager.Inst.CurrentUser.effectVolume = value;
     }
     public void SetBGM(int bgmNum)
     {

@@ -133,7 +133,7 @@ public class UIManager : MonoBehaviour
         isShow = false;
         bgmController.value = GameManager.Inst.CurrentUser.bgmVolume;
         effectController.value = GameManager.Inst.CurrentUser.effectVolume;
-        randNum = Random.Range(230, 300);
+        randNum = Random.Range(0, 10);
         MissionPanalGoStart();
         CreatePanals();
         UpdateMoneyPanal();
@@ -144,7 +144,7 @@ public class UIManager : MonoBehaviour
     {
         List<Image> images = new List<Image>();
 
-        for(int i =0; i< systemBtns.transform.childCount; i++)
+        for(int i =0; i< systemBtns.transform.childCount - 1; i++)
         {
             images.Add(systemBtns.transform.GetChild(i).GetChild(1).GetComponent<Image>());
         }
@@ -219,10 +219,10 @@ public class UIManager : MonoBehaviour
     }
     private void CheckBigHeart()
     {
-        if (clickCnt == randNum)
+        if (clickCnt >= randNum)
         {
             clickCnt = 0;
-            randNum = Random.Range(230, 300);
+            randNum = Random.Range(0, 10);
             ShowSomSaTang();
         }
 
@@ -293,7 +293,7 @@ public class UIManager : MonoBehaviour
     {
         SomSaTang somSaTang = null;
         Queue<GameObject> queue = GameManager.Inst.PoolingList[EPoolingType.somSaTang];
-        Vector2 randPos = new Vector2(GameManager.Inst.MinPos.x, Random.Range(isShow ? 0 : GameManager.Inst.MinPos.y, GameManager.Inst.MaxPos.y));
+        Vector2 randPos = new Vector2(GameManager.Inst.MinPos.x, Random.Range(isShow ? 0 : -3f, 3f));
         if (queue.Count > 0)
         {
             GameManager.Inst.Pool.GetChild(0).GetComponent<CoinText>();
@@ -523,11 +523,15 @@ public class UIManager : MonoBehaviour
     {
         int num = fps / 15 - 2;
 
-        for(int i = 0; i < fpsSettingBtns.Length; i++)
+        fpsBtns.transform.parent.gameObject.SetActive(true);
+
+        for (int i = 0; i < fpsSettingBtns.Length; i++)
         {
             fpsSettingBtns[i].interactable = true;
         }
         fpsSettingBtns[num].interactable = false;
+
+        fpsBtns.transform.parent.gameObject.SetActive(false);
     }
 
     public void CheckSelectingBtn(bool isPossive, int num)

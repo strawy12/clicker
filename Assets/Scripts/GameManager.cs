@@ -103,8 +103,8 @@ public class GameManager : MonoSingleton<GameManager>
     private float timer = 0f;
 
 
-    public Vector2 MaxPos { get; private set; }
-    public Vector2 MinPos { get; private set; }
+    public Vector2 MaxPos { get; private set; } = new Vector2(2.05f, 4.2f);
+    public Vector2 MinPos { get; private set; } = new Vector2(-2.05f, -4.2f);
     public Vector3 MousePos
     {
         get
@@ -125,8 +125,6 @@ public class GameManager : MonoSingleton<GameManager>
         {
             Directory.CreateDirectory(SAVE_PATH);
         }
-        MaxPos = new Vector2(2.05f, 4.2f);
-        MinPos = new Vector2(-2.05f, -4.2f);
         uiManager = GetComponent<UIManager>();
         tutorialManager = GetComponent<TutorialManager>();
         LoadFromJson();
@@ -221,7 +219,7 @@ public class GameManager : MonoSingleton<GameManager>
         if (user == null)
         {
             user = new User();
-            user.userName = "±›ªÁ«‚";
+            user.userName = "";
             user.basemPc = 10;
             user.additionMoney = 1;
             user.frame = 60;

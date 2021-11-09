@@ -10,7 +10,7 @@ public class SomSaTang : MonoBehaviour
     private void Update()
     {
         transform.Translate(Vector2.right * speed * Time.deltaTime);
-        if(transform.position.x >= GameManager.Inst.MaxPos.x + 0.5f)
+        if (transform.position.x >= GameManager.Inst.MaxPos.x + 0.5f)
         {
             Despawn();
         }
@@ -28,12 +28,7 @@ public class SomSaTang : MonoBehaviour
         GameManager.Inst.CurrentUser.bigHeartClickCnt++;
         transform.DOScale(new Vector3(0.1f, 0.1f, 0.1f), 0.2f).SetEase(Ease.OutCirc).OnComplete(() =>
         {
-            transform.DOScale(new Vector3(0.7f, 0.7f, 0.7f), 0.3f).SetEase(Ease.InCirc).OnComplete(() =>
-            {
-                Despawn();
-
-            });
-
+            Despawn();
         });
     }
 }

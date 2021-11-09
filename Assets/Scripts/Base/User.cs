@@ -87,6 +87,8 @@ public class User
     public BigInteger money;
     public float bgmVolume;
     public float effectVolume;
+    public bool bgmMute;
+    public bool effectMute;
     public int clickCnt;
     public int bigHeartClickCnt;
     public int skillUseCnt;
