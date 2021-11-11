@@ -133,7 +133,7 @@ public class UIManager : MonoBehaviour
         isShow = false;
         bgmController.value = GameManager.Inst.CurrentUser.bgmVolume;
         effectController.value = GameManager.Inst.CurrentUser.effectVolume;
-        randNum = Random.Range(0, 10);
+        randNum = Random.Range(120, 200);
         MissionPanalGoStart();
         CreatePanals();
         UpdateMoneyPanal();
@@ -222,7 +222,7 @@ public class UIManager : MonoBehaviour
         if (clickCnt >= randNum)
         {
             clickCnt = 0;
-            randNum = Random.Range(0, 10);
+            randNum = Random.Range(120, 200);
             ShowSomSaTang();
         }
 
@@ -345,12 +345,16 @@ public class UIManager : MonoBehaviour
     }
     public void ShowPanal(GameObject panal)
     {
-        panal.SetActive(true);
+            panal.SetActive(true);
             panal.transform.DOScale(Vector3.one, 0.3f);
     }
     public void UnShowPanal(GameObject panal)
     {
         panal.transform.DOScaleX(0f, 0.2f).OnComplete(() => { panal.SetActive(false); panal.transform.localScale = Vector3.zero; });
+    }
+    public void UnShowPanal_DoScale(GameObject panal)
+    {
+        panal.transform.DOScale(Vector3.zero, 0.2f).OnComplete(() => { panal.SetActive(false);});
     }
 
     public void ShowQuitPanal()

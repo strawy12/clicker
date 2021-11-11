@@ -247,7 +247,7 @@ public class GameManager : MonoSingleton<GameManager>
 
             user.skills.Add(new Skill("착취의 현장", 0, 1, 100, 30, 100));
             user.skills.Add(new Skill("노동의 대가", 1, 1, 100, 0, 200));
-            user.skills.Add(new Skill("유으내 모드", 2, 1, 100, 30, 300));
+            user.skills.Add(new Skill("진심 모드", 2, 1, 100, 30, 300));
 
             user.pets.Add(new Pet(0, "강아지", 0, 0, 20, 1000));
             user.pets.Add(new Pet(1, "토끼", 0, 0, 20, 1000));

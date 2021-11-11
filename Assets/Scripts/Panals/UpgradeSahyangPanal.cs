@@ -20,7 +20,13 @@ public class UpgradeSahyangPanal : UpgradePanalBase
 
     public override void UpdateValues()
     {
-        nameText.text = string.Format("Lv.{0} {1}", sahayang.level, "±Ý»çÇâ");
+        string skillName = GameManager.Inst.CurrentUser.userName;
+        if(skillName == "")
+        {
+            skillName = "ÀÌ¹Î¿µ";
+        }
+
+        nameText.text = string.Format("Lv.{0} {1}", sahayang.level, skillName);
         infoText.text = string.Format("Å¬¸¯ ´ç {0}¿ø È¹µæ", GameManager.Inst.MoneyUnitConversion(GameManager.Inst.CurrentUser.mPc));
         ChangeBuyBtnPriceText("¿ø", sahayang.price, sahayang.PriceSum(10), sahayang.PriceSum(100));
         ChangeBuyBtnInfo("±¸¸Å");

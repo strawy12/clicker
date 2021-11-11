@@ -11,6 +11,7 @@ public class SkillUpgradePanal : UpgradePanalBase
     [SerializeField] private Text skillInfoText = null;
     [SerializeField] private Image skillImage = null;
     [SerializeField] private Image coolTime = null;
+    [SerializeField] private Button skillUseBtn = null;
     private Skill skill = null;
     private int skillNum;
     private DateTime endTime;
@@ -20,7 +21,7 @@ public class SkillUpgradePanal : UpgradePanalBase
     {
         if (skill.isUsed)
         {
-            coolTime.fillAmount = (float)CheckCoolTime(endDurationTime, DateTime.Now) / skill.duration;
+            coolTime.fillAmount = (float)CheckCoolTime(endDurationTime, DateTime.Now) / Mathf.Max(skill.duration, 1f);
             if (DateTime.Now > endDurationTime)
             {
                 GameManager.Inst.UI.OnOffSkill(skillNum, false);
@@ -28,6 +29,14 @@ public class SkillUpgradePanal : UpgradePanalBase
             if (DateTime.Now > endTime)
             {
                 skill.isUsed = false;
+                skillUseBtn.interactable = true;
+            }
+            else
+            {
+                if(skillUseBtn.interactable)
+                {
+                    skillUseBtn.interactable = false;
+                }
             }
         }
         if (!isShow) return;
@@ -38,13 +47,15 @@ public class SkillUpgradePanal : UpgradePanalBase
     }
     public int CheckCoolTime(DateTime dateTime_1, DateTime dateTime_2)
     {
-        if (dateTime_1.Minute == dateTime_2.Minute)
+
+
+        if (dateTime_1.Minute == dateTime_2.Minute && dateTime_1.Hour == dateTime_2.Hour && dateTime_1.Day == dateTime_2.Day && dateTime_1.Year == dateTime_2.Year)
         {
             return dateTime_1.Second - dateTime_2.Second;
         }
         else
         {
-            if (dateTime_1.Minute < dateTime_2.Minute)
+            if (dateTime_1 < dateTime_2)
             {
                 return 0;
             }
@@ -62,12 +73,13 @@ public class SkillUpgradePanal : UpgradePanalBase
         skillNum = num;
         skillImage.sprite = GameManager.Inst.UI.SkillSpriteArray[num];
         coolTime.sprite = GameManager.Inst.UI.SkillSpriteArray[num];
-        if (skill.isUsed )
+        if (skill.isUsed)
         {
             endTime = DateTime.Parse(skill.endTime);
             endDurationTime = DateTime.Parse(skill.endDurationTime);
             if (DateTime.Now < endDurationTime)
             {
+                skillUseBtn.interactable = false;
                 GameManager.Inst.UI.OnOffSkill(skillNum, true);
             }
         }
@@ -156,6 +168,7 @@ public class SkillUpgradePanal : UpgradePanalBase
         skill.isUsed = true;
         GameManager.Inst.CurrentUser.clickCnt++;
         GameManager.Inst.UI.OnOffSkill(skillNum, true);
+        skillUseBtn.interactable = false;
     }
 
 
