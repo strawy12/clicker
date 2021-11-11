@@ -255,7 +255,7 @@ public class UIManager : MonoBehaviour
     {
         if (money <= 0) return;
         rewardText.text = string.Format("+ {0}", GameManager.Inst.MoneyUnitConversion(money));
-        rewardPanal.SetActive(true);
+        ShowPanal(rewardPanal);
     }
 
     public void ShowClickEffect(Vector3 pos)

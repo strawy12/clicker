@@ -196,8 +196,8 @@ public class GameManager : MonoSingleton<GameManager>
 
     public void OnClickDeleteJson()
     {
-        uiManager.ShowMessage("데이터를 삭제합니다. 초기화를 위해 게임을 종료합니다.", 0.3f, 0.1f, 1.5f, 22);
-        Invoke("DeleteJson", 1.5f);
+        uiManager.ShowMessage("데이터를 삭제합니다. 초기화를 위해 게임을 종료합니다.", 0.3f, 0.1f, 3f, 22);
+        Invoke("DeleteJson", 3f);
     }
 
     public void DeleteJson()
@@ -322,11 +322,20 @@ public class GameManager : MonoSingleton<GameManager>
 
     public void CheckReJoinTime()
     {
-        if (user.exitTime == null) return;
-        TimeSpan datediff = DateTime.Now - DateTime.Parse(user.exitTime);
-        if (datediff.Minutes < 20) return;
+        if (user.exitTime == "" || user.exitTime == null) 
+        {
+            return;
+        }
 
-        int diffSec = datediff.Seconds;
+        TimeSpan datediff = DateTime.Now - DateTime.Parse(user.exitTime);
+
+        int diffDate = datediff.Days * 86400;
+        int diffHour = datediff.Hours * 3600;
+        int diffMinute = datediff.Minutes * 60;
+        int diffSec = diffDate + diffHour + diffMinute + datediff.Seconds;
+
+        if (diffSec < 1200) return;
+
         BigInteger mPsSum = 0;
         foreach (Staff staff in user.staffs)
         {
@@ -335,10 +344,18 @@ public class GameManager : MonoSingleton<GameManager>
                 mPsSum += staff.mPs;
             }
         }
-
         mPsSum /= 10;
-        user.UpdateMoney(mPsSum * diffSec, true);
-        uiManager.ShowRewardPanal(mPsSum * diffSec);
+
+        mPsSum *= diffSec;
+
+        if(mPsSum <= 0)
+        {
+            return;
+        }
+        Debug.Log(mPsSum);
+        Debug.Log(diffSec);
+        user.UpdateMoney(mPsSum, true);
+        uiManager.ShowRewardPanal(mPsSum);
     }
     public void MoneyPerSecond()
     {
@@ -404,15 +421,7 @@ public class GameManager : MonoSingleton<GameManager>
     private void OnApplicationQuit()
     {
         user.exitTime = DateTime.Now.ToString("G");
+        Debug.Log("응애");
         SaveToJson();
     }
-    private void OnApplicationPause()
-    {
-        user.exitTime = DateTime.Now.ToString("G");
-        SaveToJson();
-
-
-    }
-
-
 }

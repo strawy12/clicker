@@ -249,7 +249,7 @@ public class TutorialManager : MonoBehaviour
         Coroutine coroutine = StartCoroutine(TalkEffectManager(0.1f));
         SoundManager.Inst.SetTutoEffectAudio(5);
 
-        message.Replace("&", GameManager.Inst.CurrentUser.userName);
+        message = message.Replace("&", GameManager.Inst.CurrentUser.userName);
 
         for (int i = 0; i < message.Length; i++)
         {

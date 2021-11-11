@@ -30,7 +30,7 @@ public class User
     public string userName;
     public float playTime;
     public int frame;
-    public string exitTime; 
+    public string exitTime;
     public string autoClickUsingTime; 
     public string saveMoney;
     public long goldCoin;
