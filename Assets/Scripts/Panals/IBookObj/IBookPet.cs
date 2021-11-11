@@ -17,11 +17,8 @@ public class IBookPet : IBookObject
 
         image.sprite = GameManager.Inst.UI.PetSpriteArray[pet.petNum];
         this.pet = pet;
-        if(!pet.isShow)
+        if(!pet.isLocked)
         {
-            isLocked = false;
-            exclamationImage.gameObject.SetActive(false);
-            GameManager.Inst.UI.ShowNewIBook(false);
         }
         UpdatePanal();
     }
@@ -32,19 +29,18 @@ public class IBookPet : IBookObject
         {
             image.color = Color.black;
             button.interactable = false;
-            exclamationImage.gameObject.SetActive(false);
-            GameManager.Inst.UI.ShowNewIBook(false);
-
         }
         else
         {
-            if(isLocked)
+            if (isShow)
             {
-                isLocked = false;
-                GameManager.Inst.UI.ShowNewIBook(true);
                 exclamationImage.gameObject.SetActive(true);
-
             }
+            else
+            {
+                exclamationImage.gameObject.SetActive(false);
+            }
+
             image.color = Color.white;
             button.interactable = true;
         }
@@ -52,8 +48,8 @@ public class IBookPet : IBookObject
 
     public override void ShowInfoPanal()
     {
+        isShow = false;
         GameManager.Inst.UI.ShowInfoPanal(true, pet);
         exclamationImage.gameObject.SetActive(false);
-
     }
 }

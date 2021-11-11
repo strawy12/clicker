@@ -63,6 +63,7 @@ public class Staff
         this.level = level;
         this.basemPs = mPs;
         this.price = price;
+        this.isShow = true;
     }
 }
 

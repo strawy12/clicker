@@ -14,6 +14,7 @@ public class IllustratedBookPanal : MonoBehaviour
     private void Start()
     {
         SetScrollActive(0);
+        GameManager.Inst.UI.ShowNewIBook(false);
     }
 
     public void SpawnillustratedBook(Staff staff)
@@ -34,10 +35,18 @@ public class IllustratedBookPanal : MonoBehaviour
 
     public void UpdateIBook()
     {
+        bool isShow = false;
         for (int i = 0; i < iBookList.Count; i++)
         {
             iBookList[i].UpdatePanal();
+
+            if(iBookList[i].isShow)
+            {
+                isShow = true;
+            }
         }
+
+        GameManager.Inst.UI.ShowNewIBook(isShow);
     }
     public void SetScrollActive(int num)
     {

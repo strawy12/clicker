@@ -702,9 +702,13 @@ public class UIManager : MonoBehaviour
         messageText.text = message;
         messageText.fontSize = fontSize;
         messageObject.transform.localScale = Vector3.zero;
+        messageObject.SetActive(true);
         messageObject.transform.DOScale(Vector3.one, showTime);
         yield return new WaitForSeconds(waitingTime);
         messageObject.transform.DOScale(Vector3.zero, unShowTime);
+        yield return new WaitForSeconds(unShowTime);
+        messageObject.SetActive(false);
+
         messageCo = null;
     }
 

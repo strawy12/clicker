@@ -16,13 +16,8 @@ public class IBookStaff : IBookObject
         }
 
         image.sprite = GameManager.Inst.UI.StaffSpriteArray[staff.staffNum];
+        exclamationImage.gameObject.SetActive(false);
         this.staff = staff;
-        if (!staff.isShow)
-        {
-            exclamationImage.gameObject.SetActive(false);
-            isLocked = false;
-            GameManager.Inst.UI.ShowNewIBook(false);
-        }
         UpdatePanal();
     }
 
@@ -30,28 +25,40 @@ public class IBookStaff : IBookObject
     {
         if (!staff.isSold)
         {
+            isShow = false;
             image.color = Color.black;
             button.interactable = false;
-            exclamationImage.gameObject.SetActive(false);
-            GameManager.Inst.UI.ShowNewIBook(false);
-
         }
         else
         {
-            if (isLocked)
+            isShow = staff.isShow;
+
+            if (isShow)
             {
-                isLocked = false;
-                GameManager.Inst.UI.ShowNewIBook(true);
                 exclamationImage.gameObject.SetActive(true);
             }
+            else
+            {
+                exclamationImage.gameObject.SetActive(false);
+            }
+
             image.color = Color.white;
             button.interactable = true;
         }
     }
     public override void ShowInfoPanal()
     {
-        exclamationImage.gameObject.SetActive(false);
-
+        if(staff.isShow)
+        {
+            staff.isShow = false;
+            isShow = staff.isShow;
+        }
+        
         GameManager.Inst.UI.ShowInfoPanal(true, staff);
+
+        if(exclamationImage.gameObject.activeSelf)
+        {
+            exclamationImage.gameObject.SetActive(false);
+        }
     }
 }
