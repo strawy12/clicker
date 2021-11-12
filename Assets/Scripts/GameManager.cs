@@ -418,6 +418,36 @@ public class GameManager : MonoSingleton<GameManager>
         Application.targetFrameRate = user.frame;
         uiManager.SettingFPS(user.frame);
     }
+
+    public void BGMVolume(float value)
+    {
+        SoundManager.Inst.BGMVolume(value);
+    }
+
+    public void BGMMute(bool isMute)
+    {
+        SoundManager.Inst.BGMMute(isMute);
+    }
+    public void EffectMute(bool isMute)
+    {
+        SoundManager.Inst.EffectMute(isMute);
+    }
+
+    public void EffectVolume(float value)
+    {
+        SoundManager.Inst.EffectVolume(value);
+    }
+    public void SetBGM(int bgmNum)
+    {
+        SoundManager.Inst.SetBGM(bgmNum);
+    }
+    public void SetEffectSound(int effectNum)
+    {
+        SoundManager.Inst.SetEffectSound(effectNum);
+    }
+
+
+
     private void OnApplicationQuit()
     {
         user.exitTime = DateTime.Now.ToString("G");

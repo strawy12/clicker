@@ -49,6 +49,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private PetInfo petinfoPanal = null;
     [SerializeField] private Image randomPickPanal = null;
     [SerializeField] private GameObject rewardPanal = null;
+    [SerializeField] private GameObject helpPanal = null;
     [SerializeField] private UpgradeSahyangPanal sahyangPanal = null;
     [SerializeField] GameObject selectingPanal = null;
     [SerializeField] InFoPanal inFoPanal = null;
@@ -74,7 +75,7 @@ public class UIManager : MonoBehaviour
     private Coroutine messageCo = null;
     public Button[] seletingBtns { get; private set; } = null;
     private Button[] fpsSettingBtns = null;
-    private Image[] systemBtnImages  = null;
+    private Image[] systemBtnImages = null;
 
     private Text messageText = null;
     private bool isPicking = false;
@@ -87,7 +88,7 @@ public class UIManager : MonoBehaviour
     public bool isShow { get; private set; } = false;
     private bool isShow_Setting = false;
     private bool isAdditionClick = false;
-    private int scrollNum;
+    public int scrollNum { get; private set; }
     private int additionClickCnt = 0;
     private int clickCnt = 0;
     private int randNum;
@@ -144,7 +145,7 @@ public class UIManager : MonoBehaviour
     {
         List<Image> images = new List<Image>();
 
-        for(int i =0; i< systemBtns.transform.childCount - 1; i++)
+        for (int i = 0; i < systemBtns.transform.childCount - 1; i++)
         {
             images.Add(systemBtns.transform.GetChild(i).GetChild(1).GetComponent<Image>());
         }
@@ -333,6 +334,11 @@ public class UIManager : MonoBehaviour
     {
         if(isShow)
         {
+            CheckActivePanals();
+        }
+
+        if (isShow)
+        {
 
             panal.SetActive(true);
             panal.transform.DOScale(Vector3.one, 0.3f);
@@ -340,13 +346,38 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-            panal.transform.DOScaleX(0f , 0.2f).OnComplete(() => { panal.SetActive(false); panal.transform.localScale = Vector3.zero; });
+            panal.transform.DOScaleX(0f, 0.2f).OnComplete(() => { panal.SetActive(false); panal.transform.localScale = Vector3.zero; });
         }
     }
+
+    private void CheckActivePanals()
+    {
+        if (settingPanal.activeSelf)
+        {
+            ShowPanal(settingPanal, false);
+        }
+
+        if(missionPanal.activeSelf)
+        {
+            ShowPanal(missionPanal, false);
+        }
+
+        if(iBookPanal.gameObject.activeSelf)
+        {
+            ShowPanal(iBookPanal.gameObject, false);
+        }
+
+        if(helpPanal.activeSelf)
+        {
+            ShowPanal(helpPanal, false);
+        }
+    }
+
     public void ShowPanal(GameObject panal)
     {
-            panal.SetActive(true);
-            panal.transform.DOScale(Vector3.one, 0.3f);
+        CheckActivePanals();
+        panal.SetActive(true);
+        panal.transform.DOScale(Vector3.one, 0.3f);
     }
     public void UnShowPanal(GameObject panal)
     {
@@ -354,7 +385,7 @@ public class UIManager : MonoBehaviour
     }
     public void UnShowPanal_DoScale(GameObject panal)
     {
-        panal.transform.DOScale(Vector3.zero, 0.2f).OnComplete(() => { panal.SetActive(false);});
+        panal.transform.DOScale(Vector3.zero, 0.2f).OnComplete(() => { panal.SetActive(false); });
     }
 
     public void ShowQuitPanal()
@@ -389,8 +420,8 @@ public class UIManager : MonoBehaviour
             case 1:
                 if (isOn)
                 {
-                    
-                    GameManager.Inst.CurrentUser.UpdateMoney(GameManager.Inst.CurrentUser.mPc * GameManager.Inst.CurrentUser.skills[num].level * 1000 , true);
+
+                    GameManager.Inst.CurrentUser.UpdateMoney(GameManager.Inst.CurrentUser.mPc * GameManager.Inst.CurrentUser.skills[num].level * 1000, true);
                     UpdateMoneyPanal();
                 }
                 break;
@@ -453,7 +484,7 @@ public class UIManager : MonoBehaviour
     {
         ShowPanal(randomPickPanal.gameObject, true);
         yield return new WaitForSeconds(0.2f);
-        for(int i = 0; i < amount; i++)
+        for (int i = 0; i < amount; i++)
         {
             StartCoroutine(RandomPets());
             yield return new WaitForSeconds(1f);
@@ -556,7 +587,7 @@ public class UIManager : MonoBehaviour
 
     public void SettingSeletingBtn(bool isAdd, int num)
     {
-        if(isAdd)
+        if (isAdd)
         {
             GameManager.Inst.UI.seletingBtns[0].onClick.AddListener(() => CheckSelectingBtn(true, num));
             GameManager.Inst.UI.seletingBtns[1].onClick.AddListener(() => CheckSelectingBtn(false, num));
@@ -571,13 +602,20 @@ public class UIManager : MonoBehaviour
 
     public void OnClickShowBtn(int num)
     {
-        if(GameManager.Inst.isTutorial)
+        Debug.Log("으ㅇㅇ앵");
+
+        if (GameManager.Inst.isTutorial)
         {
             if (num != Mathf.Max(GameManager.Inst.Tutorial.progressPartNum - 2, 0))
+            {
+                Debug.Log("으앵");
                 return;
+            }
         }
-        if(!GameManager.Inst.CurrentUser.isTuto[num + 1] && num == 1 && !GameManager.Inst.isTutorial)
+        if (!GameManager.Inst.CurrentUser.isTuto[num + 1] && num == 1 && !GameManager.Inst.isTutorial)
         {
+            Debug.Log("으앵ㅇㅇ");
+
             SettingSeletingBtn(true, num + 1);
             ShowSelectingPanal(true);
             controlPanal.DOAnchorPosY(-242f, 0.2f).SetEase(Ease.InCirc);
@@ -585,9 +623,10 @@ public class UIManager : MonoBehaviour
             isShow = false;
             return;
         }
-        
+
         if (isShow && scrollNum != num)
         {
+            Debug.Log("으앵ㅇㅇㅇ");
             scrollNum = num;
             SetScrollActive(num);
             return;
@@ -660,14 +699,14 @@ public class UIManager : MonoBehaviour
     public void CheckMissionClear()
     {
         int cnt = 0;
-        for(int i = 0; i < GameManager.Inst.CurrentUser.missions.Length; i++)
+        for (int i = 0; i < GameManager.Inst.CurrentUser.missions.Length; i++)
         {
-            if(GameManager.Inst.CurrentUser.missions[i] && !GameManager.Inst.CurrentUser.missionsClear[i])
+            if (GameManager.Inst.CurrentUser.missions[i] && !GameManager.Inst.CurrentUser.missionsClear[i])
             {
                 cnt++;
             }
         }
-        if(cnt != 0)
+        if (cnt != 0)
         {
             ShowNewMisstionClear(true);
         }

@@ -377,7 +377,7 @@ public class TutorialManager : MonoBehaviour
         switch (num)
         {
             case 0:
-                partNum = 0;
+                partNum = 1;
                 break;
             case 1:
                 partNum = 7;
@@ -414,10 +414,17 @@ public class TutorialManager : MonoBehaviour
             blackPanal[0].DOAnchorPosY(100f, 0.5f);
             blackPanal[1].DOAnchorPosY(-100f, 0.5f);
             yield return new WaitForSeconds(0.7f);
-            if (GameManager.Inst.CurrentUser.isTuto[0])
+            if (partNum >= 7)
             {
                 SetSkillTutorial();
                 yield return new WaitForSeconds(0.5f);
+            }
+            else
+            {
+                if(GameManager.Inst.UI.isShow)
+                {
+                    GameManager.Inst.UI.OnClickShowBtn(GameManager.Inst.UI.scrollNum);
+                }
             }
             StartMessage();
         }

@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class SoundManager : MonoSingleton<SoundManager>
 {
@@ -22,6 +24,38 @@ public class SoundManager : MonoSingleton<SoundManager>
         effectAudio = transform.GetChild(0).GetComponent<AudioSource>();
         tutoEffectAudio = transform.GetChild(1).GetComponent<AudioSource>();
     }
+
+    private void Start()
+    {
+        if(SceneManager.GetActiveScene().name == "StartScene")
+        {
+            StartScene_VolumeSetting();
+        }
+    }
+
+    public void StartScene_VolumeSetting()
+    {
+        string SAVE_PATH = Application.persistentDataPath + "/Save";
+        string SAVE_FILENAME = "/SaveFile.txt";
+        string json = "";
+        if (File.Exists(SAVE_PATH + SAVE_FILENAME))
+        {
+            json = File.ReadAllText(SAVE_PATH + SAVE_FILENAME);
+            User user = JsonUtility.FromJson<User>(json);
+
+            bgmAudio.volume = user.bgmVolume;
+            effectAudio.volume = user.effectVolume;
+            tutoEffectAudio.volume = user.effectVolume;
+            bgmAudio.mute = user.bgmMute;
+            effectAudio.mute = user.effectMute;
+            tutoEffectAudio.mute = user.effectMute;
+        }
+        else
+        {
+            return;
+        }
+    }
+
     public void VolumeSetting()
     {
         bgmAudio.volume = GameManager.Inst.CurrentUser.bgmVolume;
@@ -88,5 +122,5 @@ public class SoundManager : MonoSingleton<SoundManager>
     {
         bgmAudio.Stop();
     }
-    
+
 }
