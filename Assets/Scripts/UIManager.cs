@@ -334,7 +334,7 @@ public class UIManager : MonoBehaviour
     {
         if(isShow)
         {
-            CheckActivePanals();
+            CheckActivePanals(panal);
         }
 
         if (isShow)
@@ -350,32 +350,41 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    private void CheckActivePanals()
+    private void CheckActivePanals(GameObject panal)
     {
-        if (settingPanal.activeSelf)
+        if(panal == settingPanal || panal == missionPanal || panal == iBookPanal.gameObject || panal == helpPanal)
         {
-            ShowPanal(settingPanal, false);
+            if (settingPanal.activeSelf)
+            {
+                ShowPanal(settingPanal, false);
+            }
+
+            if (missionPanal.activeSelf)
+            {
+                ShowPanal(missionPanal, false);
+            }
+
+            if (iBookPanal.gameObject.activeSelf)
+            {
+                ShowPanal(iBookPanal.gameObject, false);
+            }
+
+            if (helpPanal.activeSelf)
+            {
+                ShowPanal(helpPanal, false);
+            }
         }
 
-        if(missionPanal.activeSelf)
+        else
         {
-            ShowPanal(missionPanal, false);
+            return;
         }
-
-        if(iBookPanal.gameObject.activeSelf)
-        {
-            ShowPanal(iBookPanal.gameObject, false);
-        }
-
-        if(helpPanal.activeSelf)
-        {
-            ShowPanal(helpPanal, false);
-        }
+        
     }
 
     public void ShowPanal(GameObject panal)
     {
-        CheckActivePanals();
+        CheckActivePanals(panal);
         panal.SetActive(true);
         panal.transform.DOScale(Vector3.one, 0.3f);
     }
