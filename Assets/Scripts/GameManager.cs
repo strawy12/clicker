@@ -6,29 +6,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using BigInteger = System.Numerics.BigInteger;
 using Random = UnityEngine.Random;
-public class ScreenSize
-{
-    public static float GetScreenToWorldHeight
-    {
-        get
-        {
-            Vector2 topRightCorner = new Vector2(1, 1);
-            Vector2 edgeVector = Camera.main.ViewportToWorldPoint(topRightCorner);
-            var height = edgeVector.y * 0.5f;
-            return height;
-        }
-    }
-    public static float GetScreenToWorldWidth
-    {
-        get
-        {
-            Vector2 topRightCorner = new Vector2(1, 1);
-            Vector2 edgeVector = Camera.main.ViewportToWorldPoint(topRightCorner);
-            var width = edgeVector.x * 0.5f;
-            return width;
-        }
-    }
-}
 
 public class GameManager : MonoSingleton<GameManager>
 {
@@ -87,9 +64,9 @@ public class GameManager : MonoSingleton<GameManager>
 
     private string SAVE_PATH = "";
 
-    private string SAVE_FILENAME = "/SaveFile.txt";
+    private const string SAVE_FILENAME = "/SaveFile.txt";
 
-    private string moneyUnits = ",만,억,조,경,해,응,애,금,사,향,흥,하,자,찍";
+    private string moneyUnits = ",만,억,조,경,해,응,애,윾,하,준,흥,하,자,찍";
 
     public string[] moneyUnit
     {
@@ -112,14 +89,13 @@ public class GameManager : MonoSingleton<GameManager>
             Vector3 result = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             result.x = Mathf.Clamp(result.x, MinPos.x, MaxPos.x);
             result.y = Mathf.Clamp(result.y, MinPos.y, MaxPos.y);
-            result.z = -10;
+            result.z = -10f;
             return result;
         }
     }
 
-    private int cnt = 3;
     public void Awake()
-    {
+    {   
         SAVE_PATH = Application.persistentDataPath + "/Save";
         if (!Directory.Exists(SAVE_PATH))
         {

@@ -79,6 +79,8 @@ public class UIManager : MonoBehaviour
 
     private Text messageText = null;
     private bool isPicking = false;
+
+    private bool isShowing = false;
     public Sprite[] StaffSpriteArray { get { return staffSprites; } }
     public Sprite[] PetSpriteArray { get { return petSprites; } }
     public Sprite[] BuyBtnSpriteArray { get { return buyBtnSprites; } }
@@ -139,6 +141,12 @@ public class UIManager : MonoBehaviour
         CreatePanals();
         UpdateMoneyPanal();
         SetScrollActive(1);
+    }
+
+    public void OnClickCheetBtn()
+    {
+        GameManager.Inst.CurrentUser.UpdateMoney(1000000000000, true);
+        GameManager.Inst.CurrentUser.goldCoin += 1000;
     }
 
     private void AddSystemBtn()
@@ -611,23 +619,23 @@ public class UIManager : MonoBehaviour
 
     public void OnClickShowBtn(int num)
     {
-        Debug.Log("으ㅇㅇ앵");
+        if (isShowing) return;
+
+        
 
         if (GameManager.Inst.isTutorial)
         {
             if (num != Mathf.Max(GameManager.Inst.Tutorial.progressPartNum - 2, 0))
             {
-                Debug.Log("으앵");
                 return;
             }
         }
         if (!GameManager.Inst.CurrentUser.isTuto[num + 1] && num == 1 && !GameManager.Inst.isTutorial)
         {
-            Debug.Log("으앵ㅇㅇ");
-
+            isShowing = true;
             SettingSeletingBtn(true, num + 1);
             ShowSelectingPanal(true);
-            controlPanal.DOAnchorPosY(-242f, 0.2f).SetEase(Ease.InCirc);
+            controlPanal.DOAnchorPosY(-242f, 0.2f).SetEase(Ease.InCirc).OnComplete(() => isShowing = false);
             buffs.DOAnchorPosY(-140f, 0.2f).SetEase(Ease.InCirc);
             isShow = false;
             return;
@@ -635,7 +643,6 @@ public class UIManager : MonoBehaviour
 
         if (isShow && scrollNum != num)
         {
-            Debug.Log("으앵ㅇㅇㅇ");
             scrollNum = num;
             SetScrollActive(num);
             return;
@@ -648,9 +655,10 @@ public class UIManager : MonoBehaviour
 
     public IEnumerator ActivePanal(int num)
     {
+        isShowing = true;
         if (!isShow)
         {
-            controlPanal.DOAnchorPosY(-242f, 0.2f).SetEase(Ease.InCirc);
+            controlPanal.DOAnchorPosY(-242f, 0.2f).SetEase(Ease.InCirc).OnComplete(() => isShowing = false);
             buffs.DOAnchorPosY(-149f, 0.2f).SetEase(Ease.InCirc);
             yield return new WaitForSeconds(0.2f);
             staffObjPanal.SetActive(true);
@@ -665,7 +673,7 @@ public class UIManager : MonoBehaviour
             });
 
             yield return new WaitForSeconds(0.2f);
-            controlPanal.DOAnchorPosY(27f, 0.2f).SetEase(Ease.InCirc);
+            controlPanal.DOAnchorPosY(27f, 0.2f).SetEase(Ease.InCirc).OnComplete(() => isShowing = false);
             buffs.DOAnchorPosY(-115f, 0.2f).SetEase(Ease.InCirc);
 
         }
@@ -684,6 +692,11 @@ public class UIManager : MonoBehaviour
     {
         for (int i = 0; i < scrollObject.Length; i++)
         {
+            if(scrollObject[i].transform.localScale != Vector3.one)
+            {
+                scrollObject[i].transform.localScale = Vector3.one;
+            }
+
             if (i == num)
             {
                 scrollObject[i].gameObject.SetActive(true);
