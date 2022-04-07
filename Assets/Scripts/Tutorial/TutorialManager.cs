@@ -404,7 +404,7 @@ public class TutorialManager : MonoBehaviour
             blackPanal[1].gameObject.SetActive(true);
             GameManager.Inst.UI.seletingBtns[0].onClick.AddListener(() => OnClickSelectingBtn(true));
             GameManager.Inst.UI.seletingBtns[1].onClick.AddListener(() => OnClickSelectingBtn(false));
-            nowPetCAmount = GameManager.Inst.CurrentUser.petAmount;
+            nowPetCAmount = GameManager.Inst.CurrentUser.PetAmount;
 
             yield return new WaitForSeconds(2f);
             touchScreen.transform.DOMoveX(0.75f, 0.5f);
@@ -450,7 +450,7 @@ public class TutorialManager : MonoBehaviour
             blackPanal[0].gameObject.SetActive(false);
             CancelInvoke();
 
-            if (GameManager.Inst.CurrentUser.tutoAllClear)
+            if (GameManager.Inst.CurrentUser.TutoAllClear)
             {
                 GameManager.Inst.CurrentUser.isTuto[4] = true;
                 GameManager.Inst.CurrentUser.goldCoin += 300;
@@ -583,7 +583,7 @@ public class TutorialManager : MonoBehaviour
                 petBtn.onClick.AddListener(CheckClickPetBtn);
                 break;
             case 15:
-                Debug.Log(GameManager.Inst.CurrentUser.petCount);
+                Debug.Log(GameManager.Inst.CurrentUser.PetClickCnt);
                 if (isStop) return;
                 isStop = true;
                 ShowArrowPoint(new Vector2(-57.2f, -240f), false);
@@ -622,7 +622,7 @@ public class TutorialManager : MonoBehaviour
 
     private void CheckClickPetMountingBtn()
     {
-        if (GameManager.Inst.CurrentUser.petCount > nowPetCAmount)
+        if (GameManager.Inst.CurrentUser.PetClickCnt > nowPetCAmount)
         {
             NextPart();
             CancelInvoke("CheckClickPetMountingBtn");

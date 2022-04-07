@@ -31,20 +31,20 @@ public class User
     public float playTime;
     public int frame;
     public string exitTime;
-    public string autoClickUsingTime; 
+    public string autoClickUsingTime;
     public string saveMoney;
     public long goldCoin;
 
     public bool[] isTuto;
 
-    public bool tutoAllClear
+    public bool TutoAllClear
     {
         get
         {
             if (isTuto[4]) return false;
-            for(int i = 0; i < 4; i++)
+            for (int i = 0; i < 4; i++)
             {
-                if(!isTuto[i])
+                if (!isTuto[i])
                 {
                     return false;
                 }
@@ -66,6 +66,7 @@ public class User
             return _mission;
         }
     }
+
     public bool[] missionsClear;
     public int missionClear
     {
@@ -100,11 +101,11 @@ public class User
     {
         get
         {
-            return basemPc + (15 * sahayang.level) * Mathf.Max(petAmount, 1) * additionMoney;
+            return basemPc + (15 * sahayang.level) * Mathf.Max(PetAmount, 1) * additionMoney;
         }
     }
 
-    public int petCount
+    public int PetClickCnt
     {
         get
         {
@@ -120,7 +121,7 @@ public class User
         }
     }
 
-    public int petAmount
+    public int PetAmount
     {
         get
         {
@@ -136,7 +137,7 @@ public class User
         }
     }
 
-    public float autoClickTime
+    public float AutoClickTime
     {
         get
         {
@@ -153,6 +154,7 @@ public class User
             return time;
         }
     }
+
     public List<Staff> staffs = new List<Staff>();
     public List<Skill> skills = new List<Skill>();
     public List<Pet> pets = new List<Pet>();
@@ -207,3 +209,4 @@ public class User
         GameManager.Inst.UI.UpdateMoneyPanal();
     }
 }
+

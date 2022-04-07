@@ -2,9 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-using EPoolingType = GameManager.EPoolingType;
 
-public class SomSaTang : MonoBehaviour
+public class CottenCandy : PoolObject
 {
     [SerializeField] private float speed = 3f;
     private void Update()
@@ -15,11 +14,10 @@ public class SomSaTang : MonoBehaviour
             Despawn();
         }
     }
-    private void Despawn()
+    override protected void Despawn()
     {
-        transform.DOKill();
-        transform.SetParent(GameManager.Inst.Pool);
-        gameObject.SetActive(false);
+        transform.localScale = Vector3.one;
+        base.Despawn();
     }
 
     public void ClickSomSatang()

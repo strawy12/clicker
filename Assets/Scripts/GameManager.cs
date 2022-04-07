@@ -9,18 +9,17 @@ using Random = UnityEngine.Random;
 
 public class GameManager : MonoSingleton<GameManager>
 {
-    public enum EPoolingType { clickEffect, coinText, somSaTang }
 
+
+
+    #region Managers Instance
     private User user = null;
 
     private UIManager uiManager = null;
 
     private TutorialManager tutorialManager = null;
 
-    private Transform pool = null;
-
-    private Dictionary<EPoolingType, Queue<GameObject>> poolingList = new Dictionary<EPoolingType, Queue<GameObject>>();
-    public User CurrentUser { get { return user; } }
+    private PoolManager poolManager = null;
 
     public TutorialManager Tutorial
     {
@@ -39,7 +38,7 @@ public class GameManager : MonoSingleton<GameManager>
     {
         get
         {
-            if(uiManager == null)
+            if (uiManager == null)
             {
                 uiManager = GetComponent<UIManager>();
             }
@@ -47,18 +46,11 @@ public class GameManager : MonoSingleton<GameManager>
         }
     }
 
-    public Transform Pool
-    {
-        get
-        {
-            if (pool == null)
-            {
-                pool = GameObject.Find("Pool").transform;
-            }
-            return pool;
-        }
-    }
-    public Dictionary<EPoolingType, Queue<GameObject>> PoolingList { get { return poolingList; } }
+    #endregion
+
+    public User CurrentUser { get { return user; } }
+
+    
 
     public bool isTutorial = false;
 
@@ -96,17 +88,11 @@ public class GameManager : MonoSingleton<GameManager>
 
     public void Awake()
     {   
-        SAVE_PATH = Application.persistentDataPath + "/Save";
-        if (!Directory.Exists(SAVE_PATH))
-        {
-            Directory.CreateDirectory(SAVE_PATH);
-        }
-        uiManager = GetComponent<UIManager>();
-        tutorialManager = GetComponent<TutorialManager>();
+        InitSetManagers();
+        SetDirectory();
         LoadFromJson();
-        Application.targetFrameRate = user.frame;
-        SetDict();
 
+        Application.targetFrameRate = user.frame;
     }
 
     private void Start()
@@ -131,7 +117,7 @@ public class GameManager : MonoSingleton<GameManager>
             uiManager.ShowQuitPanal();
         }
             timer += Time.deltaTime;
-            if(timer >= user.autoClickTime)
+            if(timer >= user.AutoClickTime)
             {
                 AutoClick();
                 timer = 0f;
@@ -139,29 +125,51 @@ public class GameManager : MonoSingleton<GameManager>
         
     }
 
+    private void InitSetManagers()
+    {
+        uiManager = GetComponent<UIManager>();
+        tutorialManager = GetComponent<TutorialManager>();
+        poolManager = FindObjectOfType<PoolManager>();
+    }
+
+    private void SetDirectory()
+    {
+        SAVE_PATH = Application.persistentDataPath + "/Save";
+
+        if (!Directory.Exists(SAVE_PATH))
+        {
+            Directory.CreateDirectory(SAVE_PATH);
+        }
+    }
+
+    #region Pooling
+    
+    public T GetPoolObject<T>() where T : PoolObject
+    {
+        EPoolingType type = (EPoolingType)Enum.Parse(typeof(EPoolingType), typeof(T).ToString());
+
+        return (T)poolManager.GetPoolObject(type);
+    }
+
+    #endregion
+
+
     private void CheckAutoClick()
     {
         if(user.autoClickUsingTime == "" || user.autoClickUsingTime == null)
         {
-            timer = user.autoClickTime;
+            timer = user.AutoClickTime;
             return;
         }
         TimeSpan diff = DateTime.Parse(user.autoClickUsingTime) - DateTime.Now;
         if (diff.TotalSeconds > 0)
         {
-            timer = user.autoClickTime - (float)diff.TotalSeconds;
+            timer = user.AutoClickTime - (float)diff.TotalSeconds;
         }
         else
         {
-            timer = user.autoClickTime;
+            timer = user.AutoClickTime;
         }
-    }
-
-    private void SetDict()
-    {
-        poolingList.Add(EPoolingType.clickEffect, new Queue<GameObject>());
-        poolingList.Add(EPoolingType.coinText, new Queue<GameObject>());
-        poolingList.Add(EPoolingType.somSaTang, new Queue<GameObject>());
     }
 
     public void Quit()
@@ -190,8 +198,8 @@ public class GameManager : MonoSingleton<GameManager>
             json = File.ReadAllText(SAVE_PATH + SAVE_FILENAME);
             user = JsonUtility.FromJson<User>(json);
             user.ConversionType(false);
-
         }
+
         if (user == null)
         {
             user = new User();
@@ -278,6 +286,8 @@ public class GameManager : MonoSingleton<GameManager>
 
         sum /= multiflyNum;
 
+        100 * 1.25f == (1 * 125)
+
         return sum;
     }
     private void SettingUser()
@@ -354,15 +364,17 @@ public class GameManager : MonoSingleton<GameManager>
         int place = (int)Mathf.Pow(10, 4);
         string retStr = "";
         do
-        {
-            moneyList.Add((int)(value % place));
-            value /= place;
+        { // 12,345,459,084,589,023
+            // 1.2345B
+            moneyList.Add((int)(value % place)); // 5030, 832, 2345
+            value /= place; 
         } while (value > 0);
 
 
         for (int i = Mathf.Max(0, moneyList.Count - 2); i < moneyList.Count; i++)
         {
             retStr = moneyList[i] + moneyUnit[i] + retStr;
+            //6849°æ123Á¶
         }
 
         return retStr;
@@ -370,8 +382,8 @@ public class GameManager : MonoSingleton<GameManager>
     public void AutoClick()
     {
         StartCoroutine(AutoClickAnim());
-        user.autoClickUsingTime = DateTime.Now.AddSeconds(user.autoClickTime).ToString("G");
-        for (int i = 0; i < user.petCount; i++)
+        user.autoClickUsingTime = DateTime.Now.AddSeconds(user.AutoClickTime).ToString("G");
+        for (int i = 0; i < user.PetClickCnt; i++)
         {
             uiManager.OnClickDisPlay();
         }
@@ -381,7 +393,7 @@ public class GameManager : MonoSingleton<GameManager>
 
     private IEnumerator AutoClickAnim()
     {
-        for (int i = 0; i < user.petCount; i++)
+        for (int i = 0; i < user.PetClickCnt; i++)
         {
             uiManager.ShowClickEffect(new Vector3(Random.Range(-1.7f, 1.7f), Random.Range(-4f, 4f), -5f));
             yield return new WaitForSeconds(0.05f);

@@ -7,7 +7,6 @@ using System.Linq;
 using DG.Tweening;
 //using UnityEngine.ResourceManagement.AsyncOperations;
 //using UnityEngine.AddressableAssets;
-using EPoolingType = GameManager.EPoolingType;
 using BigInteger = System.Numerics.BigInteger;
 
 
@@ -34,7 +33,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject petPanalTemp = null;
     [SerializeField] private Button staffObjectTemp = null;
     [SerializeField] private CoinText coinTextTemp = null;
-    [SerializeField] private SomSaTang somSaTangTemp = null;
+    [SerializeField] private CottenCandy conttenCandyTemp = null;
     [SerializeField] private GameObject clickEffectTemp = null;
     [SerializeField] private Image randomPickTemp = null;
 
@@ -232,7 +231,7 @@ public class UIManager : MonoBehaviour
         {
             clickCnt = 0;
             randNum = Random.Range(120, 200);
-            ShowSomSaTang();
+            //ShowSomSaTang();
         }
 
     }
@@ -269,53 +268,43 @@ public class UIManager : MonoBehaviour
 
     public void ShowClickEffect(Vector3 pos)
     {
-        GameObject clickEffect = null;
-        Image clickImage = null;
-        Queue<GameObject> queue = GameManager.Inst.PoolingList[EPoolingType.clickEffect];
-        if (queue.Count > 0)
-        {
-            clickEffect = queue.Dequeue();
-            clickEffect.transform.SetParent(clickEffectTemp.transform.parent);
-        }
-        else
-        {
-            clickEffect = Instantiate(clickEffectTemp, clickEffectTemp.transform.parent);
-        }
-        clickImage = clickEffect.GetComponent<Image>();
-        clickEffect.transform.position = pos;
+        //GameObject clickEffect = null;
+        //Image clickImage = null;
+        //Queue<GameObject> queue = GameManager.Inst.PoolingList[EPoolingType.ClickEffect];
+        //if (queue.Count > 0)
+        //{
+        //    clickEffect = queue.Dequeue();
+        //    clickEffect.transform.SetParent(clickEffectTemp.transform.parent);
+        //}
+        //else
+        //{
+        //    clickEffect = Instantiate(clickEffectTemp, clickEffectTemp.transform.parent);
+        //}
+        //clickImage = clickEffect.GetComponent<Image>();
+        //clickEffect.transform.position = pos;
 
-        clickEffect.SetActive(true);
-        clickImage.DOFade(0f, 0.5f).SetEase(Ease.InCirc);
-        clickEffect.transform.DOScale(new Vector3(0.5f, 0.5f, 0.5f), 0.2f).SetEase(Ease.OutCirc).OnComplete(() =>
-        {
-            clickEffect.transform.DOScale(new Vector3(1f, 1f, 1f), 0.3f).SetEase(Ease.InCirc).OnComplete(() =>
-            {
-                clickImage.DOFade(1f, 0f);
-                clickEffect.SetActive(false);
-                clickEffect.transform.localScale = (Vector3.zero);
-                clickEffect.transform.SetParent(GameManager.Inst.Pool);
-                queue.Enqueue(clickEffect);
-            });
-        });
+        //clickEffect.SetActive(true);
+        //clickImage.DOFade(0f, 0.5f).SetEase(Ease.InCirc);
+        //clickEffect.transform.DOScale(new Vector3(0.5f, 0.5f, 0.5f), 0.2f).SetEase(Ease.OutCirc).OnComplete(() =>
+        //{
+        //    clickEffect.transform.DOScale(new Vector3(1f, 1f, 1f), 0.3f).SetEase(Ease.InCirc).OnComplete(() =>
+        //    {
+        //        clickImage.DOFade(1f, 0f);
+        //        clickEffect.SetActive(false);
+        //        clickEffect.transform.localScale = (Vector3.zero);
+        //        queue.Enqueue(clickEffect);
+        //    });
+        //});
     }
     public void ShowSomSaTang()
     {
-        SomSaTang somSaTang = null;
-        Queue<GameObject> queue = GameManager.Inst.PoolingList[EPoolingType.somSaTang];
-        Vector2 randPos = new Vector2(GameManager.Inst.MinPos.x, Random.Range(isShow ? 0 : -3f, 3f));
-        if (queue.Count > 0)
-        {
-            GameManager.Inst.Pool.GetChild(0).GetComponent<CoinText>();
-            somSaTang.transform.SetParent(somSaTangTemp.transform.parent);
-            somSaTang.transform.position = randPos;
-        }
-        else
-        {
-            somSaTang = Instantiate(somSaTangTemp, somSaTangTemp.transform.parent);
-            somSaTang.transform.position = randPos;
-        }
+        CottenCandy somSaTang = GameManager.Inst.GetPoolObject<CottenCandy>();
+        CoinText coinText = GameManager.Inst.GetPoolObject<CoinText>();
+        ClickEffect clickEffect = GameManager.Inst.GetPoolObject<ClickEffect>();
+        coinText.Show(100);
+        somSaTang.ClickSomSatang();
+        Debug.Log(somSaTang);
         somSaTang.gameObject.SetActive(true);
-
     }
 
     public void ShowSelectingPanal(bool isShow)
@@ -412,19 +401,18 @@ public class UIManager : MonoBehaviour
 
     public void ShowCoinText(BigInteger money)
     {
-        CoinText coinText = null;
-        Queue<GameObject> queue = GameManager.Inst.PoolingList[EPoolingType.coinText];
-        if (queue.Count > 0)
-        {
-            GameManager.Inst.Pool.GetChild(0).GetComponent<CoinText>();
-            coinText.transform.SetParent(coinTextTemp.transform.parent);
-        }
-        else
-        {
-            coinText = Instantiate(coinTextTemp, coinTextTemp.transform.parent);
-        }
+        //CoinText coinText = null;
+        //Queue<GameObject> queue = GameManager.Inst.PoolingList[EPoolingType.CoinText];
+        //if (queue.Count > 0)
+        //{
+        //    coinText.transform.SetParent(coinTextTemp.transform.parent);
+        //}
+        //else
+        //{
+        //    coinText = Instantiate(coinTextTemp, coinTextTemp.transform.parent);
+        //}
 
-        coinText.Show(money);
+        //coinText.Show(money);
     }
 
     public void OnOffSkill(int num, bool isOn)
