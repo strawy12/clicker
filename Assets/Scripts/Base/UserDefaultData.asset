@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e79fa35fcc9dc0647b83bf057969a11d, type: 3}
+  m_Name: UserDefaultData
+  m_EditorClassIdentifier: 
+  userData:
+    userName: "\uBB34\uBA85"
+    playTime: 0
+    frame: 0
+    exitTime: 
+    autoClickUsingTime: 
+    saveMoney: 
+    goldCoin: 0
+    isTuto: 
+    missionsClear: 
+    sahayang:
+      savePrice: 
+      level: 0
+    bgmVolume: 0
+    effectVolume: 0
+    bgmMute: 0
+    effectMute: 0
+    clickCnt: 0
+    bigHeartClickCnt: 0
+    skillUseCnt: 0
+    levelUpCnt: 0
+    additionMoney: 0
+    saveBasemPc: 
+    staffs: []
+    skills: []
+    pets: []
